@@ -1,0 +1,640 @@
+\documentclass[12pt]{article}
+
+% Encoding & fonts
+\usepackage[utf8]{inputenc}   % for UTF-8 source files
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+
+% Page & core
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{titling}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{float}            % if you use [H] floats
+\usepackage{newtxtext,newtxmath}
+
+% Section heading style
+\titleformat{\section}{\bfseries\Large}{\thesection.}{0.6em}{\bfseries}
+\titlespacing*{\section}{0pt}{*1.2}{*0.6}
+\titleformat{\subsection}{\bfseries\normalsize}{\thesubsection.}{0.5em}{\bfseries}
+\titlespacing*{\subsection}{0pt}{*0.9}{*0.4}
+\titleformat{\subsubsection}{\bfseries}{\thesubsubsection.}{0.5em}{\bfseries}
+\titlespacing*{\subsubsection}{0pt}{*0.7}{*0.3}
+
+% Start each major section on a new page
+\let\oldsection\section
+\renewcommand{\section}{\clearpage\oldsection}
+
+% TOC look (font hooks must be FONT ONLY)
+\renewcommand{\contentsname}{\textbf{Table of Contents}}
+\renewcommand{\cfttoctitlefont}{\bfseries\large}
+\renewcommand{\cftdotsep}{1}
+\setlength{\cftbeforesecskip}{2.5pt}
+\setlength{\cftbeforesubsecskip}{1.5pt}
+\renewcommand{\cftsecpagefont}{\normalfont}
+\renewcommand{\cftsubsecpagefont}{\normalfont}
+
+% Hyperref LAST (unicode bookmarks)
+\usepackage[unicode]{hyperref}
+\hypersetup{hidelinks}
+
+\begin{document}
+
+% ===================== Title page =====================
+\begin{titlepage}
+\vspace*{3cm}
+
+\begin{center}
+{\LARGE \textbf{Software Requirements Specification}}\\[0.8cm]
+{\large for}\\[0.8cm]
+\end{center}
+
+\raggedleft
+{\LARGE \textbf{Employee Performance Review (EPR) Dashboard and Workflow System}}\\[1.5cm]
+
+{\large Version 0.2 Approve Pending}\\[2cm]
+
+{\normalsize Prepared by:}\\[0.4cm]
+{\normalsize Alyssa Arroyo\\
+Momoka Aung\\
+Chiemela Eziechile-Nwoke\\
+Hari Ram Gurung\\
+Michael Hareu\\
+Hoang Le\\
+John Lopez\\
+Aidan McBride\\
+Luis Morales\\
+James San\\
+Hayk Vardapetyan}\\[1.8cm]
+
+{\normalsize Santa Barbara County Public Defender’s Office}\\[0.3cm]
+{\normalsize California State University, Los Angeles}\\[2.2cm]
+
+{\normalsize 09 October 2025}
+
+\end{titlepage}
+
+% ===================== TOC =====================
+\addcontentsline{toc}{section}{Table of Contents}
+\begingroup
+\singlespacing
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+% ===================== Revision History =====================
+\section*{Revision History}
+\addcontentsline{toc}{section}{Revision History}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{center}
+\begin{tabular}{|p{2cm}|p{3cm}|p{3.5cm}|p{7cm}|}
+\hline
+\textbf{Version} & \textbf{Date} & \textbf{Author} & \textbf{Reason for Changes} \\ \hline
+0.1 & 08 Sep 2025 & Momoka Aung & Initial draft created. \\ \hline
+0.2 & 16 Oct 2025 & Momoka Aung & Added structure, clarified roles, and incorporated high-level requirements. \\ \hline
+0.2.1 & 24 Oct 2025 & Momoka Aung & Expanded details per feedback; separated EPR workflow from Power BI section; added field lists, triggers, mappings, and KPI definitions. \\ \hline
+\end{tabular}
+\end{center}
+
+
+% ===================== 1. Introduction =====================
+\section{Introduction}
+
+The Software Requirements Specification for the Employee Performance Review (EPR) Dashboard Workflow System outlines the functional and nonfunctional requirements for automating and managing employee performance reviews at the Santa Barbara County Public Defender’s Office. It serves as a formal agreement between stakeholders and developers, defining the system’s objectives, scope, and operational framework.
+
+\subsection{Purpose}
+This Software Requirements Specification defines the functional and nonfunctional requirements for the Employee Performance Review (EPR) Dashboard Workflow System developed for the Santa Barbara County Public Defender’s Office.  
+The purpose of this system is to automate and centralize the tracking, follow-up, and completion of employee performance reviews across all divisions. The system ensures timely completion of reviews through automated reminders, escalation notifications, and structured data management. It replaces the current manual, email-based tracking process with a transparent, repeatable, and auditable workflow using Smartsheet for process automation and Box for secure document storage.
+
+\subsection{Intended Audience and Reading Suggestions}
+\begin{itemize}
+  \item \textbf{HR Staff \& Product Owner:} Configure schedules/templates; monitor compliance (Sections 1–2, 4).
+  \item \textbf{Supervisors \& Division Leads:} Execute review workflow and respond to reminders (Sections 2–4).
+  \item \textbf{Developers/Integrators:} Implement Smartsheet automations and email notifications; Box linkage (Sections 3–4).
+  \item \textbf{QA/Reviewers \& IT Security:} Verify behavior and policy alignment (Sections 4–6).
+\end{itemize}
+
+\subsection{Product Scope}
+
+The Employee Performance Review (EPR) Dashboard and Workflow System is developed to automate and centralize the management of employee performance reviews within the Santa Barbara County Public Defender’s Office. It replaces the current manual, email-based process with an organized and efficient workflow using Smartsheet for tracking and Box for secure document storage.
+
+The system maintains a centralized tracker containing employee details, supervisors, review periods, due dates, and completion status. Automated reminders are sent to supervisors and employees 30, 14, and 7 days before the review due date, with follow-up escalations at 7 and 14 days after if the review remains incomplete. 
+
+Supervisors complete EPR forms offline using HR-provided templates and upload finalized documents to Box, which serves as the official record repository. Each completed review is linked back to its Smartsheet entry for tracking and verification.
+
+The EPR Dashboard provides HR with a clear overview of review progress, overdue items, and completion rates. By automating reminders, simplifying document management, and consolidating information in one place, the system improves efficiency, accountability, and compliance across all divisions.
+
+
+\subsection{Definitions, Acronyms, and Abbreviations}
+\begin{itemize}
+  \item \textbf{EPR:} Employee Performance Review
+  \item \textbf{HR:} Human Resources
+  \item \textbf{Smartsheet:} Workflow and tracking platform used for automations and status
+  \item \textbf{Box:} County-secured document repository for finalized EPRs
+  \item \textbf{SSO:} Single Sign-On for authenticated access
+\end{itemize}
+
+\subsection{References}
+\begin{itemize}
+  \item \href{https://cosantabarbara.app.box.com/s/xzxniv8dk6gt2eormc0b8ihsn686cf6l/file/1968556672300}{Project Overview: Box Link}
+\end{itemize}
+
+
+% ===================== 2. Overall Description =====================
+\section{Overall Description}
+
+The section on the overall description provides a high-level understanding of the EPR Dashboard and Workflow System, including how it is intended to be used, the environment in which it will operate, and the major factors influencing its development and deployment.
+
+\subsection{System Analysis}
+
+Currently, the Employee Performance Review (EPR) process at the Santa Barbara County Public Defender’s Office is tracked manually through spreadsheets and email reminders. This manual system creates inefficiencies, delays, and limited visibility into overall progress. Supervisors and HR staff often rely on email follow-ups and ad-hoc reminders to ensure timely completion of performance reviews, which increases administrative workload and the potential for missed deadlines.
+
+The proposed EPR Dashboard and Workflow System simplifies this process by providing a centralized, automated platform for managing all stages of the EPR cycle. Using Smartsheet as the workflow engine, the system tracks each employee’s review period, status, and due dates while automatically sending reminders and escalation notices to responsible parties. Finalized reviews are stored securely in Box, ensuring compliance with County data retention policies and providing an auditable history of all completed reviews.
+
+The main goals of this system are to:
+\begin{itemize}
+  \item Eliminate manual tracking and email-based follow-ups.
+  \item Increase accountability and visibility across all divisions.
+  \item Ensure on-time completion of performance reviews.
+  \item Maintain a reliable and secure archive of finalized EPR documents.
+\end{itemize}
+
+Key challenges include designing efficient automation rules in Smartsheet, establishing standardized folder structures in Box, and ensuring that all notifications align with County security and communication standards. Once implemented, the system will significantly reduce administrative workload and improve compliance with HR timelines.
+
+\subsection{Product Perspective}
+
+The EPR Dashboard and Workflow System functions as a fully cloud-based solution composed of existing County enterprise tools integrated through Single Sign-On (SSO) and secure APIs. It replaces fragmented spreadsheets and email tracking with a unified workflow accessible to HR, supervisors, and division leads.
+
+The system architecture integrates three main software platforms:
+\begin{itemize}
+  \item \textbf{Smartsheet:} Serves as the central workflow hub for tracking employee data, review timelines, and completion statuses. It also manages automated reminders and overdue escalations.
+  \item \textbf{Box:} Acts as the official repository for finalized EPR documents. Each document is stored in a standardized folder structure, organized by year, division, and employee name, ensuring consistent access and compliance with retention policies.
+  \item \textbf{Email (Outlook/Exchange):} Used to distribute templates, send reminders, and notify supervisors or division leads of overdue EPRs.
+\end{itemize}
+
+All components operate within the County’s secured network and use SSO authentication for user verification. The system requires minimal user training and aligns with the organization’s existing IT infrastructure. There are no on-premises components or custom-developed software, which simplifies maintenance and scalability.
+
+\subsection{Product Functions}
+
+The EPR Dashboard and Workflow System provides four primary functions that work together to streamline the review process:
+
+\begin{itemize}
+  \item \textbf{2.3.1 EPR Tracking and Scheduling}
+  \begin{itemize}
+    \item Maintain a centralized Smartsheet tracker that lists all active employees, their supervisors, review periods, and due dates.
+    \item Automatically calculate next review dates based on prior completion records.
+  \end{itemize}
+
+  \item \textbf{2.3.2 Automated Reminders and Escalations}
+  \begin{itemize}
+    \item Send automated reminder emails 30, 14, and 7 days before a review is due.
+    \item Escalate overdue reviews to division leads at 7 days past due, and to department heads at 14 days past due.
+    \item Log all reminder and escalation events in Smartsheet for audit purposes.
+  \end{itemize}
+
+  \item \textbf{2.3.3 Offline Review and Submission}
+  \begin{itemize}
+    \item Allow supervisors to complete EPR forms offline using HR-provided templates.
+    \item Upload finalized documents to Box and link the file URL in Smartsheet for record-keeping.
+  \end{itemize}
+
+  \item \textbf{2.3.4 Dashboard and Oversight}
+  \begin{itemize}
+    \item Provide HR with a Smartsheet dashboard showing real-time review progress.
+    \item Display counts of Not Started, In Progress, Submitted, and Complete reviews.
+    \item Highlight overdue items for quick follow-up and compliance reporting.
+  \end{itemize}
+\end{itemize}
+
+By integrating these functions into a single system, the EPR Dashboard reduces administrative effort, ensures policy compliance, and provides supervisors and HR with clear, up-to-date visibility into the review process.
+
+\subsection{User Classes and Characteristics}
+\begin{longtable}{@{}p{4.2cm}p{3.2cm}p{6.2cm}@{}}
+\toprule
+\textbf{Role} & \textbf{Access Scope} & \textbf{Typical Actions} \\
+\midrule
+Supervisor & Team-only & Initiate/approve EPRs; respond to reminders \\
+HR Staff (Data Stewards) & Department-wide & Configure automations/templates; monitor compliance; manage data quality \\
+Division Lead & Division & Review escalations; enforce deadlines \\
+Head of Office & Org-wide & Final approvals; view executive dashboards \\
+Admin / IT & Org-wide & SSO, permissions, integration health \\
+\bottomrule
+\end{longtable}
+
+\subsection{Operating Environment}
+
+2.5.1 The EPR Dashboard and Workflow System will operate entirely within a cloud-based environment using the County’s enterprise licenses for Smartsheet and Box.
+
+2.5.2 The system will be accessible through modern web browsers, including Google Chrome, Microsoft Edge, and Mozilla Firefox.
+
+2.5.3 Users will require an active internet connection and County Single Sign-On (SSO) credentials to access the system.
+
+2.5.4 The system will function on both desktop and mobile devices, though administrative configuration tasks will primarily occur on desktop browsers.
+
+2.5.5 The system will integrate with County email (Microsoft Outlook/Exchange) to send automated reminders and escalation notifications.
+
+2.5.6 Access will be restricted to authorized employees, supervisors, HR staff, and administrators within the Santa Barbara County Public Defender’s Office.
+
+
+\subsection{Design and Implementation Constraints}
+
+2.6.1 The system’s development and deployment must comply with Santa Barbara County’s IT and data security regulations, including data privacy and records retention policies.
+
+2.6.2 The project must be completed within the academic semester timeline, limiting long-term development and testing opportunities.
+
+2.6.3 User permissions and automation configurations are governed by the County’s administrative access levels within Smartsheet and Box enterprise accounts.
+
+2.6.4 System performance may be affected on older devices or under slow network conditions, requiring optimization of dashboards and automation rules.
+
+2.6.5 Integration options are limited to native Smartsheet and Box connectors; no external APIs or third-party middleware will be developed.
+
+2.6.6 The system must prioritize reliability, data security, and maintainability, ensuring consistent performance and compliance with County operational policies.
+
+\subsection{User Documentation}
+
+The EPR Dashboard and Workflow System will include a comprehensive set of user documentation to support onboarding, daily operation, and long-term maintenance. This Software Requirements Specification (SRS) will serve as a reference guide for understanding the system’s structure, functionality, and configuration procedures.  
+
+In addition to this document, users will receive a detailed User Guide, a Quick Start Guide, and a Frequently Asked Questions (FAQ) document to help them navigate Smartsheet dashboards, update review statuses, and upload finalized EPRs to Box. A live demonstration during the project presentation will introduce HR staff and supervisors to the system’s key features, such as automated reminders, overdue escalations, and Box link updates.  
+
+All user materials will be distributed in PDF format and stored in a shared County Box folder to ensure consistent access and version control. Contextual help links will also be embedded directly into Smartsheet dashboards, allowing users to access relevant instructions without leaving the platform.
+
+
+\subsection{Assumptions and Dependencies}
+
+2.8.1 The Santa Barbara County Single Sign-On (SSO) system will remain active and available for authenticating user access to Smartsheet and Box.  
+
+2.8.2 HR will maintain an up-to-date supervisor–employee hierarchy, which is essential for ensuring correct reminder routing and escalation workflows.  
+
+2.8.3 Users will have stable internet connectivity and access to County-approved browsers and hardware to ensure reliable system performance.  
+
+2.8.4 The system depends on Smartsheet’s enterprise automation features, including date-triggered reminders and escalation workflows, which must remain supported under the County’s current licensing plan.  
+
+2.8.5 Box will continue to serve as the official repository for all finalized EPR documents, with sufficient storage capacity and retention policy compliance.  
+
+2.8.6 Any changes to County IT infrastructure, security protocols, or access permissions may require adjustments to automation rules, reminder schedules, or folder configurations.  
+
+\subsection{Apportioning of Requirements}
+Phase 1: EPR workflow \& EPR dashboard. Phase 2: broader HR trackers, extended KPIs, drill-through.
+
+% ===================== 3. External Interface Requirements =====================
+\section{External Interface Requirements}
+
+This section outlines how the EPR Dashboard and Workflow System will interact with external interfaces, including user interfaces, hardware, software, and communication channels. These requirements describe how the system will operate within the Santa Barbara County Public Defender’s Office’s IT environment and ensure seamless integration with existing enterprise tools.
+
+\subsection{User Interfaces}
+
+3.1.1 The system shall provide a clean and user-friendly interface within Smartsheet, allowing HR staff and supervisors to view, update, and manage EPR records efficiently.
+
+3.1.2 Smartsheet forms shall enable users to input key data such as employee name, supervisor, review period, due date, and Box link for finalized performance review documents.
+
+3.1.3 The system shall include a visual dashboard summarizing review progress and displaying key metrics such as the number of EPRs Not Started, In Progress, Submitted, Completed, or Overdue.
+
+3.1.4 The interface shall clearly highlight overdue items using color indicators or status flags to assist HR in monitoring compliance and initiating follow-ups.
+
+3.1.5 The Box interface shall organize completed EPR files in structured folders (/EPR/<Year>/<Division>/<Employee Name>/) and display metadata including file name, upload date, and reviewer information.
+
+3.1.6 All user interfaces shall follow accessibility standards, supporting screen readers and high-contrast viewing options to ensure usability for all authorized personnel.
+
+3.1.7 The system shall provide clear, consistent labels, tooltips, and error messages to guide users during data entry, uploads, or when correcting invalid information.
+
+3.1.8 Embedded help links shall be available within Smartsheet dashboards to provide users with quick access to the User Guide, FAQs, and troubleshooting instructions.
+
+\subsection{Hardware Interfaces}
+
+The EPR Dashboard and Workflow System does not require any dedicated hardware and operates entirely in the cloud. Users can access the system using standard County-approved devices such as desktop computers, laptops, or mobile devices with internet connectivity. No local installation or specialized equipment is needed for normal operation, ensuring ease of access and minimal maintenance requirements.
+
+
+\subsection{Software Interfaces}
+
+The system integrates with existing County enterprise software through secure, supported connections. Smartsheet serves as the main workflow platform, while Box is used for document storage and link management. Automated reminders and notifications are sent via Microsoft Outlook or Exchange. All integrations comply with County IT security policies, and no third-party or custom-built software components are required.
+
+
+\subsection{Communications Interfaces}
+
+All communications within the EPR Dashboard and Workflow System occur over secure, encrypted HTTPS/TLS 1.2 or higher protocols. User authentication and access are managed through the County’s Single Sign-On (SSO) system using OAuth 2.0 or SAML standards. Automated emails and notifications are sent through the County’s Microsoft Exchange network, ensuring data security and compliance with organizational IT policies.
+
+
+% ===================== 4. Requirements Specification =====================
+\section{Requirements Specification}
+
+The Requirements Specification section lists all system functions, interfaces, and data interactions.
+
+\subsection{Functional Requirements} % 4.1
+
+\subsubsection{EPR Workflow Management} % 4.1.1
+
+\begin{enumerate}[label=\thesubsubsection.\arabic*, left=0pt]
+  \item The system shall maintain a Smartsheet Employee Master table to track all active employees and their performance review progress. The table shall include, at minimum, the following fields:
+    \begin{itemize}
+      \item Status – Indicates the current stage of the review (Not Created, In Progress, With HR, Complete).
+      \item DocuSign Status – Shows document progress (Not Started, Sent, Signed, Approved).
+      \item Employee First Name / Last Name – Legal employee name.
+      \item Job Class – Employee classification or role (e.g., HR Manager, Social Services Worker).
+      \item Job Class Level / Step – Identifies seniority or pay grade.
+      \item Anniversary Month – Used to determine the review cycle.
+      \item Probationary EPR – Checkbox identifying probationary status.
+      \item Probation Quarter – Identifies the evaluation quarter (1Q, 2Q, 3Q, 4Q).
+      \item Probation Due Date – Date the probationary review is due.
+      \item Late EPR – Flag for overdue reviews.
+      \item Signed EPR Due Date – Date by which the signed review must be submitted.
+      \item Previous EPR Signed / Previous Actual Due Date – Historical tracking of prior review cycles.
+      \item Supervisor, HR, Head of HR, Head of Office – Assigned staff responsible for review routing.
+      \item Supervisor 1, 2, 3 Approval Fields – Records hierarchical approvals.
+      \item Reset Ready – Flag indicating readiness for a new review cycle.
+    \end{itemize}
+
+  \item The system shall allow HR or supervisors to initiate a new EPR entry from the Employee Master sheet using a form or button automation. The new entry shall automatically populate with employee data, supervisor details, and calculated due dates.
+
+  \item The system shall calculate the next review due date based on either the employee’s anniversary month or the previous EPR completion date (Next Review Due = Last Review Date + 12 months).
+
+  \item The system shall allow HR to monitor review progress through fields such as Status, DocuSign Status, and Current Holder, updating automatically as the review moves through stages (Supervisor → HR → Head of HR → Head of Office).
+
+  \item The system shall log all major state changes (Created, Assigned, Reviewed, Approved, Completed) with timestamps and responsible users for auditing purposes.
+
+  \item When the review is completed, the system shall mark the record as Complete, store the Box link to the signed EPR, and flag the record as Reset Ready for the next annual cycle.
+\end{enumerate}
+
+\subsubsection{Reminder and Escalation Automation} % 4.1.2
+\begin{enumerate}[label=\thesubsubsection.\arabic*, left=0pt]
+  \item The system shall automatically issue reminder and escalation notifications based on the value of the Next Review Due date, following the schedule below:
+    \begin{itemize}
+      \item 30 days before — Notification to Supervisor and Employee.
+      \item 14 days before — Notification to Supervisor and HR.
+      \item 7 days before — Urgent reminder to Supervisor.
+      \item 7 days after — Escalation to Division Lead (Escalation Level 1).
+      \item 14 days after — Escalation to Head of Office (Escalation Level 2).
+    \end{itemize}
+  \item The system shall automatically update the field \textit{EPR Status} to “Overdue” if no completion record exists after the due date has passed.
+  \item Each reminder and escalation event shall be recorded in the Reminder Log sheet (Log ID, Employee ID, EPR ID, Timestamp, Recipient(s), Channel, Template ID, Delivery Status).
+\end{enumerate}
+
+\subsubsection{Completion and Archival} % 4.1.3
+\begin{enumerate}[label=\thesubsubsection.\arabic*, left=0pt]
+  \item Upon review completion, the finalized EPR document shall be uploaded to Box in the designated folder structure: \texttt{/EPR/\textless Year\textgreater/\textless Division\textgreater/\textless Employee Name\textgreater/}.
+  \item The system shall update the Smartsheet record by setting Completion Date, updating EPR Status to “Complete,” recording Last Review Date, and recalculating Next Review Due.
+  \item Attachments shall be restricted to EPR-related documents only; other sensitive content shall be stored securely in Box and referenced by hyperlink.
+\end{enumerate}
+
+\subsubsection{Access Control and Audit} % 4.1.4
+\begin{enumerate}[label=\thesubsubsection.\arabic*, left=0pt]
+  \item Supervisors shall view only their team’s EPRs.
+  \item HR and Admin shall have department-wide visibility.
+  \item Access shall be enforced via SSO; all actions shall be logged with timestamps.
+\end{enumerate}
+
+% Next subsection under Section 4 (will be 4.2)
+\subsection{Power BI Analytics Requirements}
+
+\subsubsection{Source Datasets and Refresh}
+\begin{enumerate}[left=0pt,label=\thesubsubsection.\arabic*]
+  \item Power BI shall pull from \texttt{EPR\_Results}, \texttt{Employee\_Master}, and \texttt{Reminder\_Log}. Phase 2 adds \texttt{Recruitment\_Tracker}, \texttt{Vacancy\_Tracker}, \texttt{Leave\_Tracker}, \texttt{Personnel\_Matters}, \texttt{Separation\_Tracker}.
+  \item Nightly refresh at 02:00 local time with failure alerts to HR Admin.
+\end{enumerate}
+
+\subsubsection{Reports, Filters, and Metrics}
+\begin{enumerate}[left=0pt,label=\thesubsubsection.\arabic*]
+  \item EPR dashboard shall include:
+    \begin{itemize}[left=1.2em]
+      \item \textbf{Filters (Slicers):} Supervisor, Classification, Division, Review Period (Quarter/Year), Status
+      \item \textbf{KPIs:} Total EPRs due; \% completed on time; average completion delay (days); overdue by Division/Supervisor
+      \item \textbf{Visuals:} Completions vs due trend; routing-stage funnel; overdue heatmap
+    \end{itemize}
+  \item Row-Level Security (RLS): Supervisor = team-only; Division Lead = division; HR/Admin = full.
+\end{enumerate}
+
+\subsubsection{Data Quality and Governance}
+\begin{enumerate}[left=0pt,label=\thesubsubsection.\arabic*]
+  \item Validate Employee\_ID, dates, and statuses in Power BI (flag missing/invalid/stale).
+  \item Include data lineage: data sources, refresh schedule, and owner.
+\end{enumerate}
+
+\subsection{Logical Database Requirements}
+
+\subsubsection{Employee Table}
+
+The Employee Master table serves as the primary data source for the EPR Dashboard and Workflow System. It stores all employee information required for tracking, automation, and reporting within Smartsheet. Each record represents a unique employee identified by the primary key \textit{Primary Column (Employee ID/UID)}.
+
+\textbf{Primary Key:} Primary Column (unique Employee ID/UID)
+
+\textbf{Purpose:} Hold all employee-related data needed to drive the EPR workflow, including identity, organizational assignment, review-cycle dates, routing roles, approvals, and status flags.
+
+\textbf{Key fields (aligned to current sheet):}
+
+\begin{itemize}
+  \item \textit{Identity \& organization}
+    \begin{itemize}
+      \item Employee First Name, Employee Last Name
+      \item Job Class, Job Class Level, Job Class Step
+      \item Division (if present) / Organizational unit
+      \item Supervisor (primary)
+      \item HR (assignee/contact)
+    \end{itemize}
+
+  \item \textit{Review cycle \& dates}
+    \begin{itemize}
+      \item Anniversary Month
+      \item Probationary EPR (checkbox)
+      \item Probation Quarter (1Q, 2Q, 3Q, 4Q)
+      \item Probation Due Date
+      \item Signed EPR Due Date
+      \item Previous EPR Signed
+      \item Previous EPR Actual Due Date
+    \end{itemize}
+
+  \item \textit{Routing \& approvals}
+    \begin{itemize}
+      \item Supervisor 1, Supervisor 2, Supervisor 3 (names/IDs)
+      \item Head of HR, Head of Office
+      \item Supervisor 2 approval, Supervisor 3 approval
+      \item Head of HR approval, Head of Office approval
+      \item Reset Ready (checkbox to start next cycle)
+    \end{itemize}
+
+  \item \textit{Status \& audit}
+    \begin{itemize}
+      \item Status (Not Created, In Progress, With HR, Complete)
+      \item DocuSign Status (Not Started, Sent, Signed, Approved) \emph{(if using e-signature)}
+      \item Late EPR (flag)
+      \item Current Holder \emph{(optional: who currently owns the task)}
+      \item Box Link \emph{(URL to finalized EPR in Box; may be stored on the EPR Results row if separated)}
+    \end{itemize}
+\end{itemize}
+
+\textit{Notes:}
+\begin{itemize}
+  \item The Primary Column should be a stable unique identifier (not a display name). If the Smartsheet primary column is a name, add an immutable \texttt{Employee\_UID} text/number column and treat that as the logical key.
+  \item Approval columns are boolean or single-select fields that reflect each step’s outcome and are used by automations and dashboards.
+  \item Date fields should use consistent locale and be validated (non-empty when status progresses past the corresponding stage).
+\end{itemize}
+
+\subsection{Design Constraints}
+
+This section outlines the technical and operational constraints that limit or guide the design and development of the EPR Dashboard and Workflow System.
+
+\subsubsection*{4.4.1 Access Method}
+The system shall be accessed through a web browser by all authorized users.  
+
+4.4.1.1 The system’s accessibility may be affected by County network policies or browser compatibility restrictions.  
+
+\subsubsection*{4.4.2 Authentication}
+All users shall be authenticated through the County’s Single Sign-On (SSO) system before accessing Smartsheet or Box.  
+
+4.4.2.1 Authentication services shall remain available and synchronized across all connected enterprise applications.  
+
+\subsubsection*{4.4.3 Service Availability}
+The system’s performance and availability are dependent on Smartsheet’s enterprise cloud uptime and Box’s hosting reliability.  
+
+\subsubsection*{4.4.4 Downtime and Maintenance}
+The system may be subject to downtime or limited functionality during Smartsheet or Box maintenance periods or County network outages.  
+
+\subsubsection*{4.4.5 Platform Limitations}
+The solution is limited to the features and automation capabilities provided within Smartsheet’s enterprise plan and cannot use unsupported third-party connectors or scripts.  
+
+\subsubsection*{4.4.6 Data Compliance}
+The system’s data storage and document routing processes must comply with Santa Barbara County’s data privacy, security, and retention policies.  
+
+\subsubsection*{4.4.7 Power BI Integration}
+If enabled, the Power BI dashboard will refresh nightly according to County IT scheduling standards and is subject to Power BI’s service availability.  
+
+\subsubsection*{4.4.8 DocuSign Integration}
+DocuSign integration, if implemented, will follow County licensing limits and approved routing configurations.  
+
+% ===================== 5. Other Nonfunctional Requirements =====================
+\section{Other Nonfunctional Requirements}
+
+This section describes the nonfunctional aspects of the EPR Dashboard and Workflow System, including performance, safety, security, software quality, and business requirements that guide how the system operates and is maintained.
+
+\subsection{Performance Requirements}
+
+Performance requirements define how efficiently the system must operate to meet County standards and user expectations.
+
+\begin{enumerate}[label=\textbf{5.1.\arabic*}]
+  \item The system shall process automated reminder notifications promptly after their scheduled trigger time.
+  \item The system shall maintain fast and responsive dashboard performance under normal operating conditions, efficiently handling a high volume of employee performance records and reminder notifications.
+  \item The system shall support concurrent user sessions for HR staff, supervisors, and administrators without noticeable performance degradation.
+  \item The system shall automatically retry failed automation tasks in the event of temporary network issues or vendor rate limits.
+  \item The system should recover from unexpected service interruptions within a reasonable timeframe to minimize workflow disruption.
+\end{enumerate}
+
+\subsection{Safety Requirements}
+
+This section outlines measures that ensure system stability, data protection, and recovery from potential failures.
+
+\begin{enumerate}[label=\textbf{5.2.\arabic*}]
+  \item The system shall use Box version history to restore previous document versions in case of accidental deletion or overwrite.
+  \item Regular dataset exports or backups shall be performed in accordance with Santa Barbara County IT policies.
+  \item The system shall ensure that failed automations or partial updates do not corrupt existing Smartsheet data or Box file links.
+  \item The system shall maintain data consistency between integrated applications during recovery procedures.
+\end{enumerate}
+
+\subsection{Security Requirements}
+
+This section defines the access control, authentication, and data protection measures necessary to safeguard sensitive employee information.
+
+\begin{enumerate}[label=\textbf{5.3.\arabic*}]
+  \item All users shall authenticate through the County’s Single Sign-On (SSO) system prior to accessing Smartsheet, Box, or any integrated components.
+  \item The system shall enforce role-based access control (RBAC), restricting each user’s access based on their assigned role.
+  \item Sensitive EPR documents shall be stored only in Box, while Smartsheet retains metadata and secure links.
+  \item The system shall comply with Santa Barbara County information security and data privacy policies.
+  \item Power BI dashboards, if implemented, shall utilize Row-Level Security (RLS) to limit data visibility by role and division.
+\end{enumerate}
+
+\subsection{Software Quality Attributes}
+
+This section specifies the quality attributes required to ensure usability, reliability, maintainability, and scalability.
+
+\begin{enumerate}[label=\textbf{5.4.\arabic*}]
+  \item The system shall provide an intuitive and easy-to-use interface for HR staff and supervisors.
+  \item The system shall maintain high availability during standard County business hours.
+  \item Automation rules, templates, and configurations shall be clearly documented and version controlled for maintainability.
+  \item The system shall log automation errors, integration issues, and failures for administrative review and debugging.
+  \item The system shall be scalable, allowing new divisions, workflows, or automation processes to be added without major structural changes.
+\end{enumerate}
+
+\subsection{Business Rules}
+
+This section outlines the operational rules and policies that govern the use of the EPR Dashboard and Workflow System.
+
+\begin{enumerate}[label=\textbf{5.5.\arabic*}]
+  \item Each employee shall complete one formal performance review annually unless otherwise specified by HR policy.
+  \item Only HR administrators shall have the ability to configure templates, reminders, and escalation rules.
+  \item Supervisors and HR staff may update review statuses but shall not delete EPR records.
+  \item Only County-approved and current EPR templates shall be used for reviews.
+  \item Escalation recipients and reporting hierarchies shall be maintained within the Supervisor Master sheet and reviewed quarterly by HR.
+\end{enumerate}
+
+
+% ===================== 6. Legal and Ethical Considerations =====================
+\section{Legal and Ethical Considerations}
+
+\subsection{Privacy and Security}
+
+6.1.1 Privacy and security are essential to ensure that the EPR Dashboard and Workflow System operates within the legal and ethical standards of Santa Barbara County.
+
+\begin{itemize}
+  \item 6.1.1.1 The system shall comply with all applicable County HR policies, data privacy regulations, and records retention requirements to protect sensitive employee information.
+  \item 6.1.1.2 The system shall ensure that all employee performance data is securely collected, stored, and processed in accordance with County IT security standards.
+  \item 6.1.1.3 Authorized personnel shall have access only to the data necessary for their role, following the principle of least privilege.
+  \item 6.1.1.4 All personally identifiable information shall remain protected through access controls, encryption, and secure data transmission methods.
+  \item 6.1.1.5 The system shall maintain audit logs of user activities, ensuring transparency and accountability in data handling.
+\end{itemize}
+
+\subsection{Ethical Considerations}
+
+6.1.2 Ethical standards guide the responsible use of employee data and foster trust and fairness across the organization.
+
+\begin{itemize}
+  \item 6.1.2.1 The system shall handle all employee performance data ethically, ensuring that information is used solely for official HR purposes.
+  \item 6.1.2.2 The system shall provide employees with clear communication regarding how their data is used, stored, and protected.
+  \item 6.1.2.3 Development and maintenance of the system shall promote inclusivity, ensuring accessibility for users with varying abilities.
+  \item 6.1.2.4 The system design shall include safeguards to prevent data misuse, unauthorized access, or exploitation of performance information.
+\end{itemize}
+
+% ===================== Appendix A =====================
+\appendix
+
+\section*{Appendix A: Glossary}
+\addcontentsline{toc}{section}{Appendix A: Glossary}
+
+\textbf{EPR (Employee Performance Review):} A formal evaluation process used by the Santa Barbara County Public Defender’s Office to assess employee performance, track progress, and document professional development.
+
+\textbf{SSO (Single Sign-On):} An authentication process that allows users to access multiple County systems, such as Smartsheet and Box, using a single set of login credentials.
+
+\textbf{KPI (Key Performance Indicator):} A measurable value that indicates how effectively employees or departments are achieving performance objectives.
+
+\textbf{RLS (Row-Level Security):} A Power BI feature that restricts data visibility based on user roles, ensuring that employees can only view information relevant to their permissions.
+
+\textbf{Dataset (Power BI):} A structured collection of data used within Power BI reports and dashboards for visualization and analysis.
+
+\textbf{Box Link:} A secure URL generated in Box that provides authorized users access to finalized EPR documents stored in the County’s cloud repository.
+
+\textbf{Smartsheet:} A cloud-based platform used for workflow automation, data management, and tracking of EPR progress within the County.
+
+\textbf{Box:} The County’s secure cloud storage platform used for managing, archiving, and sharing finalized EPR documents.
+
+\textbf{Power BI:} A business analytics tool by Microsoft used to visualize EPR metrics, compliance rates, and departmental performance trends.
+
+\textbf{SRS (Software Requirements Specification):} A document that outlines the functional and
+non-functional requirements for a software system, providing clear and testable guidelines for
+developers and testers.
+
+% ===================== Appendices (in TOC) =====================
+
+
+\section*{Appendix B: Analysis Models}
+\addcontentsline{toc}{section}{Appendix B: Analysis Models}
+Workflow and data flow diagrams (to be added).
+
+\section*{Appendix C: To Be Determined List}
+\addcontentsline{toc}{section}{Appendix C: To Be Determined List}
+Final DocuSign field list and template IDs; Box retention labels; Power BI workspace configuration; detailed test cases and traceability matrix.
+
+\end{document}
