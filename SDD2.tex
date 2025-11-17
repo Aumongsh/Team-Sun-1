@@ -1,0 +1,1167 @@
+\documentclass[12pt]{article}
+
+% ---------- Encoding & fonts ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{newtxtext,newtxmath}
+
+% ---------- Page & core ----------
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{titling}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{ragged2e}
+\usepackage{etoolbox} % robust section hook
+
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+
+% ---------- Section heading style ----------
+\titleformat{\section}{\bfseries\Large}{\thesection.}{0.6em}{\bfseries}
+\titlespacing*{\section}{0pt}{*1.2}{*0.6}
+\titleformat{\subsection}{\bfseries\normalsize}{\thesubsection.}{0.5em}{\bfseries}
+\titlespacing*{\subsection}{0pt}{*0.9}{*0.4}
+\titleformat{\subsubsection}{\bfseries}{\thesubsubsection.}{0.5em}{\bfseries}
+\titlespacing*{\subsubsection}{0pt}{*0.7}{*0.3}
+
+% ---------- Start each major section on a new page (robust) ----------
+\pretocmd{\section}{\clearpage}{}{}
+
+% ---------- TOC look ----------
+\renewcommand{\contentsname}{Table of Contents}
+\renewcommand{\cfttoctitlefont}{\bfseries\large}
+\renewcommand{\cftdotsep}{1}
+\setlength{\cftbeforesecskip}{2.5pt}
+\setlength{\cftbeforesubsecskip}{1.5pt}
+\renewcommand{\cftsecpagefont}{\normalfont}
+\renewcommand{\cftsubsecpagefont}{\normalfont}
+\renewcommand{\cftsubsubsecpagefont}{\normalfont}
+\setcounter{tocdepth}{3}
+
+% ---------- Hyperlinks & bookmarks (robust with Unicode) ----------
+\usepackage[unicode,psdextra]{hyperref}
+\usepackage{bookmark} % load right after hyperref
+\hypersetup{
+  bookmarksopen=true,
+  bookmarksnumbered=true,
+  pdfauthor={CSULA Team Sun-1},
+  pdftitle={System Design Specification}
+}
+
+% ---------- Unicode fixes ----------
+\usepackage{amsmath}
+\usepackage{newunicodechar}
+\newunicodechar{↔}{\(\leftrightarrow\)}
+\newunicodechar{→}{\(\rightarrow\)}
+\newunicodechar{−}{\(-\)}
+\newunicodechar{–}{--}
+\newunicodechar{—}{---}
+\pdfstringdefDisableCommands{%
+  \def\textbf#1{#1}%
+  \def\textit#1{#1}%
+  \def\&{ and }%
+}
+
+% ==============================================================
+\begin{document}
+
+% ===================== Title page =====================
+% Avoid duplicate page anchors: gobble numbers here, reset later.
+\pagenumbering{gobble}
+\begin{titlepage}
+\vspace*{3cm}
+\begin{center}
+{\LARGE \textbf{System Design Specification}}\\[0.8cm]
+
+{\large Project:}\\[0.3cm]
+{\LARGE \textbf{Intelligent HR Analytics \& EPR Management Dashboard}}\\[1.2cm]
+
+{\large Sponsor:}\\[0.3cm]
+{\large Santa Barbara County Public Defender’s Office (SBC PDO)}\\[1.2cm]
+
+{\large Author:}\\[0.3cm]
+{\large CSULA Team Sun-1}\\[1.2cm]
+
+{\large Version 1.0 (Draft)}\\[0.6cm]
+{\large Date: 10/16/2025}
+\end{center}
+\end{titlepage}
+
+% ===================== TOC =====================
+\begingroup
+\singlespacing
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+\tableofcontents
+\endgroup
+
+\clearpage
+\pagenumbering{arabic} % restart numbering safely after title/TOC
+
+% ===================== Document Control =====================
+\section*{Document Control}
+\addcontentsline{toc}{section}{Document Control}
+
+\renewcommand{\arraystretch}{1.25}
+\begin{center}
+\begin{tabularx}{\linewidth}{|Y|Y|Y|Y|}
+\hline
+\textbf{Version} & \textbf{Date} & \textbf{Author} & \textbf{Summary} \\ \hline
+0.1 & 10/16/2025 & Momoka Aung & Initial draft. \\ \hline
+0.2 & 10/20/2025 & Hoang Le (Dempsey) & Updated 3.2.3 (HR/EPR pages); added KPI definitions and why they matter; UX notes; added flow caption. \\ \hline
+\end{tabularx}
+\end{center}
+
+% ===================== 1. Introduction =====================
+\section{Introduction}
+
+\subsection{Purpose}
+This System Design Specification (SDS) defines the complete design and implementation details for the \textbf{Intelligent HR Analytics \& Employee Performance Review (EPR) Management Dashboard}, developed for the \textbf{Santa Barbara County Public Defender’s Office (SBC PDO)}.
+
+This document identifies the system components, data integrations, and automation workflows that implement the functional and non-functional requirements defined in the Software Requirements Specification (SRS).
+It includes detailed information on system behavior, architecture, data structures, interfaces, and component interactions.
+
+The purpose of this SDS is to provide developers, system administrators, and stakeholders with a comprehensive understanding of how the system will be built, tested, and maintained. It is intended to serve as a technical reference throughout the development lifecycle and during future maintenance phases.
+
+\textbf{Scope of Coverage:}
+\begin{itemize}[nosep]
+    \item Covers the entire Intelligent HR Analytics \& EPR Management Dashboard, including both workflow automation and analytics components.
+    \item Includes integration details for Smartsheet, DocuSign, Box.com, and Power BI.
+    \item Excludes unrelated HR systems or legacy document storage methods not involved in this integration.
+\end{itemize}
+
+\subsection{Document Conventions}
+This document follows a structured hierarchical numbering convention where each major section is identified numerically (e.g., 1.0, 2.0, 3.0), and subsections are represented as 1.1, 1.2, 1.3, etc.
+
+Typographical conventions used in this document include:
+\begin{itemize}[nosep]
+    \item \textbf{Bold text} – denotes section titles, system names, or key terms.
+    \item \textit{Italics} – used for document references or emphasis.
+    \item Monospaced text (e.g., \texttt{VariableName}) – represents field names, API endpoints, or code identifiers.
+\end{itemize}
+
+All diagrams and figures are labeled sequentially and referenced by their figure numbers. Requirements traceability follows the SRS reference IDs (e.g., “REQ-1.1”, “REQ-2.4”).
+
+Where applicable, this SDS inherits terminology and definitions from the corresponding SRS document. Each detailed design component is directly mapped to one or more SRS requirements.
+
+\subsection{Intended Audience and Reading Suggestions}
+This SDS is written for a variety of technical and non-technical stakeholders involved in the project:
+\begin{itemize}[nosep]
+    \item \textbf{Developers} – to understand component designs, interface specifications, and data flow logic.
+    \item \textbf{Project Managers} – to monitor design completeness, dependencies, and progress alignment with requirements.
+    \item \textbf{Quality Assurance (QA) Team} – to validate system behavior against defined design expectations.
+    \item \textbf{HR and Administrative Staff} – to gain an overview of system functionality and workflow automation.
+    \item \textbf{System Integrators} – to configure Smartsheet, DocuSign, Box, and Power BI integrations.
+\end{itemize}
+
+Recommended reading sequence:
+\begin{enumerate}[nosep]
+    \item Begin with \textbf{Section 1: Introduction} for background and context.
+    \item Proceed to \textbf{Section 2: Design Considerations} to understand system assumptions and constraints.
+    \item Review \textbf{Section 3–5} for architecture and component interaction overviews.
+    \item Consult \textbf{Sections 6–8} for detailed design and user interface references.
+    \item Use \textbf{Sections 9–12} as reference material for database design, validation, glossary, and citations.
+\end{enumerate}
+
+\subsection{System Overview}
+The Intelligent HR Analytics \& EPR Management Dashboard is a web-integrated solution that automates and streamlines the Employee Performance Review (EPR) process for the Santa Barbara County Public Defender’s Office.
+It combines workflow automation, digital document management, and analytical reporting into a unified system that supports both HR operations and strategic decision-making.
+
+% ===================== 2. Design Considerations =====================
+\section{Design Considerations}
+
+This section outlines the major factors, assumptions, constraints, and guiding principles that affect the overall design and implementation of the \textbf{Intelligent HR Analytics \& Employee Performance Review (EPR) Management Dashboard}.
+These considerations provide the foundation for architectural decisions, integration strategies, and technology selections made during the system design phase.
+
+\subsection{Assumptions and Dependencies}
+
+The design and functionality of this system are based on several operational and technical assumptions, as well as dependencies on external systems and environments.
+These include the following:
+
+\begin{itemize}[nosep]
+    \item \textbf{Cloud Infrastructure:} All major components (Smartsheet, DocuSign, Box.com, Power BI) are cloud-hosted and accessible via secure web connections, no on-premises servers are required.
+    \item \textbf{Existing Licenses and APIs:} The SBC PDO HR department maintains valid enterprise or educational licenses for Smartsheet, DocuSign, Box, and Power BI, including API access.
+    \item \textbf{User Environment:} End users (HR staff, supervisors, managers) have internet connectivity, browser access, and institutional Microsoft 365 accounts to authenticate with Power BI.
+    \item \textbf{Integration Connectivity:} Secure token-based authentication (OAuth 2.0) is supported for all external system integrations.
+    \item \textbf{Data Consistency:} Smartsheet serves as the single source of truth for all EPR tracking data, downstream systems such as Power BI and Box.com synchronize from it.
+    \item \textbf{Organizational Change Control:} HR and IT departments will review and approve future modifications to forms, columns, and workflows before deployment.
+    \item \textbf{Probable Enhancements:} Future revisions may include additional automation triggers or dashboards without requiring architectural redesign.
+\end{itemize}
+
+\subsection{General Constraints}
+
+The following global limitations and environmental factors influence the system’s design and implementation approach:
+
+\begin{itemize}[nosep]
+    \item \textbf{Platform Dependencies:} The solution relies on SaaS platforms (Smartsheet, DocuSign, Box, Power BI); therefore, system uptime and API availability are constrained by vendor SLAs.
+    \item \textbf{End-User Environment:} The HR team primarily operates on Windows-based workstations using Chrome or Edge browsers; the solution must remain browser-agnostic within modern standards.
+    \item \textbf{Standards Compliance:} All integrations must comply with SBC PDO IT security standards, HIPAA-adjacent data-handling policies, and county data-retention requirements.
+    \item \textbf{Security and Access:} Sensitive EPR content (performance reviews, personnel records) must reside exclusively in Box.com, with folder-level access control and audit logging.
+    \item \textbf{Performance Requirements:} Automation latency (Smartsheet triggers → DocuSign → Box) should not exceed typical API round-trip times within reasonable time.
+    \item \textbf{Interoperability:} Data exchanges between systems use structured JSON payloads or CSV datasets, schema changes require configuration updates but not source-code modifications.
+    \item \textbf{Scalability:} Designed to support the current HR staff (~150–200 employees) and future growth up to 2× capacity without re-architecture.
+    \item \textbf{Network Connectivity:} Continuous internet access is required for workflow automation and Power BI refreshes; offline operation is not supported.
+    \item \textbf{Verification and Validation:} Testing is limited to environments provided by Smartsheet and Power BI sandboxes, no dedicated staging server exists.
+    \item \textbf{Resource Availability:} The project team consists primarily of part-time student developers, implementation time and iteration cycles are bounded by academic schedules.
+\end{itemize}
+
+\subsection{Goals and Guidelines}
+
+The following design principles and goals drive the structure, appearance, and behavior of the system:
+
+\begin{itemize}[nosep]
+    \item \textbf{Simplicity (KISS Principle):} Keep all automations, forms, and dashboards simple to understand, configure, and maintain by non-technical HR staff.
+    \item \textbf{User Experience (UX):} The workflow and dashboards must feel intuitive, minimizing manual steps and reducing cognitive load for end users.
+    \item \textbf{Maintainability:} Favor configuration-based solutions (Smartsheet rules, Power BI models) over custom code to ease future updates by HR administrators.
+    \item \textbf{Transparency and Auditability:} Every EPR action from creation through approval must be traceable with timestamps and user identifiers.
+    \item \textbf{Integration Reuse:} Where possible, reuse connectors and automation patterns across components to ensure consistency and reduce maintenance overhead.
+    \item \textbf{Delivery Timeline:} The initial system release aligns with the end of the Fall 2025 semester; all core automations and the analytics dashboard must be operational by that date.
+    \item \textbf{Performance vs. Cost Balance:} Optimize automation efficiency while staying within free or existing license tiers to minimize additional expenses.
+\end{itemize}
+
+\subsection{Development Methods}
+
+The development and design approach for this system follows a modified \textbf{Agile Incremental Model} combined with rapid prototyping and iterative testing.
+Key characteristics of this approach include:
+
+\begin{itemize}[nosep]
+    \item \textbf{Short Development Cycles:} Features are implemented and validated in two-week sprints, allowing continuous feedback from HR stakeholders.
+    \item \textbf{Early Prototyping:} Wireframes and proof-of-concept automations are built first in Smartsheet and Power BI to confirm feasibility before full implementation.
+    \item \textbf{Continuous Integration:} Updates to Smartsheet automations and Power BI datasets are deployed iteratively; regression tests verify each change.
+    \item \textbf{Collaborative Design Reviews:} Weekly design check-ins with the HR team and faculty advisor ensure alignment with business rules and usability requirements.
+    \item \textbf{Adaptability:} While primarily Agile, elements of Waterfall documentation (e.g., fixed deliverables and sign-offs) are retained to satisfy sponsor requirements.
+\end{itemize}
+
+This hybrid approach enables flexibility for academic iteration while maintaining the structure and traceability expected in a professional system development environment.
+
+% ===================== 3. Architectural Strategies =====================
+\section{Architectural Strategies}
+This section describes the major design strategies used in the Intelligent HR Analytics \& EPR Management Dashboard, including technology selection, system reuse, scalability, communication, and accessibility considerations.
+
+\subsection{Technology Stack Selection}
+\begin{itemize}
+  \item \textbf{3.1.1} The system is built using a combination of enterprise-grade platforms — Smartsheet, DocuSign, Box.com, and Microsoft Power BI.
+  \item \textbf{3.1.2} These tools were selected for their proven reliability, interoperability, and ease of automation without requiring extensive custom development.
+  \item \textbf{3.1.3} The selection ensures compliance with Santa Barbara County’s IT policies and leverages existing agency subscriptions to minimize cost and implementation time.
+  \item \textbf{3.1.4} Power BI provides secure and interactive visualization directly connected to Smartsheet data, ensuring near–real-time insights into EPR workflows.
+\end{itemize}
+
+\subsection{Reuse of Existing Components}
+\begin{itemize}
+  \item \textbf{3.2.1} Instead of building a new HR platform from scratch, the design reuses existing SaaS tools already approved for use by the County.
+  \item \textbf{3.2.2} Smartsheet serves as the workflow backbone, DocuSign manages approvals and digital signatures, Box handles storage, and Power BI provides analytics, reducing duplication and ensuring data consistency.
+  \item \textbf{3.2.3} This reuse approach accelerates deployment, minimizes maintenance overhead, and ensures seamless integration with existing County infrastructure.
+\end{itemize}
+
+\subsection{Automation and Workflow Intelligence}
+\begin{itemize}
+  \item \textbf{3.3.1} Smartsheet automation drives the EPR lifecycle — identifying due reviews, triggering DocuSign templates, routing for approval, and notifying HR staff.
+  \item \textbf{3.3.2} Automation reduces manual tracking and administrative delays, ensuring that reviews are completed on time.
+  \item \textbf{3.3.3} Automated notifications (30/14/7-day reminders) and escalations to supervisors or division leads ensure accountability and timeliness.
+\end{itemize}
+
+\subsection{Integration and Communication}
+\begin{itemize}
+  \item \textbf{3.4.1} The system securely integrates Smartsheet, DocuSign, Box.com, and Power BI using native connectors and APIs.
+  \item \textbf{3.4.2} Data flows automatically from Smartsheet to DocuSign for signature routing, and finalized EPRs are uploaded to Box.
+  \item \textbf{3.4.3} Power BI connects directly to Smartsheet to visualize review progress, completion rates, and overdue metrics in real time.
+\end{itemize}
+
+\subsection{Modularity and Scalability}
+\begin{itemize}
+  \item \textbf{3.5.1} Each subsystem such as workflow, document routing, storage, and analytics, operates independently, allowing updates without impacting others.
+  \item \textbf{3.5.2} This modular architecture supports future scaling to additional departments or new HR processes (e.g., onboarding, probation tracking).
+  \item \textbf{3.5.3} The design can accommodate increased employee records or multi-year data without major architectural changes.
+\end{itemize}
+
+\subsection{Error Handling and Recovery}
+\begin{itemize}
+  \item \textbf{3.6.1} Automations include validation rules to prevent incorrect data submissions (e.g., missing supervisor, invalid dates).
+  \item \textbf{3.6.2} If DocuSign or Box integration fails, the system logs errors in Smartsheet and notifies HR admins automatically.
+  \item \textbf{3.6.3} Manual override processes are available for critical tasks, ensuring that no EPR is lost or delayed due to system errors.
+\end{itemize}
+
+\subsection{Data Storage and Management}
+\begin{itemize}
+  \item \textbf{3.7.1} All HR and EPR data are securely stored in Box.com (for finalized documents) and Smartsheet (for tracking metadata).
+  \item \textbf{3.7.2} Data in transit between systems is encrypted via HTTPS and OAuth 2.0 authentication.
+  \item \textbf{3.7.3} Power BI accesses only approved datasets through controlled connectors, ensuring compliance with County security policies.
+  \item \textbf{3.7.4} Metadata tagging in Box ensures fast retrieval, auditability, and proper retention per HR policy.
+\end{itemize}
+
+\subsection{Accessibility Strategy}
+\begin{itemize}
+  \item \textbf{3.8.1} The Power BI dashboard and Smartsheet interfaces are accessible to all users, including individuals with disabilities.
+  \item \textbf{3.8.2} The system supports ADA-compliant color contrasts, keyboard navigation, and readable data tables.
+  \item \textbf{3.8.3} HR and supervisors can export data into accessible Excel and PDF formats for reporting or distribution.
+\end{itemize}
+
+\subsection{Security and Permissions}
+\begin{itemize}
+  \item \textbf{3.9.1} Access controls are role-based — HR admins have full privileges, while supervisors and division leads have limited or read-only access.
+  \item \textbf{3.9.2} Sensitive EPR content is stored exclusively in Box, with permissions managed through County Single Sign-On.
+  \item \textbf{3.9.3} Each integration respects least-privilege principles and audit logging for compliance.
+\end{itemize}
+
+\subsection{Future Plans}
+\begin{itemize}
+  \item \textbf{3.10.1} Future versions may include predictive analytics for performance trends, automated reminders through Teams, or PowerApps-based self-service HR forms.
+\end{itemize}
+
+\subsection{Rejected Alternatives}
+\begin{itemize}
+\item[] % placeholder
+\end{itemize}
+
+% ===================== 4. System Architecture =====================
+\section{System Architecture}
+
+The Intelligent HR Analytics \& EPR Management Dashboard architecture decomposes the system into manageable, interoperable components that together fulfill its core functions: automating Employee Performance Review (EPR) workflows, enabling digital signatures, centralizing document storage, and visualizing HR analytics.
+These responsibilities are distributed across modular subsystems that communicate through secure API integrations and platform connectors.
+
+\subsection{System Decomposition}
+At a high level, the system is composed of several key components:
+
+\begin{itemize}
+ \item \textbf{EPR Workflow Subsystem (Smartsheet)}\\
+  This subsystem acts as the operational hub for tracking, automating, and managing all performance review activities. It identifies upcoming reviews, assigns reviewers, tracks status updates, and triggers automated notifications or escalations.
+
+ \item \textbf{Document Routing and Signing Subsystem (DocuSign)}\\
+  Responsible for digital signature routing, the DocuSign integration ensures that review forms are securely distributed to supervisors, HR, and leadership in sequential order, maintaining audit trails and approval records.
+
+ \item \textbf{Secure Document Repository (Box.com)}\\
+  Stores finalized EPR documents once they are fully approved. Files are organized automatically into structured folder paths by employee, year, and division. Access is restricted to authorized HR personnel through role-based permissions.
+
+ \item \textbf{Analytics and Reporting Subsystem (Power BI)}\\
+  Provides real-time dashboards for HR staff, supervisors, and leadership. It visualizes data from Smartsheet trackers, showing EPR completion rates, overdue reviews, workforce distribution, and performance trends.
+
+ \item \textbf{Integration and Data Services Layer}\\
+  This layer enables secure data flow between Smartsheet, DocuSign, Box.com, and Power BI. It uses native connectors, REST APIs, and scheduled refreshes to ensure synchronization and data integrity.
+\end{itemize}
+
+\subsection{Component Responsibilities}
+Each component was designed with clear boundaries and roles to support modularity, maintainability, and security:
+
+\begin{itemize}
+  \item \textbf{Smartsheet} manages workflow logic, employee metadata, and automation triggers for EPR creation, routing, and completion tracking.
+  \item \textbf{DocuSign} handles secure signing, multi-step approval routing, and status feedback to Smartsheet.
+  \item \textbf{Box.com} serves as the centralized document archive, ensuring all finalized EPRs are accessible and compliant with retention policies.
+  \item \textbf{Power BI} aggregates EPR tracking data, refreshes nightly, and provides visual analytics for leadership decision-making.
+\end{itemize}
+
+\subsection{Communication and Control Flow}
+The system follows a structured, event-driven process to manage the full EPR lifecycle.
+
+\begin{itemize}
+  \item \textbf{1)} When an employee’s review becomes due or EPR is completed, Smartsheet automation identifies the record based on the “Next EPR Due Date.”
+  \item \textbf{2)} The Smartsheet–DocuSign connector automatically generates a review form and routes it to the employee’s supervisor for completion.
+  \item \textbf{3)} Upon supervisor submission, DocuSign routes the document sequentially to HR and the Head of Office for approval.
+  \item \textbf{4)} Once all signatures are obtained, Smartsheet automatically uploads the finalized PDF to Box.com and updates the tracker with a Box URL and completion metadata.
+  \item \textbf{5)} Power BI refreshes nightly to reflect updated completion metrics, overdue counts, and performance summaries.
+  \item \textbf{6)} Automated emails notify reviewers of pending actions, overdue items, or completion confirmations.
+\end{itemize}
+
+\subsection{Data Flow and Integration Logic}
+Data moves seamlessly between connected systems in a one- or two-way pattern:
+\begin{itemize}
+  \item Smartsheet $\leftrightarrow$ DocuSign: Two-way integration for template population and signature status updates.
+  \item Smartsheet $\rightarrow$ Box: One-way upload of finalized documents with metadata tagging.
+  \item Smartsheet $\rightarrow$ Power BI: One-way data synchronization for analytics and reporting.
+\end{itemize}
+
+\subsection{Justification of Architecture}
+This modular decomposition supports several key design goals:
+
+\begin{itemize}
+  \item \textbf{Scalability:} Each subsystem can be extended independently (e.g., additional Smartsheet trackers or Power BI pages) without disrupting the overall architecture.
+  \item \textbf{Reusability:} The workflow and analytics patterns can be replicated for other HR functions like onboarding or training evaluations.
+  \item \textbf{Security:} Each integration uses OAuth-based authentication and enforces role-based access in line with County IT standards.
+  \item \textbf{Maintainability:} Low-code connectors and visual workflows reduce long-term technical maintenance and dependency on developers.
+  \item \textbf{Transparency:} Real-time dashboards and automated logging ensure traceability across the entire EPR process.
+\end{itemize}
+
+\subsection{Rejected Alternatives}
+\begin{itemize}
+  \item Manual PDF routing via email was dismissed because it could not provide centralized tracking or analytics capabilities.
+\end{itemize}
+
+% ===================== 5. Policies and Tactics =====================
+\section{Policies and Tactics}
+This section documents concrete design decisions and day-to-day development practices that guided the implementation of the Intelligent HR Analytics \& EPR Management Dashboard. These choices do not alter the high-level architecture but directly affect interface behavior, maintainability, usability, and compliance. Each area notes rationale, alternatives considered, and justification.
+
+\subsection{Specific Products Used}
+\subsubsection{Development Environment}
+Power BI Desktop/Service for analytics, and Smartsheet for workflow and data tables. Rationale: fastest delivery with enterprise-approved SaaS; alternative (custom web app) rejected due to schedule and security review overhead.
+\subsubsection{Signature and Routing}
+DocuSign for sequential approvals with audit trails; native Smartsheet--DocuSign connector selected over custom API glue to reduce maintenance.
+\subsubsection{Storage}
+Box.com for finalized documents with folder-level RBAC and retention; Smartsheet as system-of-record for tracking metadata.
+\subsubsection{Connectors}
+Native Smartsheet, DocuSign, Box, and Power BI connectors preferred over bespoke scripts; OAuth~2.0 for all service principals.
+
+\subsection{Requirements Traceability}
+A living traceability matrix links each SRS requirement to implementation artifacts: Smartsheet columns/sheets, automation rules, DocuSign templates, Box folder policies, and Power BI report pages. The matrix is updated each sprint and validated during sprint reviews; gaps trigger backlog items.
+
+\subsection{Testing the Software}
+\subsubsection{Unit Testing}
+Rule-level tests for Smartsheet automations with mock rows; validation of DocuSign template variables; DAX measure tests in Power BI using sample datasets.
+\subsubsection{Integration Testing}
+End-to-end “review happy path” and “overdue escalation” scenarios across Smartsheet~$\rightarrow$~DocuSign~$\rightarrow$~Box~$\rightarrow$~Power~BI; idempotency verified by replaying events.
+\subsubsection{User Acceptance Testing}
+HR staff and supervisors exercise common tasks in a sandbox workspace; feedback collected via structured forms and instrumented usage logs.
+\subsubsection{Accessibility Testing}
+Color-contrast checks on visuals, keyboard navigation of filters, PDF exports checked with screen readers.
+\subsubsection{Data Validation}
+Daily checks compare Power BI aggregates with Smartsheet source counts; discrepancies \textgreater{}1\% raise alerts.
+
+\subsection{Engineering Trade-offs}
+\subsubsection{Low-Code vs.\ Custom Code}
+Low-code accelerates delivery and governance alignment but constrains UI/ETL flexibility, custom services were deferred to avoid owning infrastructure.
+\subsubsection{Near Real-Time vs.\ Scheduled Refresh}
+Nightly Power BI refresh chosen to limit API load and licensing costs, on-demand refresh is available for critical periods.
+\subsubsection{Single Source of Truth}
+Smartsheet designated SoT for EPR status, Box holds immutable artifacts. Alternative “Power BI as SoT” rejected.
+
+\subsection{Guidelines and Conventions}
+\begin{itemize}[nosep]
+  \item Naming: ??????????????????????
+  \item Solutions: logical grouping (Workflow, Signing, Storage, Analytics).
+  \item Status values normalized (\texttt{NotStarted}, \texttt{InProgress}, \texttt{PendingSignatures}, \texttt{Complete}, \texttt{Overdue}). ??????????????????????????
+  \item Dates stored ISO~8601 (UTC) with display localized in reports.
+  \item Box metadata tags: ????????????????????????????
+  \item All changes peer-reviewed, change log kept in the traceability matrix.
+\end{itemize}
+
+\subsection{Protocols}
+All inter-system calls over HTTPS; OAuth~2.0 with least-privilege scopes; webhook-style callbacks where supported; audit logs retained per county policy.
+
+\subsection{Design Patterns and Programming Idioms}
+\begin{itemize}[nosep]
+  \item \textbf{Event-driven workflow}: due-date rules trigger EPR creation and routing.
+  \item \textbf{Idempotent actions}: re-runs check for existing DocuSign envelopes/Box files before creating new ones.
+  \item \textbf{Retry with backoff}: transient API errors retried up to three times.
+  \item \textbf{Metadata-first}: identifiers flow through all steps for traceability.
+  \item \textbf{Separation of concerns}: workflow (Smartsheet), signing (DocuSign), storage (Box), analytics (Power BI).
+\end{itemize}
+
+\subsection{Maintaining the Software}
+Backups of Smartsheet sheets ???????? and Box retention policies ?????????, Power BI datasets monitored for refresh failures, quarterly review of automation rules with HR.
+
+\subsection{Interfaces}
+End users operate in Smartsheet (tracker views) and Power BI (dashboards). HR admins manage DocuSign templates and Box permissions; optional PowerApps surface for structured submissions.
+
+\subsection{Source Organization}
+\begin{itemize}[nosep]
+  \item Smartsheet: Employees table and Employee History Records
+  \item DocuSign: ?????????????
+  \item Power BI: Data model organized into logical folders aligned with each dashboard page (e.g., HR Overview, EPR Performance Review), with measures and visuals grouped by purpose for clarity and easier maintenance.
+  \item Box: ?????????????????
+\end{itemize}
+
+\subsection{Build and Deployment Process}
+\begin{itemize}[nosep]
+  \item The system was built and tested using mock HR data to verify functionality and data flow before connecting to real production sources.
+  \item Smartsheet, DocuSign, Box, and Power BI components were configured and linked using test datasets to ensure all integrations worked correctly.
+  \item After testing, Power BI reports were published to the HR workspace and connected to the live Smartsheet data with a scheduled daily refresh.
+\end{itemize}
+
+
+\subsection{Abstraction}
+External services are connected through configurable connectors and rules. Power BI reports use defined measures for consistency, and PowerApps (if used) interacts with Smartsheet through a simple action layer.
+These practices make the system easier to maintain, scalable for future updates, and compliant with SBC PDO IT and records policies.
+
+\noindent\textit{Together, these practices keep the solution scalable, auditable, and maintainable while conforming to SBC PDO IT and records policies.}
+
+% ===================== 6. Detailed System Design =====================
+\section{Detailed System Design}
+
+Most components described in the System Architecture section require a more detailed discussion.  
+Each subsection in this section provides a detailed description of a software component within the Intelligent HR Analytics \& EPR Management Dashboard.  
+The discussion covers responsibilities, constraints, composition, interactions, resources, and interfaces for each major subsystem.
+
+% -------------------------------------------------------
+\subsection{Workflow Automation Subsystem (Smartsheet)}
+
+\subsubsection{Responsibilities}
+\begin{itemize}[nosep]
+  \item Manages the creation, tracking, and routing of Employee Performance Reviews (EPRs).
+  \item Automates notifications, reminders, and escalations to ensure timely completion.
+  \item Generates and routes EPR documents automatically based on workflow triggers.
+  \item Synchronizes review completion data to Box and Power BI for centralized reporting.
+\end{itemize}
+
+\subsubsection{Constraints}
+\begin{itemize}[nosep]
+  \item Dependent on Smartsheet Enterprise licensing and API availability.
+  \item Requires stable internet connectivity for triggers, notifications, and updates.
+  \item Automation complexity constrained by Smartsheet’s conditional rule limitations.
+  \item OAuth tokens for integrations (e.g., DocuSign, Box) must be periodically refreshed.
+\end{itemize}
+
+\subsubsection{Composition}
+\begin{itemize}[nosep]
+  \item \textbf{EPR Tracker Sheet} – Core tracking sheet for all employee performance review records.
+  \item \textbf{Employee Metadata Table} – Stores supervisor hierarchy and HR data.
+  \item \textbf{Automated Workflows and Conditional Rules:}
+  \begin{itemize}[nosep]
+    \item EPR Tracker 1 – Generates EPR documents at cycle start.
+    \item EPR Tracker 2.1 – Sends EPRs to Supervisor 1 for completion.
+    \item EPR Tracker 2.2 – Handles missed supervisor actions and reminders.
+    \item EPR Tracker 2.3 – Escalates to upper supervisors (Head of HR, Head of Office).
+    \item EPR Tracker 3.1 – Updates and tracks status changes during reviews.
+    \item EPR Tracker 4.0 – Copies finalized reviews to archival sheets.
+    \item EPR Tracker 5.1 – Sends periodic reminders to pending recipients.
+    \item TODD (EPR Tracker) – Resets and prepares sheets for the next review cycle.
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{Uses/Interactions}
+\begin{itemize}[nosep]
+  \item Triggers DocuSign workflows for EPR review routing and signatures.
+  \item Sends completion updates and documents to Box for archiving.
+  \item Pushes performance review metrics to Power BI datasets for analytics.
+  \item Sends automated alerts to Supervisors, HR, and Heads of Office based on status changes.
+\end{itemize}
+
+\subsubsection{Resources}
+\begin{itemize}[nosep]
+  \item Smartsheet automation platform
+  \item OAuth 2.0 authentication tokens
+  \item Box and Power BI integration endpoints
+\end{itemize}
+
+\subsubsection{Interface/Exports}
+\begin{itemize}[nosep]
+  \item \textbf{Input:} employee records, review due dates, supervisor hierarchy, EPR attachments.
+  \item \textbf{Output:} workflow status updates, approval timestamps, document URLs, and completion reports.
+\end{itemize}
+
+% -------------------------------------------------------
+\subsection{Document Routing and Signing Subsystem (DocuSign)}
+\subsubsection{Responsibilities}
+\begin{itemize}[nosep]
+  \item Routes performance review documents to the appropriate signers.
+  \item Maintains secure digital signatures and audit trails.
+\end{itemize}
+
+\subsubsection{Constraints}
+\begin{itemize}[nosep]
+  \item Requires authenticated County DocuSign accounts.
+  \item Relies on Smartsheet integration for initiation and tracking.
+\end{itemize}
+
+\subsubsection{Composition}
+\begin{itemize}[nosep]
+  \item DocuSign templates for EPR forms.
+  \item Routing rules defining signing sequence.
+\end{itemize}
+
+\subsubsection{Uses/Interactions}
+\begin{itemize}[nosep]
+  \item Receives initiation from Smartsheet workflows.
+  \item Returns signed completion data and URLs back to Smartsheet.
+\end{itemize}
+
+\subsubsection{Resources}
+\begin{itemize}[nosep]
+  \item DocuSign eSignature API
+  \item Smartsheet integration connector
+\end{itemize}
+
+\subsubsection{Interface/Exports}
+\begin{itemize}[nosep]
+  \item Input: employee name, supervisor, HR, and office head routing details.
+  \item Output: completed PDF, timestamp, audit data.
+\end{itemize}
+
+% -------------------------------------------------------
+\subsection{Secure Document Repository (Box.com)}
+\subsubsection{Responsibilities}
+\begin{itemize}[nosep]
+  \item Stores finalized and signed EPR documents in a secure, access-controlled environment.
+  \item Maintains folder hierarchy for organized storage and retrieval.
+\end{itemize}
+
+\subsubsection{Constraints}
+\begin{itemize}[nosep]
+  \item Requires consistent metadata tagging for file placement.
+  \item Accessible only through County-approved accounts with assigned roles.
+\end{itemize}
+
+\subsubsection{Composition}
+\begin{itemize}[nosep]
+  \item Folder hierarchy by Division → Year → Employee.
+  \item Metadata fields for indexing and search.
+\end{itemize}
+
+\subsubsection{Uses/Interactions}
+\begin{itemize}[nosep]
+  \item Receives uploads from Smartsheet after DocuSign completion.
+  \item Provides file URLs back to Smartsheet and Power BI.
+\end{itemize}
+
+\subsubsection{Resources}
+\begin{itemize}[nosep]
+  \item Box Content Management API
+  \item County Single Sign-On (SSO)
+\end{itemize}
+
+\subsubsection{Interface/Exports}
+\begin{itemize}[nosep]
+  \item Input: signed document, metadata (EmployeeID, Division, Year).
+  \item Output: file link, storage path, upload confirmation.
+\end{itemize}
+
+% -------------------------------------------------------
+\subsection{Analytics and Reporting Subsystem (Power BI)}
+\subsubsection{Responsibilities}
+\begin{itemize}[nosep]
+  \item Provide analytics and visualization for staffing and Employee Performance Review (EPR) data.
+  \item Deliver interactive dashboards that summarize workforce composition and EPR progress.
+  \item Refresh data nightly from Smartsheet to ensure near–real-time accuracy.
+\end{itemize}
+
+\subsubsection{Constraints}
+\begin{itemize}[nosep]
+  \item Requires Power BI Pro or institutional license.
+  \item Relies on Smartsheet data integrity and scheduled API refreshes.
+  \item Access limited to authorized HR and management accounts.
+\end{itemize}
+
+\subsubsection{Composition}
+\begin{itemize}[nosep]
+  \item Page 1 – HR Overview
+  \item Page 2 – EPR Performance Review (currently being refined)
+\end{itemize}
+
+\subsubsection{Uses/Interactions}
+\begin{itemize}[nosep]
+  \item Connects directly to Smartsheet datasets.
+  \item Incorporates Box URLs for document verification.
+  \item Provides visuals embedded or shared through Power BI Service.
+\end{itemize}
+
+\subsubsection{Resources}
+\begin{itemize}[nosep]
+  \item Power BI Desktop and Service.
+  \item Smartsheet API connectors.
+\end{itemize}
+
+\subsubsection{Interface/Exports}
+\begin{itemize}[nosep]
+  \item \textbf{Input:} Smartsheet EPR Tracker data (Status, Due Date, Employee ID, Division).
+  \item \textbf{Output:} Interactive reports, KPI cards, and downloadable summary tables.
+\end{itemize}
+
+% -------------------------------------------------------
+\paragraph{Page 1 – HR Overview}
+\textbf{Purpose:} Present the current workforce structure, job classifications, and reporting relationships.
+
+\textbf{Key Features:}
+\begin{itemize}[nosep]
+  \item \textbf{Summary Cards (Employees, Supervisors, Interns, Employees on Probation):}
+        Four headline tiles that update dynamically through the Find Employee slicer.  
+        \emph{Use:} Quick reference on team size, intern cohort, and probation count for capacity checks.
+  \item \textbf{Find Employee (Search Slicer):}
+        Type a name to focus all visuals on that employee or group; clear the selection to reset.  
+        \emph{Why it matters:} Enables rapid lookup without technical skill.
+  \item \textbf{Employee Directory (Table – Full Name, Job Class, Level, Supervisor):}
+        Read-only roster for the current selection; clicking a row filters other visuals.  
+        \emph{Decision support:} Verify included employees and view key fields such as probation status.
+  \item \textbf{Employees by Job Class Level:}
+        Bar chart showing counts for Intern, I, II, III, Senior.
+  \item \textbf{Employees by Job Class:}
+        Horizontal bar chart showing counts by job category.
+  \item \textbf{Combined View – Employees Count by Job Class and Level:}
+        Ranked stacked bars combining job class and level.  
+        \emph{Why it matters:} Helps HR visualize department composition and supervisor-to-employee ratios.
+\end{itemize}
+
+% -------------------------------------------------------
+\paragraph{Page 2 – EPR Performance Review (Still Being Refined)}
+\textbf{Purpose:} Track the status and completion of EPRs and reveal progress, delays, and workload distribution.
+
+\textbf{Key Features:}
+\begin{itemize}[nosep]
+  \item \textbf{EPR Due Date (Between Slicer):}
+        Date-range filter that drives all visuals.  
+        \emph{Decision support:} Examine workload and progress for any chosen time window.
+  \item \textbf{Job Class (List Slicer):}
+        Filter the page to one or more job classes.  
+        \emph{Decision support:} Compare progress across job classes or focus on a single group for follow-up.
+  \item \textbf{KPI Cards:}
+        Display totals for Incomplete EPRs, Completed EPRs, Total EPRs, Average Days Past Due, and Completion Rate (\%).  
+        \emph{Decision support:} Track throughput, identify overdue items, and monitor completion performance.
+\end{itemize}
+
+\textbf{Notes and KPI Logic (from Smartsheet data):}
+\begin{itemize}[nosep]
+  \item \textbf{Total EPRs} = Completed + Incomplete records in the current view.
+  \item \textbf{Completed EPRs} = count where Status = ``Completed''.
+  \item \textbf{Incomplete EPRs} = count where Status $\neq$ ``Completed'' (includes Not Created, With Supervisor, With HR, With Heads). Previously called ``Open EPRs''.
+  \item \textbf{Overdue EPRs} = Due Date $<$ Today and Status $\neq$ Completed.
+  \item \textbf{Completion Rate (\%)} = Completed $\div$ (Completed + Incomplete).
+  \item \textbf{Average Days Past Due (for Incomplete EPRs only):}  
+        Consider EPRs with Stage Group = Incomplete and Due Date $<$ Today.  
+        For each, compute Days Late = Today $-$ Due Date, then take the average.  
+        If none are overdue, the value is 0. Example: 2, 5, and 11 days late $\Rightarrow$ Average = 6 days.
+\end{itemize}
+
+\textbf{Visualizations:}
+\begin{itemize}[nosep]
+  \item \textbf{Incomplete vs Completed EPRs by Due Month (Clustered Columns):}
+        Monthly bars showing incomplete and completed counts for the selected range.  
+        \emph{Decision support:} Reveal whether completions match upcoming due volume.
+  \item \textbf{Incomplete/Past-Due EPRs per Supervisor (Horizontal Bar):}
+        Ranks supervisors by number of incomplete or late reviews.  
+        \emph{Decision support:} Balance workload and target follow-ups.
+  \item \textbf{EPR Status with Total EPRs by Stage (Matrix):}
+        Pipeline table showing counts at each stage (Not Created; With Supervisor 1/2/3; With HR; With Head of HR; With Head of Office; Completed).  
+        \emph{Decision support:} Identify bottlenecks and responsible owners.  
+        \emph{Helper text:} ``Each stage lists who owns the number of their current EPRs.''
+\end{itemize}
+
+\textbf{Interactions \& UX:}
+\begin{itemize}[nosep]
+  \item All slicers affect every visual on the page.
+  \item Selecting a supervisor filters the Stage Matrix and monthly trend for that owner.
+  \item Tables support export for follow-up lists.
+\end{itemize}
+
+
+% -------------------------------------------------------
+\subsection{Data Services Layer}
+\subsubsection{Responsibilities}
+\begin{itemize}[nosep]
+  \item Manages secure communication and synchronization among Smartsheet, DocuSign, Box, and Power BI.
+  \item Ensures consistent data flow and updates across all integrated systems.
+\end{itemize}
+
+\subsubsection{Constraints}
+\begin{itemize}[nosep]
+  \item Subject to rate limits and latency from external APIs.
+  \item Requires OAuth 2.0 authentication for each service.
+\end{itemize}
+
+\subsubsection{Composition}
+\begin{itemize}[nosep]
+  \item API integration connectors.
+  \item Data validation and retry mechanisms.
+\end{itemize}
+
+\subsubsection{Uses/Interactions}
+\begin{itemize}[nosep]
+  \item Interacts with all subsystems for sending and receiving updates.
+\end{itemize}
+
+\subsubsection{Resources}
+\begin{itemize}[nosep]
+  \item Smartsheet API
+  \item DocuSign API
+  \item Box API
+  \item Power BI REST API
+\end{itemize}
+
+\subsubsection{Interface/Exports}
+\begin{itemize}[nosep]
+  \item Input: event triggers, API requests.
+  \item Output: validated responses and synchronized records.
+\end{itemize}
+
+% -------------------------------------------------------
+\subsection{Access and Audit Subsystem}
+\subsubsection{Responsibilities}
+\begin{itemize}[nosep]
+  \item Tracks user activity and document access across all connected systems.
+  \item Maintains compliance with county audit and retention policies.
+\end{itemize}
+
+\subsubsection{Constraints}
+\begin{itemize}[nosep]
+  \item Depends on Box and Smartsheet logging features.
+\end{itemize}
+
+\subsubsection{Composition}
+\begin{itemize}[nosep]
+  \item Access logs and version history.
+  \item User activity reports.
+\end{itemize}
+
+\subsubsection{Uses/Interactions}
+\begin{itemize}[nosep]
+  \item Used by HR administrators and IT auditors for compliance review.
+\end{itemize}
+
+\subsubsection{Resources}
+\begin{itemize}[nosep]
+  \item Box activity log database.
+  \item Smartsheet version history.
+\end{itemize}
+
+\subsubsection{Interface/Exports}
+\begin{itemize}[nosep]
+  \item Input: user actions and file access events.
+  \item Output: timestamped audit entries and reports.
+\end{itemize}
+
+% -------------------------------------------------------
+\noindent
+Each subsystem operates within a defined scope and interaction model.  
+This modular structure improves scalability, maintainability, and security while ensuring compliance with SBC PDO IT and data governance standards.
+
+
+% ===================== 7. Detailed Lower-Level Component Design =====================
+\section{Detailed Lower-Level Component Design}
+
+This section describes the lower-level components, automation flows, and scripts that support the higher-level subsystems presented in Section~6.  
+Each component is discussed in terms of its classification, processing narrative (PSPEC), interface description, and internal processing details, including any design hierarchy or constraints.
+
+% 7.1 -------------------------------------------------------
+\subsection{Smartsheet Automation Rules}
+
+\subsubsection{Classification}
+Configuration-based automation logic in Smartsheet that governs the routing, notification, and updating processes for Employee Performance Review (EPR) tracking. Each rule executes independently based on triggers or conditions defined within the EPR Tracker sheet.
+
+\subsubsection{Processing Narrative (PSPEC)}
+Automation rules are triggered when specific events occur, such as:
+\begin{itemize}[nosep]
+  \item Record creation at the start of an EPR cycle.
+  \item Status changes (e.g., ``With Supervisor 1'', ``Approved'', ``Completed'').
+  \item Updates to assigned supervisors or approvals.
+  \item Attachments or document uploads indicating review progress.
+\end{itemize}
+Upon activation, the workflows perform actions such as:
+\begin{itemize}[nosep]
+  \item Generating and distributing EPR forms to assigned supervisors.
+  \item Sending reminders and escalation emails to overdue reviewers.
+  \item Updating row statuses and progress columns.
+  \item Triggering DocuSign workflows for signature collection.
+  \item Copying finalized EPR data to archival or reporting sheets.
+\end{itemize}
+
+\subsubsection{Interface Description}
+\begin{itemize}[nosep]
+  \item \textbf{Input Fields:} Employee ID, Review Due Date, Status, Assigned Supervisor(s), Approval State, EPR Document Link.
+  \item \textbf{Output Actions:} Automated email notifications, status updates, DocuSign trigger events, cell updates, and Box/Power BI synchronization.
+\end{itemize}
+
+\subsubsection{Processing Detail}
+\begin{itemize}[nosep]
+  \item \textbf{Design Hierarchy:} Flat rule-based automation structure composed of linked workflows:
+  \begin{itemize}[nosep]
+    \item EPR Tracker 1 – Generate EPR documents.
+    \item EPR Tracker 2.x – Send forms to supervisors and handle missed approvals.
+    \item EPR Tracker 3.x – Manage review status and escalation paths.
+    \item EPR Tracker 4.x – Archive or copy finalized records.
+    \item EPR Tracker 5.x – Schedule and send periodic reminders.
+    \item TODD Reset Workflow – Reset fields for next EPR cycle.
+  \end{itemize}
+  \item \textbf{Restrictions/Limitations:} 
+  Executes solely within the Smartsheet automation engine; cannot perform multi-step API transactions or long-running iterative loops.
+  \item \textbf{Performance:}
+  Typical trigger latency under one minute, depending on Smartsheet’s workflow queue and system load.
+\end{itemize}
+
+% 7.2 -------------------------------------------------------
+\subsection{DocuSign Workflow Templates}
+
+\subsubsection{Classification}
+Predefined DocuSign workflow templates used for routing and digital signing of Employee Performance Review (EPR) forms. Templates are triggered automatically by Smartsheet automations to initiate the review approval process.
+
+\subsubsection{Processing Narrative (PSPEC)}
+When triggered from Smartsheet, DocuSign generates an envelope using the corresponding EPR form template. The system automatically populates employee metadata (name, division, and review period) and routes the document sequentially through the defined approval chain:
+\begin{itemize}[nosep]
+  \item Supervisor 1 → Supervisor 2 → Head of HR → Head of Office
+\end{itemize}
+Throughout the signing process, DocuSign records timestamps, signer actions, and document versions. Once all approvals are complete, the finalized and signed PDF is returned to Smartsheet with audit trail data for storage and reporting.
+
+\subsubsection{Interface Description}
+\begin{itemize}[nosep]
+  \item \textbf{Input Fields:} Employee name, Division, Review period, Email addresses of signers.
+  \item \textbf{Output Actions:} Completed signed PDF, timestamp, DocuSign envelope ID, and audit trail metadata.
+\end{itemize}
+
+\subsubsection{Processing Detail}
+\begin{itemize}[nosep]
+  \item \textbf{Design Hierarchy:} Template-based configuration; each EPR type corresponds to a predefined DocuSign envelope with assigned signer routing.
+  \item \textbf{Restrictions/Limitations:} Requires active DocuSign integration and valid signer accounts. Custom routing is limited to predefined role assignments.
+  \item \textbf{Performance:} Envelope creation occurs within seconds; overall completion time depends on signer response intervals and DocuSign queue latency.
+\end{itemize}
+
+% 7.3-------------------------------------------------------
+\subsection{Box Upload Function (Box Integration)}
+
+\subsubsection{Classification}
+Automated integration between Smartsheet and Box that archives finalized Employee Performance Review (EPR) documents and maintains a historical upload log for audit tracking.  
+The integration ensures secure document storage while resetting employee records in preparation for the next review cycle.
+
+\subsubsection{Processing Narrative (PSPEC)}
+When an EPR record in the main \textit{Employee Tracker} sheet reaches the status \textit{“Completed,”} an automation rule triggers the Box upload function.  
+The finalized DocuSign file is uploaded to the appropriate Box folder through the Box connector API.  
+After a successful upload, the status of the record changes to \textit{“Saving to Box,”} indicating that the file has been stored successfully.  
+
+Upon confirmation, the system performs post-upload maintenance on the originating Employee Tracker row:
+\begin{itemize}[nosep]
+  \item Logs the upload record (employee details, file name, Box folder path, timestamp) into the \textit{Box Upload Log} sheet for tracking purposes.
+  \item Confirms upload success by recording Box File ID and document URL.
+  \item Clears the current attachment from the Employee Tracker row.
+  \item Increments the due date for the next review cycle.
+  \item Resets the status to \textit{“Not Created.”}
+  \item Empties Supervisors, HR and Office fields.
+\end{itemize}
+This ensures the Employee Tracker remains current and ready for the next review, while the Box Upload Log preserves historical records of all completed uploads.
+
+\subsubsection{Interface Description}
+\begin{itemize}[nosep]
+  \item \textbf{Input Fields:} EmployeeID, File URL, ReviewYear, Division, CompletionDate.
+  \item \textbf{Output Actions:} Box File ID, upload confirmation (\textit{“Saving to Box”}), cleared attachment field, incremented due date, reset supervisors, and tracking entry in the \textit{Box Upload Log}.
+\end{itemize}
+
+\subsubsection{Processing Detail}
+\begin{itemize}[nosep]
+  \item \textbf{Design Hierarchy:} Single-step upload from Employee Tracker with a secondary logging action to the Box Upload Log sheet for audit trail purposes.
+  \item \textbf{Restrictions/Limitations:} Uploads limited by Box API file size (≤ 15 MB). Requires active OAuth 2.0 authentication. The Box Upload Log must maintain synchronized metadata fields for tracking.
+  \item \textbf{Performance:} Upload and reset process typically completes within 10–15 seconds per record. Logging actions occur asynchronously to minimize latency.
+\end{itemize}
+
+% -------------------------------------------------------
+\subsection{Power BI Data Model and Measures}
+
+\subsubsection{Classification}
+Analytical reporting layer that transforms Smartsheet Employee Performance Review (EPR) data into structured Power BI datasets for visualization and performance analysis.  
+The model supports real-time tracking of review progress, completion trends, and HR compliance metrics.
+
+\subsubsection{Processing Narrative (PSPEC)}
+A scheduled refresh process extracts data from the Smartsheet EPR Tracker sheet via the Smartsheet connector.  
+During processing, the dataset is cleaned, normalized, and aggregated into analytical tables.  
+The model computes several key performance indicators (KPIs), including:
+\begin{itemize}[nosep]
+  \item EPR completion rate.
+  \item Number of overdue reviews.
+  \item Average days past due.
+  \item Departmental and supervisor-level performance summaries.
+\end{itemize}
+The processed dataset is published to the HR Power BI workspace and visualized through interactive dashboards accessible to management.
+
+\subsubsection{Interface Description}
+\begin{itemize}[nosep]
+  \item \textbf{Input Fields:} Smartsheet dataset containing EmployeeID, Status, DueDate, CompletedDate, Department, and Supervisor.
+  \item \textbf{Output Actions:} Power BI visuals, KPI cards, and performance dashboards accessible to HR and leadership.
+\end{itemize}
+
+\subsubsection{Processing Detail}
+\begin{itemize}[nosep]
+  \item \textbf{Design Hierarchy:} Flat relational data model keyed on EmployeeID and Division. Includes DAX-based calculated columns and measures for KPIs and summary analytics.
+  \item \textbf{Restrictions/Limitations:} Dependent on Smartsheet connector schema stability and API rate limits. Field name or structure changes require dataset remapping. Refresh frequency limited to Power BI service schedule.
+  \item \textbf{Performance:} Average dataset refresh completes within 1–2 minutes for approximately 1,000 records. Rendering of dashboards is near real-time post-refresh.
+\end{itemize}
+
+% -------------------------------------------------------
+\noindent
+These lower-level components form the operational backbone of the Intelligent HR Analytics \& EPR Management Dashboard.  
+They handle automation, data synchronization, analytics computation, and compliance logging—ensuring that the system remains maintainable, auditable, and efficient across Smartsheet, DocuSign, Box, and Power BI integrations.
+
+
+% ===================== 8. User Interface =====================
+\section{Database Design}
+
+This section describes the structure, purpose, and relationships of the primary Smartsheet data repository used by the Intelligent HR Analytics \& EPR Management Dashboard.  
+A single Smartsheet table (Employees) stores employee details, job classifications, and Employee Performance Review (EPR) workflow status. This centralized design simplifies automation, reporting, and integration with DocuSign, Box, and Power BI.
+
+\subsection{Employees/Employees  History Records(Smartsheet)}
+\textbf{Purpose:}  
+Serves as the master data source for all HR and EPR tracking activities. It maintains employee information, review cycles, probation data, and routing details for the entire workflow.
+
+\textbf{Field Definitions:}
+\begin{tabular}{|p{3.2cm}|p{3cm}|p{8cm}|}
+\hline
+\textbf{Field Name} & \textbf{Data Type} & \textbf{Description} \\ \hline
+Status & Choice & Workflow stage (Not Created, With HR, Completed, etc.). \\ \hline
+DocuSign Status & Choice & Indicates signature progress (Not Started, In Progress, Completed). \\ \hline
+Employee First Name & Text & Employee’s given name. \\ \hline
+Employee Last Name & Text & Employee’s surname. \\ \hline
+Job Class & Choice & Employee’s classification (e.g., Social Services, HR Manager, ADMPHS Practitioner, etc.). \\ \hline
+Job Class Level & Choice & Position level within the class (Intern, I, II, III, Senior). \\ \hline
+Anniversary Month & Choice & Month when employment or review cycle begins. \\ \hline
+Probationary EPR & Checkbox & Marks whether an employee is in a probationary review cycle. \\ \hline
+Probation Quarter & Choice & Quarter of the probationary cycle (1Q–4Q, Final). \\ \hline
+Probation Due Date & Date & Due date for probationary reviews. \\ \hline
+Signed EPR Due Date & Date & Target completion date for the employee’s current EPR. \\ \hline
+Previous EPR Signed & Date & Date the last EPR was signed. \\ \hline
+Previous EPR Actual Due Date & Date & Original due date for the last EPR. \\ \hline
+Supervisor & Text & Primary supervisor responsible for the employee. \\ \hline
+HR & Text & Assigned HR reviewer verifying EPR progress. \\ \hline
+Head of HR & Text & HR leadership reviewer for final approval. \\ \hline
+Head of Office & Text & Department or division head providing final sign-off. \\ \hline
+Supervisor 1 / 2 / 3 Approvals & Checkbox & Indicates approval completion at each supervisory level. \\ \hline
+Head of HR / Head of Office Approvals & Checkbox & Indicates final review and approval stages. \\ \hline
+Reset Ready & Checkbox & Marks record as ready to restart next review cycle. \\ \hline
+Late EPR & Checkbox & Flag indicating whether the EPR is overdue. \\ \hline
+\end{tabular}
+
+\textbf{Constraints:}
+\begin{itemize}[nosep]
+  \item Each employee appears once per active review cycle.  
+  \item Approval steps must follow the set sequence (Supervisor → HR → Head of HR → Head of Office).  
+  \item Only authorized HR users can modify workflow status, DocuSign Status, or approval fields.  
+  \item All date values must follow ISO format (MM/DD/YY) for consistency with Power BI refresh logic.
+\end{itemize}
+
+\subsection{Data Relationships and Integration}
+\begin{itemize}[nosep]
+  \item The Smartsheet table connects directly to Power BI via the Smartsheet connector for analytics and reporting.  
+  \item DocuSign integration populates signature status fields and completion timestamps.  
+  \item Box integration automatically uploads completed EPR documents and writes the storage link back into the table.  
+  \item Power Automate handles synchronization across Smartsheet, DocuSign, Box, and Power BI.
+\end{itemize}
+
+\subsection{Security and Access Control}
+\begin{itemize}[nosep]
+  \item Smartsheet enforces role-based permissions: HR Admins (edit all), Supervisors (edit assigned rows), Employees (view only).  
+  \item All edits are version-tracked and timestamped automatically for compliance.  
+  \item Data access through APIs is secured using OAuth~2.0 authentication.
+\end{itemize}
+
+\noindent
+This single-sheet data structure provides modularity, real-time synchronization, and high traceability while maintaining compliance with SBC PDO HR data governance policies.
+
+
+% ===================== 9. User Interface =====================
+\section{User Interface}
+
+\subsection{Overview of User Interface}
+From the user’s perspective, the Intelligent HR Analytics \& Employee Performance Review (EPR) Management Dashboard is a set of connected cloud interfaces that together automate and visualize the county’s HR review process.  
+Users interact with the system primarily through four existing platforms: \textbf{Smartsheet}, \textbf{DocuSign}, \textbf{Box}, and \textbf{Power BI}.
+
+\begin{itemize}[nosep]
+  \item \textbf{Smartsheet} acts as the operational workspace where HR staff and supervisors manage employee data, review schedules, and workflow progress.  
+  \item \textbf{DocuSign} provides the electronic signature interface for routing and approving EPR forms.  
+  \item \textbf{Box} hosts finalized and signed EPR documents within structured, access-controlled folders.  
+  \item \textbf{Power BI} delivers interactive analytics dashboards for HR leadership to track review completion, overdue items, and workforce trends.
+\end{itemize}
+
+Each interface is easy to navigate and designed for non-technical users. HR staff update employee or EPR records directly in Smartsheet through intuitive row and column controls. Supervisors receive DocuSign email notifications prompting them to review and sign digital forms; completed files automatically route to HR for verification.  
+Box folders are organized by division and year, ensuring that all finalized documents are retrievable without additional setup. Power BI visualizations present summarized results through charts, KPIs, and slicers for real-time performance insights.
+
+Accessibility and usability are key considerations. All platforms support high-contrast modes, screen-reader compatibility, and responsive layouts across desktop and tablet devices.  
+The modular use of familiar commercial interfaces minimizes training needs while providing a consistent experience for both HR personnel and supervisors.
+
+\subsection{Screen Frameworks or Images}
+\begin{itemize}[nosep]
+  \item \textbf{Smartsheet:}  
+        Employee Table and EPR Tracker sheets containing employee names, job classes, probationary data, due dates, and review statuses.
+  \item \textbf{DocuSign:}  
+        Standard signature view displaying the EPR form with signer fields for Supervisor, HR, Head of HR, and Head of Office.
+  \item \textbf{Box:}  
+        Folder directory by Division → Year → EmployeeID storing finalized and signed EPR PDFs.
+  \item \textbf{Power BI:}  
+        HR Overview page showing workforce summaries and job class distributions;  
+        EPR Performance Review page showing completion metrics, overdue counts, and supervisor workload.
+\end{itemize}
+
+\subsection{User Interface Flow Model}
+The user interface operates as a connected workflow rather than a single web portal:
+
+\begin{enumerate}[nosep]
+  \item \textbf{Initiation:} HR staff create or update employee entries in Smartsheet.  
+  \item \textbf{Routing:} Automated Smartsheet triggers send EPR forms to DocuSign for supervisor and HR approval.  
+  \item \textbf{Completion:} Once all parties sign, DocuSign routes the finalized document to Box, where it is archived in the correct folder path.  
+  \item \textbf{Analytics:} Smartsheet data refreshes nightly in Power BI, updating KPIs, completion rates, and overdue alerts.
+\end{enumerate}
+
+Each stage provides immediate visual feedback—status updates in Smartsheet, email confirmations in DocuSign, upload verification in Box, and live metrics in Power BI.  
+This integrated, user-centric design streamlines the entire EPR process, enabling HR staff and supervisors to track, approve, and analyze reviews efficiently across familiar cloud interfaces.
+
+% ===================== 10. Requirements Validation and Verification =====================
+\section{Requirements Validation and Verification}
+
+This section describes how the main functions of the Intelligent HR Analytics \& EPR Management Dashboard are tested and verified to meet system requirements.
+
+\begin{tabular}{|p{5cm}|p{4cm}|p{7cm}|}
+\hline
+\textbf{Requirement} & \textbf{Component / Module} & \textbf{Method of Testing} \\ \hline
+
+The system provides a simple and accessible user interface for HR and supervisors. &
+User Interface (Smartsheet, Power BI, DocuSign) &
+Manual walkthrough and user feedback sessions; accessibility and usability review. \\ \hline
+
+The system allows HR staff to create, edit, and track employee performance reviews. &
+Smartsheet Automation Rules &
+Functional test by adding and updating employee rows; checking rule triggers. \\ \hline
+
+The system routes EPR forms for signatures in correct order. &
+DocuSign Integration &
+Integration test with sample forms; verify signing order and completion notices. \\ \hline
+
+The system saves completed EPRs automatically in Box. &
+Box Storage Connector &
+Upload verification; folder name and file access check. \\ \hline
+
+The system displays EPR status and completion data in Power BI. &
+Power BI Dashboard &
+Compare dashboard counts with Smartsheet data; test slicers and visuals. \\ \hline
+
+The system updates Power BI data each night. &
+Data Services Layer &
+Confirm daily scheduled refresh and timestamp in dataset. \\ \hline
+
+The system enforces user roles and permissions. &
+Smartsheet / Box Permissions &
+Test edit rights for HR, Supervisor, and Employee roles. \\ \hline
+
+The system protects data with encryption and secure access. &
+Smartsheet, Box, DocuSign &
+Verify HTTPS connection and County IT compliance. \\ \hline
+
+The system handles multiple users without performance loss. &
+Power Automate / Smartsheet &
+Simulate concurrent updates; observe response times. \\ \hline
+
+The system records activity and changes for auditing. &
+Smartsheet History Log &
+Review logs for date, time, and user accuracy. \\ \hline
+
+\end{tabular}
+
+\noindent
+All major modules were verified through user testing and workflow simulations to confirm that the dashboard operates correctly, securely, and efficiently.
+
+% ===================== 11. Glossary =====================
+\section{Glossary}
+
+\begin{itemize}[nosep]
+  \item \textbf{EPR (Employee Performance Review):} A structured evaluation process for employee performance and development.  
+  \item \textbf{HR (Human Resources):} The department responsible for employee records, reviews, and workflow management.  
+  \item \textbf{Smartsheet:} Cloud-based platform used to manage employee data, workflow automation, and EPR tracking.  
+  \item \textbf{DocuSign:} Electronic signature tool used to send, sign, and verify performance review forms securely.  
+  \item \textbf{Box:} Cloud storage system used to archive finalized and signed EPR documents.  
+  \item \textbf{Power BI:} Data analytics tool used to visualize EPR metrics, progress, and workforce summaries.  
+  \item \textbf{Power Automate:} Automation service used to link Smartsheet, DocuSign, Box, and Power BI for workflow synchronization.  
+  \item \textbf{Dashboard:} A Power BI visual interface displaying HR analytics and EPR tracking metrics.  
+  \item \textbf{OAuth 2.0:} Authentication method used to ensure secure access between connected services.  
+  \item \textbf{KPI (Key Performance Indicator):} Quantifiable metric used to measure progress toward HR goals.  
+  \item \textbf{SRS (Software Requirements Specification):} The document that defines all functional and non-functional system requirements.  
+  \item \textbf{SDS (Software Design Specification):} This document; describes how the system is structured, integrated, and implemented.  
+\end{itemize}
+
+% ===================== 12. References =====================
+\section{References}
+
+\begin{itemize}[nosep]
+  \item Software Requirements Specification – Intelligent HR Analytics \& EPR Management Dashboard  
+  \item Smartsheet Product Documentation: \url{https://help.smartsheet.com/}  
+  \item DocuSign Developer Guide: \url{https://developers.docusign.com/}  
+  \item Microsoft Power BI Documentation: \url{https://learn.microsoft.com/power-bi/}  
+  \item Microsoft Power Automate Documentation: \url{https://learn.microsoft.com/power-automate/}  
+  \item Box API and Security Overview: \url{https://developer.box.com/}  
+  \item Santa Barbara County Public Defender’s Office – HR Process Guidelines (Internal Reference)  
+  \item CSULA Senior Design Project Portal – Team Sun-1 Documentation (2025)
+\end{itemize}
+
+\end{document}
