@@ -15,8 +15,9 @@
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{enumitem}
-\usepackage{float}            % if you use [H] floats
+\usepackage{float}
 \usepackage{newtxtext,newtxmath}
+\usepackage{graphicx}
 
 % Section heading style
 \titleformat{\section}{\bfseries\Large}{\thesection.}{0.6em}{\bfseries}
@@ -677,13 +678,44 @@ This section outlines the operational rules and policies that govern the use of 
 non-functional requirements for a software system, providing clear and testable guidelines for
 developers and testers.
 
-% ===================== Appendices (in TOC) =====================
-
-
+% ===================== Appendix B=====================
 \section*{Appendix B: Analysis Models}
 \addcontentsline{toc}{section}{Appendix B: Analysis Models}
-Workflow and data flow diagrams (to be added).
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{workflow.png}
+    \caption{Project Workflow}
+    \label{fig:workflow}
+\end{figure}
+
+\noindent
+\textbf{Workflow Explanation}
+
+\begin{enumerate}
+    \item \textbf{HR → Smartsheet} \\
+    HR enters employee or assignment information into Smartsheet for tracking.
+
+    \item \textbf{Supervisors/Managers → Smartsheet} \\
+    Supervisors review, update, and approve tasks or EPR submissions directly in Smartsheet.
+
+    \item \textbf{Smartsheet → Supervisors/Managers} \\
+    Smartsheet automatically sends email notifications to supervisors and managers to review EPRs, and sends reminders to individuals who are late.
+
+    \item \textbf{Smartsheet → DocuSign} \\
+    Smartsheet sends documents to DocuSign for required signatures.
+
+    \item \textbf{DocuSign → Smartsheet} \\
+    Smartsheet retrieves the signed document from DocuSign and temporarily stores it before moving it.
+
+    \item \textbf{Smartsheet → Power BI} \\
+    Smartsheet provides data to Power BI to generate dashboards and reports for leadership.
+
+    \item \textbf{Smartsheet → Box.com} \\
+    Files uploaded or collected through Smartsheet are stored in Box.com, and Smartsheet keeps the corresponding links.
+\end{enumerate}
+
+% ===================== Appendix C=====================
 \section*{Appendix C: To Be Determined List}
 \addcontentsline{toc}{section}{Appendix C: To Be Determined List}
 Final DocuSign field list and template IDs; Box retention labels; Power BI workspace configuration; detailed test cases and traceability matrix.
