@@ -390,93 +390,145 @@ This modular decomposition supports several key design goals:
 \begin{itemize}
   \item Manual PDF routing via email was dismissed because it could not provide centralized tracking or analytics capabilities.
 \end{itemize}
-
 % ===================== 5. Policies and Tactics =====================
 \section{Policies and Tactics}
-This section documents concrete design decisions and day-to-day development practices that guided the implementation of the Intelligent HR Analytics \& EPR Management Dashboard. These choices do not alter the high-level architecture but directly affect interface behavior, maintainability, usability, and compliance. Each area notes rationale, alternatives considered, and justification.
+
+Developing the Intelligent HR Analytics \& EPR Management Dashboard required a series of
+practical decisions and day-to-day development strategies. This section outlines the tools,
+practices, and policies used to ensure the system was reliable, maintainable, and aligned with
+county requirements.
 
 \subsection{Specific Products Used}
-\subsubsection{Development Environment}
-Power BI Desktop/Service for analytics, and Smartsheet for workflow and data tables. Rationale: fastest delivery with enterprise-approved SaaS; alternative (custom web app) rejected due to schedule and security review overhead.
-\subsubsection{Signature and Routing}
-DocuSign for sequential approvals with audit trails; native Smartsheet--DocuSign connector selected over custom API glue to reduce maintenance.
-\subsubsection{Storage}
-Box.com for finalized documents with folder-level RBAC and retention; Smartsheet as system-of-record for tracking metadata.
-\subsubsection{Connectors}
-Native Smartsheet, DocuSign, Box, and Power BI connectors preferred over bespoke scripts; OAuth~2.0 for all service principals.
+
+\subsubsection{Smartsheet}
+Used as the primary workflow platform for tracking EPR status, managing assignments, and
+triggering automated reminders. Chosen because it is already approved for county use and
+supports rapid low-code development.
+
+\subsubsection{DocuSign}
+Selected for secure sequential signatures and audit trails. The Smartsheet–DocuSign connector
+was used instead of a custom API to reduce maintenance and ensure compatibility.
+
+\subsubsection{Box.com}
+Used to store finalized documents with folder-level permissions and retention controls.
+Smartsheet holds metadata, while Box holds the actual signed PDF artifacts.
+
+\subsubsection{Power BI}
+Used to create HR dashboards and performance analytics. Power BI connects directly to
+Smartsheet and provides visual reports for supervisors and HR leaders.
+
+\subsubsection{Connectors and Authentication}
+Native Smartsheet, DocuSign, Box, and Power BI connectors were used. All integrations rely on
+OAuth~2.0 with least-privilege permissions.
 
 \subsection{Requirements Traceability}
-A living traceability matrix links each SRS requirement to implementation artifacts: Smartsheet columns/sheets, automation rules, DocuSign templates, Box folder policies, and Power BI report pages. The matrix is updated each sprint and validated during sprint reviews; gaps trigger backlog items.
 
-\subsection{Testing the Software}
+Requirements were tracked using a living Requirements Traceability Matrix (RTM). Each SRS
+requirement is linked to specific Smartsheet columns, automation rules, DocuSign templates,
+Box folder structures, and Power BI report pages. The RTM was reviewed each sprint, and any
+gaps were added to the project backlog.
+
+\subsection{Plans for Testing the Software}
+
 \subsubsection{Unit Testing}
-Rule-level tests for Smartsheet automations with mock rows; validation of DocuSign template variables; DAX measure tests in Power BI using sample datasets.
+Individual automations, DocuSign templates, and Power BI measures were tested using mock
+data to ensure each component behaved correctly before connecting to live HR sheets.
+
 \subsubsection{Integration Testing}
-End-to-end “review happy path” and “overdue escalation” scenarios across Smartsheet~$\rightarrow$~DocuSign~$\rightarrow$~Box~$\rightarrow$~Power~BI; idempotency verified by replaying events.
+Full end-to-end tests were conducted across Smartsheet~$\rightarrow$~DocuSign~$\rightarrow$~Smartsheet~$\rightarrow$~Box~$\rightarrow$~Power~BI.
+Typical scenarios included “on-time review,” “overdue reminder,” and “signature returned.”
+
 \subsubsection{User Acceptance Testing}
-HR staff and supervisors exercise common tasks in a sandbox workspace; feedback collected via structured forms and instrumented usage logs.
+HR staff and supervisors tested the system within a sandbox environment. Feedback was
+collected using structured forms and incorporated into the workflow.
+
 \subsubsection{Accessibility Testing}
-Color-contrast checks on visuals, keyboard navigation of filters, PDF exports checked with screen readers.
+Dashboards were validated for color contrast, screen-reader compatibility, keyboard navigation,
+and readable PDF exports.
+
 \subsubsection{Data Validation}
-Daily checks compare Power BI aggregates with Smartsheet source counts; discrepancies \textgreater{}1\% raise alerts.
+Daily checks compare Smartsheet row counts with Power BI aggregates. Any mismatch greater
+than 1\% triggers a review.
 
 \subsection{Engineering Trade-offs}
-\subsubsection{Low-Code vs.\ Custom Code}
-Low-code accelerates delivery and governance alignment but constrains UI/ETL flexibility, custom services were deferred to avoid owning infrastructure.
-\subsubsection{Near Real-Time vs.\ Scheduled Refresh}
-Nightly Power BI refresh chosen to limit API load and licensing costs, on-demand refresh is available for critical periods.
+
+\subsubsection{Low-Code vs. Custom Code}
+Low-code tools enabled faster delivery but limited UI customization. Custom services were
+deferred to avoid additional infrastructure and security reviews.
+
+\subsubsection{Real-Time vs. Scheduled Refresh}
+A nightly Power BI refresh was selected to minimize API usage and licensing costs. Manual
+refresh is available only when needed.
+
 \subsubsection{Single Source of Truth}
-Smartsheet designated SoT for EPR status, Box holds immutable artifacts. Alternative “Power BI as SoT” rejected.
+Smartsheet is the source of truth for EPR status and task tracking. Box holds immutable signed
+documents. Power BI mirrors Smartsheet data for reporting.
 
 \subsection{Guidelines and Conventions}
 \begin{itemize}[nosep]
-  \item Naming: ??????????????????????
-  \item Solutions: logical grouping (Workflow, Signing, Storage, Analytics).
-  \item Status values normalized (\texttt{NotStarted}, \texttt{InProgress}, \texttt{PendingSignatures}, \texttt{Complete}, \texttt{Overdue}). ??????????????????????????
-  \item Dates stored ISO~8601 (UTC) with display localized in reports.
-  \item Box metadata tags: ????????????????????????????
-  \item All changes peer-reviewed, change log kept in the traceability matrix.
+  \item \textbf{Naming:} Use clear, descriptive names in the format 
+        \texttt{System\_Function\_Description}
+  \item \textbf{Solutions grouped logically:} Workflow, Signing, Storage, Analytics.
+  \item \textbf{Status values normalized:} 
+        \texttt{NotStarted}, \texttt{InProgress}, \texttt{PendingSignatures}, 
+        \texttt{Complete}, \texttt{Overdue}.
+  \item \textbf{Date handling:} All dates stored in ISO~8601 (UTC); localization applied only
+        within Power BI for readability.
+  \item \textbf{Box metadata tags:} 
+        \texttt{EmployeeID}, \texttt{EPRPeriod}, \texttt{DocumentType}, 
+        \texttt{SignedStatus}, \texttt{UploadedBy}, \texttt{Version}.
+  \item \textbf{Change control:} All modifications peer-reviewed and logged in the
+        traceability matrix.
 \end{itemize}
 
 \subsection{Protocols}
-All inter-system calls over HTTPS; OAuth~2.0 with least-privilege scopes; webhook-style callbacks where supported; audit logs retained per county policy.
+All communication across systems uses HTTPS with OAuth~2.0 authentication. Where possible,
+Smartsheet and DocuSign use webhook-style callbacks. Audit logs follow county retention
+policies.
 
 \subsection{Design Patterns and Programming Idioms}
 \begin{itemize}[nosep]
-  \item \textbf{Event-driven workflow}: due-date rules trigger EPR creation and routing.
-  \item \textbf{Idempotent actions}: re-runs check for existing DocuSign envelopes/Box files before creating new ones.
-  \item \textbf{Retry with backoff}: transient API errors retried up to three times.
-  \item \textbf{Metadata-first}: identifiers flow through all steps for traceability.
-  \item \textbf{Separation of concerns}: workflow (Smartsheet), signing (DocuSign), storage (Box), analytics (Power BI).
+  \item \textbf{Event-driven workflow:} Due dates trigger reminders and routing actions.
+  \item \textbf{Idempotency:} Automations check for existing envelopes or files before
+        creating new ones.
+  \item \textbf{Retry with backoff:} Transient API errors retry automatically up to three times.
+  \item \textbf{Metadata-first design:} Identifier fields flow through each component to support
+        traceability.
+  \item \textbf{Separation of concerns:} Smartsheet for workflow, DocuSign for signing,
+        Box for storage, Power BI for analytics.
 \end{itemize}
 
 \subsection{Maintaining the Software}
-Backups of Smartsheet sheets ???????? and Box retention policies ?????????, Power BI datasets monitored for refresh failures, quarterly review of automation rules with HR.
+Smartsheet sheets are backed up before major changes. Box retention policies protect archived
+EPR documents. Power BI datasets are monitored for refresh failures, and automation rules are
+reviewed quarterly with HR.
 
 \subsection{Interfaces}
-End users operate in Smartsheet (tracker views) and Power BI (dashboards). HR admins manage DocuSign templates and Box permissions; optional PowerApps surface for structured submissions.
+End users interact primarily with Smartsheet (task tracker views) and Power BI dashboards.
+HR administrators manage DocuSign templates and Box permissions as needed.
 
 \subsection{Source Organization}
 \begin{itemize}[nosep]
-  \item Smartsheet: Employees table and Employee History Records
-  \item DocuSign: ?????????????
-  \item Power BI: Data model organized into logical folders aligned with each dashboard page (e.g., HR Overview, EPR Performance Review), with measures and visuals grouped by purpose for clarity and easier maintenance.
-  \item Box: ?????????????????
+  \item \textbf{Smartsheet:} Employee table, EPR Tracker, and History Logs.
+  \item \textbf{DocuSign:} Template sets for EPR approvals and routing workflows.
+  \item \textbf{Power BI:} Data model organized by dashboard pages such as 
+        \textit{HR Overview} and \textit{EPR Performance}, grouped by purpose for clarity.
+  \item \textbf{Box:} Folder hierarchy organized by Employee ID and Review Period, with
+        controlled access permissions.
 \end{itemize}
 
 \subsection{Build and Deployment Process}
-\begin{itemize}[nosep]
-  \item The system was built and tested using mock HR data to verify functionality and data flow before connecting to real production sources.
-  \item Smartsheet, DocuSign, Box, and Power BI components were configured and linked using test datasets to ensure all integrations worked correctly.
-  \item After testing, Power BI reports were published to the HR workspace and connected to the live Smartsheet data with a scheduled daily refresh.
-\end{itemize}
-
+The system was initially tested with mock HR data. Once validated, the Smartsheet sheets,
+DocuSign templates, Box folders, and Power BI reports were linked to production data. Power BI
+reports were published to the HR workspace with a nightly scheduled refresh.
 
 \subsection{Abstraction}
-External services are connected through configurable connectors and rules. Power BI reports use defined measures for consistency, and PowerApps (if used) interacts with Smartsheet through a simple action layer.
-These practices make the system easier to maintain, scalable for future updates, and compliant with SBC PDO IT and records policies.
+External systems are accessed using configurable connectors rather than custom code. Power BI
+measures abstract business logic so it can be reused across reports. These approaches simplify
+maintenance and ensure compliance with SBC PDO IT policies.
 
-\noindent\textit{Together, these practices keep the solution scalable, auditable, and maintainable while conforming to SBC PDO IT and records policies.}
+\noindent\textit{Together, these policies and tactics ensure the system remains maintainable,
+auditable, and secure throughout its lifecycle.}
 
 % ===================== 6. Detailed System Design =====================
 \section{Detailed System Design}
