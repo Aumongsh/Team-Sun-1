@@ -365,6 +365,12 @@ Each component was designed with clear boundaries and roles to support modularit
 \subsection{Communication and Control Flow}
 The system follows a structured, event-driven process to manage the full EPR lifecycle.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{high_flow_chart.png}
+    \caption{High-Level EPR Workflow Overview}
+\end{figure}
+
 \begin{itemize}
   \item \textbf{1)} When an employee’s review becomes due or EPR is completed, Smartsheet automation identifies the record based on the “Next EPR Due Date.”
   \item \textbf{2)} The Smartsheet–DocuSign connector automatically generates a review form and routes it to the employee’s supervisor for completion.
@@ -880,6 +886,18 @@ This modular structure improves scalability, maintainability, and security while
 
 This section describes the lower-level components, automation flows, and scripts that support the higher-level subsystems presented in Section~6.  
 Each component is discussed in terms of its classification, processing narrative (PSPEC), interface description, and internal processing details, including any design hierarchy or constraints.
+
+\subsection{Processing Detail}
+
+The following diagram shows the detailed low-level logic of the EPR automation,
+including Smartsheet triggers, supervisor approval routing, DocuSign interactions,
+Python post-processing, and row reset operations.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{low_flow_chart.png}
+    \caption{Detailed EPR Automation Logic (Smartsheet, DocuSign, Python)}
+\end{figure}
 
 % 7.1 -------------------------------------------------------
 \subsection{Smartsheet Automation Rules}
