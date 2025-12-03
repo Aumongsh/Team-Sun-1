@@ -1085,38 +1085,49 @@ Throughout the signing process, DocuSign records timestamps, signer actions, and
 
 % 7.3-------------------------------------------------------
 \subsection{Box Upload Function (Box Integration)}
-
 \subsubsection{Classification}
-Automated integration between Smartsheet and Box that archives finalized Employee Performance Review (EPR) documents and maintains a historical upload log for audit tracking.  
-The integration ensures secure document storage while resetting employee records in preparation for the next review cycle.
+This component is a Python batch script that archives finalized EPRs from Smartsheet to Box and prepares rows for the next review cycle.
 
 \subsubsection{Processing Narrative (PSPEC)}
-When an EPR record in the main \textit{Employee Tracker} sheet reaches the status \textit{“Completed,”} an automation rule triggers the Box upload function.  
-The finalized DocuSign file is uploaded to the appropriate Box folder through the Box connector API.  
-After a successful upload, the status of the record changes to \textit{“Saving to Box,”} indicating that the file has been stored successfully.  
-
-Upon confirmation, the system performs post-upload maintenance on the originating Employee Tracker row:
-\begin{itemize}[nosep]
-  \item Logs the upload record (employee details, file name, Box folder path, timestamp) into the \textit{Box Upload Log} sheet for tracking purposes.
-  \item Confirms upload success by recording Box File ID and document URL.
-  \item Clears the current attachment from the Employee Tracker row.
-  \item Increments the due date for the next review cycle.
-  \item Resets the status to \textit{“Not Created.”}
-  \item Empties Supervisors, HR and Office fields.
-\end{itemize}
-This ensures the Employee Tracker remains current and ready for the next review, while the Box Upload Log preserves historical records of all completed uploads.
+The script performs the following steps:
+\begin{enumerate}[nosep]
+  \item Connects to Smartsheet using an API access token loaded from the environment.
+  \item Queries the EPR Tracker sheet for rows whose \texttt{Status} is \texttt{``Saving to Box''}.
+  \item For each matching row, uploads the latest attached EPR PDF to Box using the Box helper module.
+  \item Copies the row to a Smartsheet history sheet to preserve an immutable EPR record.
+  \item Resets status, due dates, probation fields, supervisor assignments, and attachments so the row is ready for the next EPR cycle.
+\end{enumerate}
 
 \subsubsection{Interface Description}
 \begin{itemize}[nosep]
-  \item \textbf{Input Fields:} EmployeeID, File URL, ReviewYear, Division, CompletionDate.
-  \item \textbf{Output Actions:} Box File ID, upload confirmation (\textit{“Saving to Box”}), cleared attachment field, incremented due date, reset supervisors, and tracking entry in the \textit{Box Upload Log}.
+  \item \textbf{Inputs:}
+    \begin{itemize}[nosep]
+      \item Environment variable \texttt{SMARTSHEET\_ACCESS\_TOKEN}.
+      \item Smartsheet sheet IDs \texttt{SHEET\_ID} (EPR Tracker) and \texttt{HISTORY\_SHEET\_ID}.
+      \item Rows with status \texttt{``Saving to Box''} and at least one EPR attachment.
+    \end{itemize}
+  \item \textbf{Outputs:}
+    \begin{itemize}[nosep]
+      \item EPR PDF files stored in Box with the naming pattern \texttt{LASTNAME-FIRSTNAME-YYYY-MM-DD.pdf}.
+      \item New rows added to the EPR history sheet with a saved date stamp.
+      \item Updated rows in the EPR Tracker sheet with reset fields and next EPR due date.
+    \end{itemize}
+  \item \textbf{External Interfaces:}
+    \begin{itemize}[nosep]
+      \item Smartsheet REST API (via \texttt{smartsheet-python-sdk}).
+      \item Box API (via \texttt{box\_helper.upload\_file\_to\_box\_by\_url}).
+    \end{itemize}
 \end{itemize}
 
 \subsubsection{Processing Detail}
+The main functions are:
 \begin{itemize}[nosep]
-  \item \textbf{Design Hierarchy:} Single-step upload from Employee Tracker with a secondary logging action to the Box Upload Log sheet for audit trail purposes.
-  \item \textbf{Restrictions/Limitations:} Uploads limited by Box API file size (≤ 15 MB). Requires active OAuth 2.0 authentication. The Box Upload Log must maintain synchronized metadata fields for tracking.
-  \item \textbf{Performance:} Upload and reset process typically completes within 10–15 seconds per record. Logging actions occur asynchronously to minimize latency.
+  \item \texttt{get\_smartsheet\_client()} – validates the Smartsheet access token and returns a client instance.
+  \item \texttt{get\_rows\_awaiting\_saving()} – filters EPR Tracker rows with status \texttt{``Saving to Box''}.
+  \item \texttt{save\_epr\_attachments\_to\_box()} – uploads the latest EPR attachment for each row to Box, tracking errors in \texttt{error\_map}.
+  \item \texttt{copy\_smartsheet\_rows\_to\_history\_table()} – copies successful rows to the history sheet and stamps the saved date.
+  \item \texttt{reset\_columns\_for\_next\_epr\_due\_date()} – recalculates the next EPR due date based on employment status and probation quarter, resets status and approvals, and removes attachments.
+  \item \texttt{main()} – orchestrates the full workflow, enforces error handling, and logs summary results.
 \end{itemize}
 
 % -------------------------------------------------------
