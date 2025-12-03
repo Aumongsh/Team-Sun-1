@@ -586,6 +586,118 @@ The discussion covers responsibilities, constraints, composition, interactions, 
   \end{itemize}
 \end{itemize}
 
+\vspace{1cm}
+
+% Automation Diagram Figures
+
+\paragraph{Automation Workflow Diagrams}
+
+The following figures illustrate the nine Smartsheet automation workflows used in the EPR tracking system. 
+Each workflow diagram corresponds to one of the rules listed above.
+
+% Automation 2: Enforce probation value
+\paragraph{Enforce probation value}
+This rule standardizes data by setting the probationary quarter to “N/A” whenever the Employment Status is changed to “yearly.”
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{auto1}
+  \caption{[EPR Tracker] 0 – Enforce probationary quarter value for yearly employment type.}
+  \label{fig:epr-auto-probationary}
+\end{figure}
+
+% Automation 2: Mark as probationary
+\paragraph{Mark as probationary}
+This rule automatically marks an employee as probationary when their employment status is set to a probationary type.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{auto2}
+  \caption{[EPR Tracker] 0 – Mark as probationary.}
+  \label{fig:epr-auto-probationary-flag}
+\end{figure}
+
+% Automation 3: Mark EPR as late
+\paragraph{Mark EPR as late}
+This rule flags an EPR as late when the signed due date is in the past; otherwise, it clears the late indicator.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{auto3}
+  \caption{[EPR Tracker] 0 – Mark EPR as late.}
+  \label{fig:epr-auto-0-late}
+\end{figure}
+
+
+% Automation 4: Send reminder to holding recipients
+\paragraph{Send reminder to holding recipients}
+This daily rule sends reminder notifications to supervisors and HR when the signed EPR due date is approaching, based on time-window conditions.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{auto4}
+  \caption{[EPR Tracker] 0 – Send reminder to holding recipients.}
+  \label{fig:epr-auto-0-reminder}
+\end{figure}
+
+% Automation 5: Generate EPR documents
+\paragraph{Generate EPR documents}
+This rule creates an EPR document for an employee when their due date falls within the defined window and their status indicates the document has not yet been generated.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{auto5}
+  \caption{[EPR Tracker] 1 – Generate EPR documents.}
+  \label{fig:epr-auto-1-generate}
+\end{figure}
+
+
+% Automation 6: Ask HR to fill out supervisors
+\paragraph{Ask HR to fill out supervisors}
+This rule notifies HR to enter supervisor assignments whenever an EPR document is uploaded and the review has not yet been set up.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{auto6}
+  \caption{[EPR Tracker] 2.1 – Ask HR to fill out Supervisors for EPR Review.}
+  \label{fig:epr-auto-2-1-hr}
+\end{figure}
+
+
+% Automation 7: Send EPR to Supervisor 1
+\paragraph{Send EPR to Supervisor 1}
+This rule prompts Supervisor 1 to complete the EPR once HR has assigned supervisors and the review status is set to “With HR.”
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{auto7}
+  \caption{[EPR Tracker] 2.2 – Send EPR to Supervisor 1 to fill out.}
+  \label{fig:epr-auto-2-2-supervisor1}
+\end{figure}
+
+% Automation 8: Send EPR to upper supervisors for review
+\paragraph{Send EPR to upper supervisors for review}
+This rule escalates the EPR to Supervisor 2, Supervisor 3, the Head of HR, and the Head of Office based on review status and completion conditions, ensuring the form moves through all required approval levels.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{auto8}
+  \caption{[EPR Tracker] 2.3 – Send EPR to upper supervisors for review.}
+  \label{fig:epr-auto-2-3-escalation}
+\end{figure}
+
+
+% Automation 9: Handle statuses when missing supervisors
+\paragraph{Handle statuses when missing supervisors}
+This rule corrects status values when required supervisor fields are missing by reassigning the EPR to the appropriate level or notifying HR if escalation targets are incomplete.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{auto9}
+  \caption{[EPR Tracker] 2.3.2 – Handle statuses when missing supervisors.}
+  \label{fig:epr-auto-2-3-2-missing-supervisors}
+\end{figure}
+
 \subsubsection{Uses/Interactions}
 \begin{itemize}[nosep]
   \item Triggers DocuSign workflows for EPR review routing and signatures.
