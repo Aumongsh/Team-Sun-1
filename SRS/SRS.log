@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  23 MAR 2026 16:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  20 MAR 2026 17:25
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**SDD2.tex
-(./SDD2.tex
+**SRS.tex
+(./SRS.tex
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/article.cls
@@ -459,59 +459,78 @@ Package: array 2024/10/17 v2.6g Tabular extension package (FMi)
 \TX@cols=\count299
 \TX@ftn=\toks35
 )
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2024-10-27 v4.22 Multi-page Table package (DPC)
+\LTleft=\skip93
+\LTright=\skip94
+\LTpre=\skip95
+\LTpost=\skip96
+\LTchunksize=\count300
+\LTcapwidth=\dimen186
+\LT@head=\box59
+\LT@firsthead=\box60
+\LT@foot=\box61
+\LT@lastfoot=\box62
+\LT@gbox=\box63
+\LT@cols=\count301
+\LT@rows=\count302
+\c@LT@tables=\count303
+\c@LT@chunks=\count304
+\LT@p@ftn=\toks36
+)
 (/usr/local/texlive/2025/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
-\heavyrulewidth=\dimen186
-\lightrulewidth=\dimen187
-\cmidrulewidth=\dimen188
-\belowrulesep=\dimen189
-\belowbottomsep=\dimen190
-\aboverulesep=\dimen191
-\abovetopsep=\dimen192
-\cmidrulesep=\dimen193
-\cmidrulekern=\dimen194
-\defaultaddspace=\dimen195
-\@cmidla=\count300
-\@cmidlb=\count301
-\@aboverulesep=\dimen196
-\@belowrulesep=\dimen197
-\@thisruleclass=\count302
-\@lastruleclass=\count303
-\@thisrulewidth=\dimen198
+\heavyrulewidth=\dimen187
+\lightrulewidth=\dimen188
+\cmidrulewidth=\dimen189
+\belowrulesep=\dimen190
+\belowbottomsep=\dimen191
+\aboverulesep=\dimen192
+\abovetopsep=\dimen193
+\cmidrulesep=\dimen194
+\cmidrulekern=\dimen195
+\defaultaddspace=\dimen196
+\@cmidla=\count305
+\@cmidlb=\count306
+\@aboverulesep=\dimen197
+\@belowrulesep=\dimen198
+\@thisruleclass=\count307
+\@lastruleclass=\count308
+\@thisrulewidth=\dimen199
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/enumitem/enumitem.sty
 Package: enumitem 2025/02/06 v3.11 Customized lists
-\labelindent=\skip93
-\enit@outerparindent=\dimen199
-\enit@toks=\toks36
-\enit@inbox=\box59
-\enit@count@id=\count304
-\enitdp@description=\count305
+\labelindent=\skip97
+\enit@outerparindent=\dimen256
+\enit@toks=\toks37
+\enit@inbox=\box64
+\enit@count@id=\count309
+\enitdp@description=\count310
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count306
-\float@exts=\toks37
-\float@box=\box60
-\@float@everytoks=\toks38
-\@floatcapt=\box61
+\c@float@type=\count311
+\float@exts=\toks38
+\float@box=\box65
+\@float@everytoks=\toks39
+\@floatcapt=\box66
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/ragged2e/ragged2e.sty
 Package: ragged2e 2023/06/22 v3.6 ragged2e Package
-\CenteringLeftskip=\skip94
-\RaggedLeftLeftskip=\skip95
-\RaggedRightLeftskip=\skip96
-\CenteringRightskip=\skip97
-\RaggedLeftRightskip=\skip98
-\RaggedRightRightskip=\skip99
-\CenteringParfillskip=\skip100
-\RaggedLeftParfillskip=\skip101
-\RaggedRightParfillskip=\skip102
-\JustifyingParfillskip=\skip103
-\CenteringParindent=\skip104
-\RaggedLeftParindent=\skip105
-\RaggedRightParindent=\skip106
-\JustifyingParindent=\skip107
+\CenteringLeftskip=\skip98
+\RaggedLeftLeftskip=\skip99
+\RaggedRightLeftskip=\skip100
+\CenteringRightskip=\skip101
+\RaggedLeftRightskip=\skip102
+\RaggedRightRightskip=\skip103
+\CenteringParfillskip=\skip104
+\RaggedLeftParfillskip=\skip105
+\RaggedRightParfillskip=\skip106
+\JustifyingParfillskip=\skip107
+\CenteringParindent=\skip108
+\RaggedLeftParindent=\skip109
+\RaggedRightParindent=\skip110
+\JustifyingParindent=\skip111
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
@@ -527,8 +546,8 @@ File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 106.
 )
-\Gin@req@height=\dimen256
-\Gin@req@width=\dimen257
+\Gin@req@height=\dimen257
+\Gin@req@width=\dimen258
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2024-11-05 v7.01l Hypertext links for LaTeX
@@ -571,15 +590,15 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
  (/usr/local/texlive/2025/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 ))
-\c@section@level=\count307
+\c@section@level=\count312
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/stringenc/stringenc.sty
 Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
 )
 )
-\@linkdim=\dimen258
-\Hy@linkcounter=\count308
-\Hy@pagecounter=\count309
+\@linkdim=\dimen259
+\Hy@linkcounter=\count313
+\Hy@pagecounter=\count314
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2024-11-05 v7.01l Hyperref: PDFDocEncoding definition (HO)
@@ -589,7 +608,7 @@ Now handling font encoding PD1 ...
 (/usr/local/texlive/2025/texmf-dist/tex/generic/intcalc/intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
-\Hy@SavedSpaceFactor=\count310
+\Hy@SavedSpaceFactor=\count315
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/hyperref/puenc.def
 File: puenc.def 2024-11-05 v7.01l Hyperref: PDF Unicode definition (HO)
@@ -609,14 +628,14 @@ Package hyperref Info: Plain pages OFF on input line 4172.
 Package hyperref Info: Backreferencing OFF on input line 4177.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4424.
-\c@Hy@tempcnt=\count311
+\c@Hy@tempcnt=\count316
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4763.
-\XeTeXLinkMargin=\dimen259
+\XeTeXLinkMargin=\dimen260
 
 (/usr/local/texlive/2025/texmf-dist/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
@@ -625,9 +644,9 @@ Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
 )
 ))
-\Fld@menulength=\count312
-\Field@Width=\dimen260
-\Fld@charsize=\dimen261
+\Fld@menulength=\count317
+\Field@Width=\dimen261
+\Fld@charsize=\dimen262
 Package hyperref Info: Hyper figures OFF on input line 6042.
 Package hyperref Info: Link nesting OFF on input line 6047.
 Package hyperref Info: Hyper index ON on input line 6050.
@@ -640,9 +659,9 @@ Package hyperref Info: PDF/A mode OFF on input line 6072.
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
 )
-\Hy@abspage=\count313
-\c@Item=\count314
-\c@Hfootnote=\count315
+\Hy@abspage=\count318
+\c@Item=\count319
+\c@Hfootnote=\count320
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 
@@ -654,8 +673,8 @@ Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
 kage
 with kernel methods
 )
-\Fld@listcount=\count316
-\c@bookmark@seq@number=\count317
+\Fld@listcount=\count321
+\c@bookmark@seq@number=\count322
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
 Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
@@ -666,100 +685,109 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 85.
 )
-\Hy@SectionHShift=\skip108
+\Hy@SectionHShift=\skip112
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
 File: bkm-pdftex.def 2023-12-10 v1.31 bookmark driver for pdfTeX and luaTeX (HO
 )
-\BKM@id=\count318
+\BKM@id=\count323
 ))
-Package hyperref Info: Option `bookmarksopen' set `true' on input line 56.
-Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 56.
+Package hyperref Info: Option `bookmarksopen' set `true' on input line 59.
+Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 59.
+Package hyperref Info: Option `hypertexnames' set `false' on input line 59.
 
-(/usr/local/texlive/2025/texmf-dist/tex/latex/newunicodechar/newunicodechar.sty
-Package: newunicodechar 2018/04/08 v1.2 Defining Unicode characters
+(/usr/local/texlive/2025/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
+
+\f@nch@headwidth=\skip113
+\f@nch@offset@elh=\skip114
+\f@nch@offset@erh=\skip115
+\f@nch@offset@olh=\skip116
+\f@nch@offset@orh=\skip117
+\f@nch@offset@elf=\skip118
+\f@nch@offset@erf=\skip119
+\f@nch@offset@olf=\skip120
+\f@nch@offset@orf=\skip121
+\f@nch@height=\skip122
+\f@nch@footalignment=\skip123
+\f@nch@widthL=\skip124
+\f@nch@widthC=\skip125
+\f@nch@widthR=\skip126
+\@temptokenb=\toks40
 )
-
-Package newunicodechar Warning: Redefining Unicode character on input line 62.
-
-
-Package newunicodechar Warning: Redefining Unicode character on input line 64.
-
-
-Package newunicodechar Warning: Redefining Unicode character on input line 65.
-
 LaTeX Font Info:    Trying to load font information for T1+ntxtlf on input line
- 72.
+ 69.
+
 (/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/t1ntxtlf.fd
 File: t1ntxtlf.fd 2021/05/24 v1.1 font definition file for T1/ntx/tlf
 )
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 12.0pt on input line 72.
- (./SDD2.aux)
-\openout1 = `SDD2.aux'.
+(Font)              scaled to size 12.0pt on input line 69.
+ (./SRS.aux)
+\openout1 = `SRS.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/ntxmi/m/it on input line 72.
+LaTeX Font Info:    Checking defaults for OML/ntxmi/m/it on input line 69.
 LaTeX Font Info:    Trying to load font information for OML+ntxmi on input line
- 72.
+ 69.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/omlntxmi.fd
 File: omlntxmi.fd 2015/08/25 Fontinst v1.933 font definitions for OML/ntxmi.
 )
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for U/ntxexa/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for U/ntxexa/m/n on input line 69.
 LaTeX Font Info:    Trying to load font information for U+ntxexa on input line 
-72.
+69.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/untxexa.fd
 File: untxexa.fd 2012/04/16 Fontinst v1.933 font definitions for U/ntxexa.
 )
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for LMS/ntxsy/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for LMS/ntxsy/m/n on input line 69.
 LaTeX Font Info:    Trying to load font information for LMS+ntxsy on input line
- 72.
+ 69.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/lmsntxsy.fd
 File: lmsntxsy.fd 2016/07/02 Fontinst v1.933 font definitions for LMS/ntxsy.
 )
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for LMX/ntxexx/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for LMX/ntxexx/m/n on input line 69.
 LaTeX Font Info:    Trying to load font information for LMX+ntxexx on input lin
-e 72.
+e 69.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/lmxntxexx.fd
 File: lmxntxexx.fd 2016/07/03 Fontinst v1.933 font definitions for LMX/ntxexx.
 )
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Info: Redefining \microtypecontext on input line 72.
-Package microtype Info: Applying patch `item' on input line 72.
-Package microtype Info: Applying patch `toc' on input line 72.
-Package microtype Info: Applying patch `eqnum' on input line 72.
-Package microtype Info: Applying patch `footnote' on input line 72.
-Package microtype Info: Applying patch `verbatim' on input line 72.
-LaTeX Info: Redefining \microtypesetup on input line 72.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Info: Redefining \microtypecontext on input line 69.
+Package microtype Info: Applying patch `item' on input line 69.
+Package microtype Info: Applying patch `toc' on input line 69.
+Package microtype Info: Applying patch `eqnum' on input line 69.
+Package microtype Info: Applying patch `footnote' on input line 69.
+Package microtype Info: Applying patch `verbatim' on input line 69.
+LaTeX Info: Redefining \microtypesetup on input line 69.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 72.
+LaTeX Info: Redefining \showhyphens on input line 69.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -769,17 +797,17 @@ File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 )
 (/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count319
-\scratchdimen=\dimen262
-\scratchbox=\box62
-\nofMPsegments=\count320
-\nofMParguments=\count321
-\everyMPshowfont=\toks39
-\MPscratchCnt=\count322
-\MPscratchDim=\dimen263
-\MPnumerator=\count323
-\makeMPintoPDFobject=\count324
-\everyMPtoPDFconversion=\toks40
+\scratchcounter=\count324
+\scratchdimen=\dimen263
+\scratchbox=\box67
+\nofMPsegments=\count325
+\nofMParguments=\count326
+\everyMPshowfont=\toks41
+\MPscratchCnt=\count327
+\MPscratchDim=\dimen264
+\MPnumerator=\count328
+\makeMPintoPDFobject=\count329
+\everyMPtoPDFconversion=\toks42
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -789,10 +817,10 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\c@mv@tabular=\count325
-\c@mv@boldtabular=\count326
-LaTeX Info: Command `\dddot' is already robust on input line 72.
-LaTeX Info: Command `\ddddot' is already robust on input line 72.
+\c@mv@tabular=\count330
+\c@mv@boldtabular=\count331
+LaTeX Info: Command `\dddot' is already robust on input line 69.
+LaTeX Info: Command `\ddddot' is already robust on input line 69.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -828,13 +856,13 @@ LaTeX Info: Command `\ddddot' is already robust on input line 72.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 72.
+Package hyperref Info: Link coloring OFF on input line 69.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 20.74pt on input line 82.
+(Font)              scaled to size 20.74pt on input line 79.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 20.74pt on input line 82.
+(Font)              scaled to size 20.74pt on input line 79.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 14.4pt on input line 86.
+(Font)              scaled to size 14.4pt on input line 83.
 
 
 [1
@@ -842,12 +870,13 @@ LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
 {/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
 al/texlive/2025/texmf-dist/fonts/enc/dvips/newtx/ntx-ec-tlf.enc}]
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 12.0pt on input line 130.
+(Font)              scaled to size 12.0pt on input line 132.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 14.4pt on input line 130.
- (./SDD2.toc
+(Font)              scaled to size 14.4pt on input line 132.
+ (./SRS.toc
 LaTeX Font Info:    Trying to load font information for OT1+minntx on input lin
 e 1.
+
 (/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/ot1minntx.fd
 File: ot1minntx.fd 2023/09/09 v1.1 font definition file for OT1/minntx
 )
@@ -923,44 +952,30 @@ LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 (Font)              scaled to size 6.6pt on input line 1.
 
 
+[1
 
-pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
-een already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.49 ...Workflow Engine)}{10}{subsubsection.5.1.1}
-                                                  % [1]
-
-
-pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
-een already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.110 ...idation and Verification}{24}{section.11}
-                                                  % [2])
+])
 \tf@toc=\write3
-\openout3 = `SDD2.toc'.
+\openout3 = `SRS.toc'.
 
 
 
-
-pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
-een already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.133 \clearpage
-                 [3]
+[2]
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
 (Font)              scaled to size 17.28pt on input line 137.
 
-Underfull \hbox (badness 1092) in paragraph at lines 151--151
-[]|\T1/ntxtlf/m/n/12 (+20) Hoang Le 
+Underfull \hbox (badness 10000) in paragraph at lines 145--145
+[]|\T1/ntxtlf/m/n/12 (+20) Momoka Aung,
+ []
+
+
+Overfull \hbox (38.04976pt too wide) in paragraph at lines 142--153
+ [] 
  []
 
 
 
-[1
-
+[3
 
 ]
 LaTeX Font Info:    Trying to load font information for TS1+ntxtlf on input lin
@@ -970,85 +985,36 @@ File: ts1ntxtlf.fd 2015/01/18 v1.0 fd file for TS1/ntxtlf
 )
 LaTeX Font Info:    Font shape `TS1/ntxtlf/m/n' will be
 (Font)              scaled to size 12.0pt on input line 172.
-LaTeX Font Info:    Font shape `T1/ntxtlf/m/it' will be
-(Font)              scaled to size 12.0pt on input line 173.
-LaTeX Font Info:    Trying to load font information for T1+ntxtt on input line 
-174.
 
-(/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/t1ntxtt.fd
-File: t1ntxtt.fd 2012/04/20 v3.1
-)
-LaTeX Font Info:    Font shape `T1/ntxtt/m/n' will be
-(Font)              scaled to size 12.0pt on input line 174.
-Package microtype Info: Loading generic protrusion settings for font family
-(microtype)             `ntxtt' (encoding: T1).
-(microtype)             For optimal results, create family-specific settings.
-(microtype)             See the microtype manual for details.
-
-
-[2
-
-{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/tex-gyre/q-ts1.enc}]
-
-[3
-
-]
 
 [4
 
-]
+{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/tex-gyre/q-ts1.enc}]
 
 [5]
 
-[6
+[6]
+
+[7
 
 ]
 
-[7]
-
 [8]
+Underfull \hbox (badness 10000) in paragraph at lines 300--301
+[]|\T1/ntxtlf/m/n/12 (+20) Configure au-toma-tions/templates;
+ []
+
+
 
 [9]
 
-[10
-
-]
+[10]
 
 [11]
-Overfull \hbox (123.48698pt too wide) in paragraph at lines 614--615
-\T1/ntxtt/m/n/12 EmploymentStatus, ProbationDueDate, SignedEPRDueDate, Previous
-EPRSigned, PreviousEPRDueDate,
- []
-
-
-Overfull \hbox (54.07323pt too wide) in paragraph at lines 637--638
-[] []\T1/ntxtlf/b/n/12 (-20) Core Data Fields[] \T1/ntxtt/m/n/12 MatterID, Open
-Date, Status, Complaint, Responder, IncidentSummary,
- []
-
-
-Overfull \hbox (12.9192pt too wide) in paragraph at lines 637--638
-\T1/ntxtt/m/n/12 IssueType, PolicyReference, Supervisor, NextStep, NextStepDueD
-ate, Box_URL 
- []
-
-
-Overfull \hbox (28.87328pt too wide) in paragraph at lines 658--659
-[] []\T1/ntxtlf/b/n/12 (-20) Core Data Fields[] \T1/ntxtt/m/n/12 VacancyID, Job
-ClassTitle, Department, Label, VacancyStartDate,
- []
-
-
 
 [12
 
 ]
-Overfull \hbox (54.07323pt too wide) in paragraph at lines 679--680
-[] []\T1/ntxtlf/b/n/12 (-20) Core Data Fields[] \T1/ntxtt/m/n/12 EmployeeID, Fi
-rstName, LastName, Email, ExitReason, EffectiveDate,
- []
-
-
 
 [13]
 
@@ -1056,156 +1022,61 @@ rstName, LastName, Email, ExitReason, EffectiveDate,
 
 ]
 
-[15
-
-]
+[15]
 
 [16]
-<EPR Data 1.png, id=320, 1279.27937pt x 85.31876pt>
-File: EPR Data 1.png Graphic file (type png)
-<use EPR Data 1.png>
-Package pdftex.def Info: EPR Data 1.png  used on input line 813.
-(pdftex.def)             Requested size: 452.9679pt x 30.2096pt.
-<EPR Data 2.png, id=322, 1274.26062pt x 87.32625pt>
-File: EPR Data 2.png Graphic file (type png)
-<use EPR Data 2.png>
-Package pdftex.def Info: EPR Data 2.png  used on input line 820.
-(pdftex.def)             Requested size: 452.9679pt x 31.04167pt.
-
 
 [17
 
- <./EPR Data 1.png> <./EPR Data 2.png>]
-<EPR Data History 1.png, id=331, 1306.38063pt x 81.80562pt>
-File: EPR Data History 1.png Graphic file (type png)
-<use EPR Data History 1.png>
-Package pdftex.def Info: EPR Data History 1.png  used on input line 846.
-(pdftex.def)             Requested size: 452.9679pt x 28.36401pt.
-<EPR Data History 2.png, id=332, 1398.22375pt x 92.84688pt>
-File: EPR Data History 2.png Graphic file (type png)
-<use EPR Data History 2.png>
-Package pdftex.def Info: EPR Data History 2.png  used on input line 853.
-(pdftex.def)             Requested size: 452.9679pt x 30.07852pt.
-<Personnel Matters Data.png, id=333, 1423.3175pt x 145.54375pt>
-File: Personnel Matters Data.png Graphic file (type png)
-<use Personnel Matters Data.png>
-Package pdftex.def Info: Personnel Matters Data.png  used on input line 879.
-(pdftex.def)             Requested size: 452.9679pt x 46.31732pt.
+]
 
+[18]
 
-[18 <./EPR Data History 1.png> <./EPR Data History 2.png>]
-<Separation Data.png, id=342, 1318.9275pt x 120.45pt>
-File: Separation Data.png Graphic file (type png)
-<use Separation Data.png>
-Package pdftex.def Info: Separation Data.png  used on input line 904.
-(pdftex.def)             Requested size: 452.9679pt x 41.36598pt.
-<Separation Holiday Data.png, id=343, 607.77063pt x 226.8475pt>
-File: Separation Holiday Data.png Graphic file (type png)
-<use Separation Holiday Data.png>
-Package pdftex.def Info: Separation Holiday Data.png  used on input line 927.
-(pdftex.def)             Requested size: 452.9679pt x 169.07254pt.
+[19
 
+]
 
-[19 <./Personnel Matters Data.png> <./Separation Data.png>]
-<Vacancies and Recruitments Data.png, id=352, 933.4875pt x 96.36pt>
-File: Vacancies and Recruitments Data.png Graphic file (type png)
-<use Vacancies and Recruitments Data.png>
-Package pdftex.def Info: Vacancies and Recruitments Data.png  used on input lin
-e 953.
-(pdftex.def)             Requested size: 452.9679pt x 46.75806pt.
+[20
 
-
-[20 <./Separation Holiday Data.png> <./Vacancies and Recruitments Data.png>]
-<Personnel Matters Employee Intake Form.png, id=361, 519.44063pt x 667.99562pt>
-
-File: Personnel Matters Employee Intake Form.png Graphic file (type png)
-<use Personnel Matters Employee Intake Form.png>
-Package pdftex.def Info: Personnel Matters Employee Intake Form.png  used on in
-put line 974.
-(pdftex.def)             Requested size: 452.9679pt x 582.50714pt.
-<Personnel Matters HR Intake Form.png, id=362, 496.35437pt x 827.09pt>
-File: Personnel Matters HR Intake Form.png Graphic file (type png)
-<use Personnel Matters HR Intake Form.png>
-Package pdftex.def Info: Personnel Matters HR Intake Form.png  used on input li
-ne 981.
-(pdftex.def)             Requested size: 452.9679pt x 754.79854pt.
+]
+<workflow.png, id=211, 376.5267pt x 181.3977pt>
+File: workflow.png Graphic file (type png)
+<use workflow.png>
+Package pdftex.def Info: workflow.png  used on input line 728.
+(pdftex.def)             Requested size: 452.9679pt x 218.23802pt.
 
 
 [21
 
- <./Personnel Matters Employee Intake Form.png>]
-Overfull \vbox (81.38966pt too high) has occurred while \output is active []
+ <./workflow.png>]
 
+[22
 
-
-[22 <./Personnel Matters HR Intake Form.png>]
-
-[23]
-Underfull \hbox (badness 10000) in paragraph at lines 1009--1009
-[]|\T1/ntxtlf/m/n/12 (+20) User In-ter-face
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1026--1026
-[]|\T1/ntxtlf/m/n/12 (+20) Compare dash-board counts with
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1041--1041
-[]|\T1/ntxtlf/m/n/12 (+20) Power Au-to-mate /
- []
-
-
-Overfull \hbox (57.50098pt too wide) in paragraph at lines 1004--1049
-[][] 
- []
-
-
-
-[24
-
-]
-
-[25
-
-]
-
-[26
-
-]
-Overfull \hbox (52.82909pt too wide) in paragraph at lines 1138--1139
-[]\T1/ntxtlf/m/n/12 (-20) Microsoft Power Au-to-mate Doc-u-men-ta-tion: []$\T1/
-ntxtt/m/n/12 https : / / learn . microsoft . com / power-[]automate/$[] 
- []
-
-
-
-[27
-
-] (./SDD2.aux)
+] (./SRS.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2020/03/25>
  ***********
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 19056 strings out of 473190
- 286258 string characters out of 5715801
- 709440 words of memory out of 5000000
- 41761 multiletter control sequences out of 15000+600000
- 601383 words of font info for 132 fonts, out of 8000000 for 9000
+ 19239 strings out of 473190
+ 288679 string characters out of 5715801
+ 715714 words of memory out of 5000000
+ 41997 multiletter control sequences out of 15000+600000
+ 598248 words of font info for 136 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 80i,8n,93p,1001b,2262s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 80i,11n,93p,1000b,2364s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/tex-gyre/qtmr.pfb></us
-r/local/texlive/2025/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb></usr/loca
-l/texlive/2025/texmf-dist/fonts/type1/public/newtx/txsys.pfb></usr/local/texliv
-e/2025/texmf-dist/fonts/type1/public/newtx/ztmb.pfb></usr/local/texlive/2025/te
-xmf-dist/fonts/type1/public/newtx/ztmr.pfb></usr/local/texlive/2025/texmf-dist/
-fonts/type1/public/newtx/ztmri.pfb>
-Output written on SDD2.pdf (31 pages, 979207 bytes).
+r/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/ztmb.pfb></usr/local/t
+exlive/2025/texmf-dist/fonts/type1/public/newtx/ztmr.pfb>
+Output written on SRS.pdf (23 pages, 146990 bytes).
 PDF statistics:
- 764 PDF objects out of 1000 (max. 8388607)
- 692 compressed objects within 7 object streams
- 168 named destinations out of 1000 (max. 500000)
- 21315 words of extra memory for PDF output out of 24883 (max. 10000000)
+ 404 PDF objects out of 1000 (max. 8388607)
+ 367 compressed objects within 4 object streams
+ 102 named destinations out of 1000 (max. 500000)
+ 18278 words of extra memory for PDF output out of 20736 (max. 10000000)
 

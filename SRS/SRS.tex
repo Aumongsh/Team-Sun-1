@@ -1,25 +1,30 @@
 \documentclass[12pt]{article}
 
-% Encoding & fonts
-\usepackage[utf8]{inputenc}   % for UTF-8 source files
+% ---------- Encoding & fonts ----------
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{microtype}
+\usepackage{newtxtext,newtxmath}
 
-% Page & core
+% ---------- Page & core ----------
 \usepackage[a4paper,margin=1in]{geometry}
 \usepackage{setspace}
 \usepackage{titling}
 \usepackage{titlesec}
 \usepackage{tocloft}
-\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{longtable} % <-- MUST be here (preamble)
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage{float}
-\usepackage{newtxtext,newtxmath}
+\usepackage{ragged2e}
 \usepackage{graphicx}
+\usepackage{etoolbox} % robust section hook
 
-% Section heading style
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+
+% ---------- Section heading style ----------
 \titleformat{\section}{\bfseries\Large}{\thesection.}{0.6em}{\bfseries}
 \titlespacing*{\section}{0pt}{*1.2}{*0.6}
 \titleformat{\subsection}{\bfseries\normalsize}{\thesubsection.}{0.5em}{\bfseries}
@@ -27,22 +32,39 @@
 \titleformat{\subsubsection}{\bfseries}{\thesubsubsection.}{0.5em}{\bfseries}
 \titlespacing*{\subsubsection}{0pt}{*0.7}{*0.3}
 
-% Start each major section on a new page
-\let\oldsection\section
-\renewcommand{\section}{\clearpage\oldsection}
+% ---------- Start each major section on a new page (robust) ----------
+\pretocmd{\section}{\clearpage}{}{}
 
-% TOC look (font hooks must be FONT ONLY)
-\renewcommand{\contentsname}{\textbf{Table of Contents}}
+% ---------- TOC look ----------
+\renewcommand{\contentsname}{Table of Contents}
 \renewcommand{\cfttoctitlefont}{\bfseries\large}
 \renewcommand{\cftdotsep}{1}
 \setlength{\cftbeforesecskip}{2.5pt}
 \setlength{\cftbeforesubsecskip}{1.5pt}
 \renewcommand{\cftsecpagefont}{\normalfont}
 \renewcommand{\cftsubsecpagefont}{\normalfont}
+\renewcommand{\cftsubsubsecpagefont}{\normalfont}
+\setcounter{tocdepth}{3}
 
-% Hyperref LAST (unicode bookmarks)
-\usepackage[unicode]{hyperref}
-\hypersetup{hidelinks}
+% ---------- Hyperlinks & bookmarks (robust) ----------
+\usepackage[unicode,psdextra]{hyperref}
+\usepackage{bookmark} % load right after hyperref
+\hypersetup{
+  hidelinks,
+  bookmarksopen=true,
+  bookmarksnumbered=true,
+  hypertexnames=false, % <-- fixes duplicate "page." destination warnings
+  pdfauthor={CSULA Team Sun-1},
+  pdftitle={System Requirements Specification}
+}
+
+% ---------- Page Numbering ----------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}                    % clear header and footer
+\fancyfoot[C]{\thepage}       % page number centered at bottom
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
 
 \begin{document}
 
@@ -95,6 +117,9 @@ Hayk Vardapetyan\par}
 \vfill
 {\normalsize 03 December 2025\par}
 
+\clearpage
+\pagenumbering{arabic}
+
 \end{titlepage}
 
 % ===================== TOC =====================
@@ -103,6 +128,7 @@ Hayk Vardapetyan\par}
 \singlespacing
 \setlength{\parskip}{0pt}
 \setlength{\parindent}{0pt}
+\pagenumbering{arabic}
 \tableofcontents
 \endgroup
 \newpage
@@ -116,12 +142,13 @@ Hayk Vardapetyan\par}
 \begin{tabular}{|p{2cm}|p{3cm}|p{3.5cm}|p{7cm}|}
 \hline
 \textbf{Version} & \textbf{Date} & \textbf{Author} & \textbf{Reason for Changes} \\ \hline
-0.1 & 08 Sep 2025 & Momoka Aung, Chiemela Eziechile - Nwoke & Initial draft created. \\ \hline
-0.2 & 16 Oct 2025 & Momoka Aung & Added structure, clarified roles, and incorporated high-level requirements. \\ \hline
-0.2.1 & 24 Oct 2025 & Momoka Aung & Expanded details per feedback; separated EPR workflow from Power BI section; added field lists, triggers, mappings, and KPI definitions. \\ \hline
-0.3 & 21 Nov 2025 & Momoka Aung & Updated with Personnel Matters project information. \\ \hline
-0.4 & 3 Dec 2025 & Momoka Aung & Added workflow diagram. \\ \hline
-0.5 & 30 Jan 2026 & Momoka Aung & Added information of Recruitments, Vacancies, and Separation projects.  \\ \hline
+1.0 & 08 Sep 2025 & Momoka Aung, Chiemela Eziechile - Nwoke & Initial draft created. \\ \hline
+1.1 & 16 Oct 2025 & Momoka Aung & Added structure, clarified roles, and incorporated high-level requirements. \\ \hline
+1.2 & 24 Oct 2025 & Momoka Aung & Expanded details per feedback; separated EPR workflow from Power BI section; added field lists, triggers, mappings, and KPI definitions. \\ \hline
+1.3 & 21 Nov 2025 & Momoka Aung & Updated with Personnel Matters project information. \\ \hline
+1.4 & 3 Dec 2025 & Momoka Aung & Added workflow diagram. \\ \hline
+1.5 & 30 Jan 2026 & Momoka Aung & Added information of Recruitments, Vacancies, and Separation projects.  \\ \hline
+1.6 & 13 Mar 2026 & Momoka Aung & Finalized draft  \\ \hline
 \end{tabular}
 \end{center}
 
@@ -129,36 +156,41 @@ Hayk Vardapetyan\par}
 % ===================== 1. Introduction =====================
 \section{Introduction}
 
-This Software Requirements Specification (SRS) describes the key features and expectations for the Human Resources Workflow Management System, which includes both the Employee Performance Review (EPR) Dashboard, the Personnel Matters, Recruitments, Vacancies, and Separation Tracker projects. The system is being developed for the Santa Barbara County Public Defender’s Office to improve how HR processes are tracked, managed, and reported.
+This Software Requirements Specification (SRS) describes the key features and expectations for the Human Resources Workflow Management System, which includes both the Employee Performance Review (EPR), the Personnel Matters, Recruitments/Vacancies, and Separation Tracker and Dashboard projects. The system is being developed for the Santa Barbara County Public Defender’s Office to improve how HR processes are tracked, managed, and reported.
 
 This document outlines what the system should do, how it should perform, and the standards it must meet. It serves as a shared reference for HR staff, project stakeholders, and developers to ensure a clear understanding of the project’s goals, scope, and overall framework.
 
 \subsection{Purpose}
 
-This Software Requirements Specification (SRS) defines the functional and nonfunctional requirements for the Human Resources Workflow Management System, which includes the Employee Performance Review (EPR) Dashboard and the Personnel Matters, Recruitments, Vacancies, and Separation Tracker projects. 
+This Software Requirements Specification (SRS) defines the functional and nonfunctional requirements for the Human Resources Workflow Management System, which includes the Employee Performance Review (EPR), the Personnel Matters, Recruitments/Vacancies, and Separation Tracker and Dashboard projects. 
 
-The purpose of this system is to automate and centralize HR workflows across all divisions of the Santa Barbara County Public Defender’s Office, improving how performance reviews, employee concerns, and related documentation are tracked and completed. The system ensures timely follow-up and accountability through automated reminders, escalation notifications, and structured data management. It replaces current manual, email-based processes with a transparent, repeatable, and auditable workflow that uses Smartsheet for process automation and Box for secure document storage.
+The purpose of these system is to automate and centralize HR workflows across all divisions of the Santa Barbara County Public Defender’s Office, improving how performance reviews, employee concerns, and related documentation are tracked and completed. The system ensures timely follow-up and accountability through automated reminders, escalation notifications, and structured data management. It replaces current manual, email-based processes with a transparent, repeatable, and auditable workflow that uses Smartsheet for process automation and Box for secure document storage.
 
 \subsection{Intended Audience and Reading Suggestions}
 
 \begin{itemize}
   \item \textbf{HR Staff \& Product Owner:} Configure schedules, templates, and monitor compliance (Sections 1–2, 4).
   \item \textbf{Supervisors \& Division Leads:} Manage review workflows and respond to reminders (Sections 2–4).
-  \item \textbf{Developers / Integrators:} Implement Smartsheet automations, email notifications, and Box integration (Sections 3–4).
+  \item \textbf{Developers / Integrators:} Implement Smartsheet automations, email notifications, Box integration, and develop the AWS architecture and APIs supporting Smartsheet and Box.com integrations (Sections 3–4).
   \item \textbf{QA / Reviewers \& IT Security:} Verify system behavior and ensure policy alignment (Sections 4–6).
 \end{itemize}
 
 \subsection{Product Scope}
 
-The Human Resources Workflow Management System is designed to modernize and centralize two key HR functions within the Santa Barbara County Public Defender’s Office: the Employee Performance Review (EPR) Dashboard and the Personnel Matters, Recruitments, Vacancies, and Separation Tracker projects. Together, these tools streamline HR processes, reduce manual workload, and improve transparency and accountability across all divisions.
+The Human Resources Workflow Management System is designed to modernize and centralize four key HR functions within the Santa Barbara County Public Defender’s Office: the Employee Performance Review (EPR), the Personnel Matters, Recruitments/Vacancies, and Separation Tracker and Dashboard projects. Together, these systems streamline HR processes, reduce manual workload, and improve transparency and accountability across all divisions.
 
-The \textbf{Employee Performance Review (EPR) Dashboard} automates the end-to-end review process. It tracks due dates, sends automated reminder and escalation notifications, and records completion status in a centralized Smartsheet dashboard. Supervisors complete review templates and upload finalized documents to Box, where they are securely stored and linked to their corresponding tracker entries. The EPR component ensures that reviews are completed on time, properly documented, and easily accessible for compliance and reporting purposes.
+The \textbf{Employee Performance Review (EPR) Tracker} will automate the end-to-end review process. It tracks due dates, sends automated reminder and escalation notifications, and records completion status in a centralized Smartsheet dashboard. Data from the tracker will also feed into Power BI dashboards to provide real-time reporting, analytics, and leadership visibility into review progress and compliance. Supervisor(s) and manager(s) complete and review EPR templates, while the EPR Tracker Workflow uploads finalized documents to the secured Box repository, where they are stored and linked to corresponding tracker entries. The EPR component ensures that reviews are completed on time, properly documented, and easily accessible for compliance and reporting purposes.
 
-The \textbf{Personnel Matters Tracker} provides a structured process for recording, tracking, and resolving employee-raised concerns such as disputes, investigations, or disciplinary actions. It introduces standardized intake forms for both employees and HR staff, metadata tracking (status, due dates, responsible parties), and integrated document management through Box. This component replaces informal, email-based submissions with a consistent, auditable workflow that improves recordkeeping and communication between HR and management.
+The \textbf{Personnel Matters Tracker} will provide a structured process for recording, tracking, and resolving employee-raised concerns such as disputes, investigations, or disciplinary actions. It introduces standardized intake forms for both employees and HR staff, metadata tracking (status, due dates, responsible parties), and integrated document management through Box. Data from the tracker will also feed into Power BI dashboards, providing real-time reporting, analytics, and visibility into review progress and compliance. This component replaces informal, email-based submissions with a consistent, auditable workflow that improves recordkeeping and communication between HR and management.
 
-The \textbf{Vacancies & Recruitments Dashboard} centralizes the tracking of open positions and hiring activity, providing leadership with real-time visibility and HR with a standardized management tool. It replaces manual downloads from the Den application with a Smartsheet-based tracker that captures key recruitment data such as job class, status, funding, vacancy dates, and time-to-hire. This data feeds a Power BI dashboard that presents active and historical vacancy trends, recruitment statuses, new hires, interview activity, and internal versus external recruitments to support informed workforce planning.
+The \textbf{Vacancies \& Recruitment Tracker} will provide a centralized process for tracking open positions, recruitment activity, and hiring outcomes across the organization. It introduces a standardized vacancy tracker that captures key data elements such as job class, department, funding status, vacancy start date, recruitment stage, interview activity, and time-to-hire metrics. Integrated analytics through Power BI deliver real-time visibility into active vacancies, recruitment progress, new hires, and internal versus external recruitment trends.
 
-The \textbf{Separations Dashboard} standardizes the capture and reporting of employee exits through a centralized Smartsheet tracker with automated field dependencies to improve data accuracy. It supports consistent separation notifications and feeds a Power BI dashboard that provides real-time insights into exits by job class and reason, with flexible time-based filtering. This component replaces informal, email-based processes with a consistent, auditable workflow that improves transparency, reporting, and leadership awareness.
+This component replaces the current manual process of downloading vacancy reports from the County’s Den application in PDF or Excel format and re-entering data into tracking sheets. By consolidating vacancy management into a structured, continuously maintained system, the dashboard improves data consistency, reporting accuracy, and workforce planning visibility for HR and leadership.
+
+The \textbf{Separations Dashboard} provides a centralized process for recording and tracking employee exits. HR begins the process by filling out the designated Smartsheet form with  the leaving employee’s information, including position details, reason for exit, effective date, and last working day. Required fields help ensure data accuracy and completeness. The system generates standardized separation notifications and tracks their status. A Power BI dashboard displays separation trends by division, job class, and reason for exit to support reporting and workforce planning.
+
+This component replaces informal, email-based processes with a consistent, auditable workflow secured through SmartSheet's Single Sign-On (SSO), improving transparency and reporting accuracy.
+
 
 Those components share a unified data model, common user interface, and secure authentication through Single Sign-On (SSO). The system provides HR with real-time visibility into active cases, overdue tasks, and historical records, ultimately improving process efficiency, compliance with county policies, and data accuracy.
 
@@ -169,6 +201,7 @@ Those components share a unified data model, common user interface, and secure a
   \item \textbf{HR:} Human Resources
   \item \textbf{Smartsheet:} Workflow and tracking platform used for automation and status management
   \item \textbf{Box:} County-secured document repository for finalized HR records
+  \item \textbf{Power BI:} Business intelligence and reporting platform used to create dashboards and analytics visualizations
   \item \textbf{SSO:} Single Sign-On for authenticated access
   \item \textbf{Personnel Matters:} HR cases related to employee disputes, investigations, or disciplinary actions
 \end{itemize}
@@ -176,48 +209,39 @@ Those components share a unified data model, common user interface, and secure a
 \subsection{References}
 
 \begin{itemize}
-  \item \href{/mnt/data/49787d8a-35ca-4b91-9f73-5d6470ae0641.png}{Project Overview: Box Link}
+  \item \href{https://cosantabarbara.app.box.com/s/xzxniv8dk6gt2eormc0b8ihsn686cf6l}{Project Overview: Box Link}
 \end{itemize}
 
 % ===================== 2. Overall Description =====================
 \section{Overall Description}
 
-This section provides a high-level understanding of the Human Resources Workflow Management System, including the Employee Performance Review (EPR) Dashboard, the Personnel Matters, Recruitments, Vacancies, and Separation Tracker projects outlining how each component is used, the environment in which they operate, and the key factors influencing their development and deployment.
+This section provides a high-level overview of the Human Resources Workflow Management System, which includes the Employee Performance Review (EPR), Personnel Matters Tracker, Vacancies and Recruitment Tracker, and Separation Tracker and Dashboard. Together, these components provide a centralized and structured approach to managing key HR processes.
 
 \subsection{System Analysis}
 
-Currently, the Employee Performance Review (EPR) process at the Santa Barbara County Public Defender’s Office is tracked manually through spreadsheets and email reminders. This manual system creates inefficiencies, delays, and limited visibility into overall progress. Supervisors and HR staff often rely on email follow-ups and ad-hoc reminders to ensure timely completion of performance reviews, which increases administrative workload and the potential for missed deadlines.
+The Human Resources Workflow Management System is designed to simplify how the Public Defender’s Office manages core HR processes, including Employee Performance Reviews (EPR), Personnel Matters, Vacancies and Recruitments, and Employee Separations. Currently, these processes rely on spreadsheets, email communication, and manual downloads from external applications, making it difficult to track progress, ensure timely completion, and maintain consistent documentation.
 
-The proposed EPR Dashboard and Workflow System simplifies this process by providing a centralized, automated platform for managing all stages of the EPR cycle. Using Smartsheet as the workflow engine, the system tracks each employee’s review period, status, and due dates while automatically sending reminders and escalation notices to responsible parties. Finalized reviews are stored securely in Box, ensuring compliance with County data retention policies and providing an auditable history of all completed reviews.
+By consolidating these workflows into a centralized platform, the system standardizes how HR activities are recorded, routed, and monitored. Automated notifications, structured tracking, and integrated dashboards provide clearer visibility into deadlines, case status, hiring activity, and separation trends. This allows HR staff to manage tasks more efficiently while giving leadership real-time insight into workforce operations.
 
-The main goals of this system are to:
-\begin{itemize}
-  \item Eliminate manual tracking and email-based follow-ups.
-  \item Increase accountability and visibility across all divisions.
-  \item Ensure on-time completion of performance reviews.
-  \item Maintain a reliable and secure archive of finalized EPR documents.
-\end{itemize}
-
-Key challenges include designing efficient automation rules in Smartsheet, establishing standardized folder structures in Box, and ensuring that all notifications align with County security and communication standards. Once implemented, the system will significantly reduce administrative workload and improve compliance with HR timelines.
-
-In addition to the EPR process, the Personnel Matters Tracker addresses similar challenges within HR case management. Currently, employee concerns and personnel-related issues are handled informally through emails or verbal reports, with limited structure for documentation and follow-up. The new tracker introduces standardized intake forms, automated status tracking, and centralized recordkeeping in Smartsheet and Box, providing HR with greater visibility, consistency, and accountability.
-
-Vacancies, recruitments, and employee separations present comparable operational challenges. At present, vacancy and recruitment activity is not tracked in a centralized system, requiring HR to manually download reports from the county-provided Den application and manage updates outside of a structured workflow. Similarly, employee separations are communicated informally between supervisors and HR, resulting in inconsistent documentation and limited reporting capabilities.
-
-The proposed Vacancies \& Recruitments and Separations dashboards extend the same Smartsheet and Power BI architecture to workforce lifecycle management. Smartsheet grids serve as the system of record for recruitment and separation data, capturing standardized fields such as position details, job class, status, dates, and reasons for exit, with automated field dependencies to reduce manual entry. Power BI dashboards provide leadership with real-time visibility into vacancies, hiring activity, and separation trends through interactive charts, counts, and time-based filters. Together, these systems replace fragmented, manual processes with a consistent, auditable, and data-driven approach to workforce planning and HR reporting.
+The goal of the system is to improve accountability, reduce administrative burden, and enhance reporting accuracy across all HR functions. Key challenges include designing reliable workflow automation, ensuring secure document management, and maintaining compliance with County data privacy and retention standards. By leveraging a centralized workflow and reporting architecture, the system provides a consistent, auditable, and secure solution tailored to the office’s operational needs.
 
 \subsection{Product Perspective}
 
-The EPR Dashboard and Workflow System functions as a fully cloud-based solution composed of existing County enterprise tools integrated through Single Sign-On (SSO) and secure APIs. It replaces fragmented spreadsheets and email tracking with a unified workflow accessible to HR, supervisors, and division leads.
+The Human Resources Workflow Management System enhances the Public Defender’s Office’s existing HR processes by integrating with County enterprise platforms to streamline workforce operations. By centralizing performance reviews, personnel matters, recruitment tracking, and separations into a unified workflow environment, the system improves accessibility, accountability, and reporting consistency.
 
-The system architecture integrates three main software platforms:
+The solution integrates with key County-supported tools:
+
 \begin{itemize}
-  \item \textbf{Smartsheet:} Serves as the central workflow hub for tracking employee data, review timelines, personnel cases, and completion statuses. It also manages automated reminders, escalations, and metadata fields for case tracking.
-  \item \textbf{Box:} Acts as the official repository for finalized EPR documents and personnel case records.
-  \item \textbf{Email (Outlook/Exchange):} Used to distribute templates, send reminders, and notify supervisors or division leads of overdue EPRs.
-\end{itemize}
+  \item \textbf{Smartsheet:} Provides the structured workflow environment for tracking HR activities, managing review timelines, routing approvals, and maintaining case records.
+  \item \textbf{Box:} Serves as the secure repository for finalized HR documents and supporting records.
+  \item \textbf{Email System:} Enables automated notifications and reminders for workflow actions, approvals, and deadlines.
+  \item \textbf{Amazon Web Services (AWS):} Provides cloud infrastructure, backend services, and API integrations supporting the system’s workflows, data processing, and secure connectivity with Smartsheet and Box.
+  \end{itemize}
 
-All components operate within the County’s secured network and use SSO authentication for user verification. The system requires minimal user training and aligns with the organization’s existing IT infrastructure. There are no on-premises components or custom-developed software, which simplifies maintenance and scalability.
+In addition, the system includes a cloud-based automation service implemented using AWS Services such as AWS Lambda, written in the Python programming language. This service manages cross-system operations such as
+sending outbound emails with Box-hosted documents and executing controlled workflow updates.
+
+By leveraging these existing platforms through secure Single Sign-On (SSO), the system eliminates reliance on fragmented spreadsheets and email-based tracking. Employees and HR staff can manage tasks, monitor progress, and access records within a consistent cloud-based environment aligned with the County’s IT infrastructure. This integrated approach improves operational efficiency while maintaining compliance with County security and data retention standards.
 
 \subsection{Product Functions}
 
@@ -228,22 +252,18 @@ The EPR Dashboard and Workflow System provides four primary functions that work 
   \begin{itemize}
     \item Maintain a centralized Smartsheet tracker that lists all active employees, their supervisors, review periods, and due dates.
     \item Automatically calculate next review dates based on prior completion records.
-  \end{itemize}
-
-  \item \textbf{2.3.2 Automated Reminders and Escalations}
-  \begin{itemize}
-    \item Send automated reminder emails 30, 14, and 7 days before a review is due.
+    \item Send automated reminder emails 60, 30, 14, and 7 days before/after a review is due.
     \item Escalate overdue reviews to division leads at 7 days past due, and to department heads at 14 days past due.
     \item Log all reminder and escalation events in Smartsheet for audit purposes.
   \end{itemize}
 
-  \item \textbf{2.3.3 Offline Review and Submission}
+  \item \textbf{2.3.2 Offline Review and Submission}
   \begin{itemize}
     \item Allow supervisors to complete EPR forms offline using HR-provided templates.
     \item Upload finalized documents to Box and link the file URL in Smartsheet for record-keeping.
   \end{itemize}
 
-\item \textbf{2.3.5 Personnel Matters Case Tracking}
+\item \textbf{2.3.3 Personnel Matters Case Tracking}
   \begin{itemize}
     \item Maintain a structured Smartsheet tracker for employee-submitted concerns, investigations, and HR actions.
     \item Include intake forms for both employees and HR staff, with required metadata (status, next-step due dates, responsible HR personnel).
@@ -251,7 +271,7 @@ The EPR Dashboard and Workflow System provides four primary functions that work 
     \item Provide HR with real-time dashboards summarizing open, in-progress, and closed cases.
   \end{itemize}
   
-    \item \textbf{2.3.5 Vacancies and Recruitments Tracking}
+    \item \textbf{2.3.4 Vacancies and Recruitments Tracking}
   \begin{itemize}
     \item Maintain a centralized Smartsheet tracker for all active vacancies and recruitment efforts.
     \item Support initial data population through uploads from the county-provided Den application, with manual updates by HR as recruitment progresses.
@@ -259,16 +279,17 @@ The EPR Dashboard and Workflow System provides four primary functions that work 
     \item Feed structured data into a Power BI dashboard to provide leadership with real-time visibility into active vacancies, recruitment status, new hires, interview activity, and historical hiring trends.
   \end{itemize}
 
-  \item \textbf{2.3.6 Employee Separations Tracking and Reporting}
+  \item \textbf{2.3.5 Employee Separations Tracking and Reporting}
   \begin{itemize}
     \item Maintain a centralized Smartsheet tracker to record employee separation data, including staff information, position details, job class, reason for exit, submission date, and last working day.
     \item Automate field dependencies to reduce manual data entry and improve accuracy.
+    \item Utilize a standardized intake form to validate required fields and ensure all minimum necessary information is captured for accurate and efficient processing.
     \item Trigger standardized separation notification emails using data captured in Smartsheet.
     \item Provide Power BI dashboards that summarize separations by job class and exit reason, with configurable time-based filters for leadership reporting.
   \end{itemize}
 \end{itemize}
 
-By integrating these functions into a single system, the EPR Dashboard reduces administrative effort, ensures policy compliance, and provides supervisors and HR with clear, up-to-date visibility into the review process.
+By integrating these functions into a single system, the Dashboards reduce administrative effort, ensures policy compliance, and provides supervisors and HR with clear, up-to-date visibility into the review process.
 
 \subsection{User Classes and Characteristics}
 \begin{longtable}{@{}p{4.2cm}p{3.2cm}p{6.2cm}@{}}
@@ -285,452 +306,333 @@ Admin / IT & Org-wide & SSO, permissions, integration health \\
 
 \subsection{Operating Environment}
 
-2.5.1 The EPR Dashboard and Personnel Matters Tracker will operate entirely within a cloud-based environment using the County’s enterprise licenses for Smartsheet and Box.
+The system operates within the following environment:
 
-2.5.2 Both modules will be accessible through modern web browsers, including Google Chrome, Microsoft Edge, and Mozilla Firefox.
+\begin{itemize}
+    \item Cloud-based deployment using the County’s enterprise licenses for Smartsheet and Box.
+    \item Accessible through modern web browsers, including Google Chrome, Microsoft Edge, and Mozilla Firefox.
+    \item Requires an active internet connection and County Single Sign-On (SSO) credentials.
+    \item Supported on both desktop and mobile devices; administrative configuration is primarily performed on desktop browsers.
+    \item Integrated with County email services (Microsoft Outlook/Exchange) for automated reminders and notifications.
+    \item Access restricted to authorized employees, supervisors, HR staff, and administrators, with role-based permissions defined for each workflow (EPR, Personnel Matters, Vacancies and Recruitments, and Separations).
+\end{itemize}
 
-2.5.3 Users will require an active internet connection and County Single Sign-On (SSO) credentials to access the system.
-
-2.5.4 The system will function on both desktop and mobile devices, though administrative configuration tasks will primarily occur on desktop browsers.
-
-2.5.5 The system will integrate with County email (Microsoft Outlook/Exchange) to send automated reminders, escalation notifications, and updates related to personnel case tracking.
-
-2.5.6 Access will be restricted to authorized employees, supervisors, HR staff, and administrators within the Santa Barbara County Public Defender’s Office, with permissions defined separately for EPR, Personnel Matters, Vacancies and Recruitments, Employee Separations Tracking workflows.
-
+% --------------------------------------------------
 
 \subsection{Design and Implementation Constraints}
 
-2.6.1 The system’s development and deployment must comply with Santa Barbara County’s IT and data security regulations, including data privacy and records retention policies.
+The system is subject to the following constraints:
 
-2.6.2 The project must be completed within the academic semester timeline, limiting long-term development and testing opportunities.
-
-2.6.3 User permissions and automation configurations are governed by the County’s administrative access levels within Smartsheet and Box enterprise accounts.
-
-2.6.4 System performance may be affected on older devices or under slow network conditions, requiring optimization of dashboards and automation rules.
-
-2.6.5 Integration options are limited to native Smartsheet and Box connectors; no external APIs or third-party middleware will be developed.
-
-2.6.6 The system must prioritize reliability, data security, and maintainability, ensuring consistent performance and compliance with County operational policies.
+\begin{itemize}
+    \item Must comply with Santa Barbara County IT policies, data privacy standards, and records retention regulations.
+    \item Development and deployment must be completed within the academic semester timeline.
+    \item User permissions and automation capabilities are limited by the County’s administrative configurations within Smartsheet and Box enterprise accounts.
+    \item System performance may vary depending on device capability and network speed.
+    \item The design must prioritize reliability, security, and maintainability to ensure long-term compliance with County operational policies.
+\end{itemize}
 
 \subsection{User Documentation}
 
-The EPR Dashboard, Personnel Matters, Vacancies and Recruitments, Employee Separations Tracker will include a comprehensive set of user documentation to support onboarding, daily operation, and long-term maintenance. This Software Requirements Specification (SRS) will serve as a reference guide for understanding the system’s structure, functionality, and configuration procedures.  
+The Human Resources Workflow Management System will provide multiple user documentation resources to support onboarding and ongoing use. This Software Requirements Specification (SRS) will serve as a reference guide for understanding the system’s purpose and functionality.
 
-In addition to this document, users will receive a detailed User Guide, a Quick Start Guide, and a Frequently Asked Questions (FAQ) document to help them navigate Smartsheet dashboards, complete intake forms, track case statuses, update review records, and upload finalized documents to Box. A live demonstration during the project presentation will introduce HR staff and supervisors to the system’s key features, such as automated reminders, overdue escalations, intake form workflows, and Box link updates.  
+A user guide and quick reference materials will be provided to assist HR staff and supervisors in navigating dashboards, managing workflows, and accessing reports. A live demonstration during the project presentation will introduce users to the system’s core features, including workflow tracking, automated notifications, and reporting capabilities.
 
-All user materials will be distributed in PDF format and stored in a shared County Box folder to ensure consistent access and version control. Contextual help links will also be embedded directly into Smartsheet dashboards, allowing users to access relevant instructions for both the EPR and Personnel Matters modules without leaving the platform.
+All documentation will be distributed in PDF format and stored in a shared County repository to ensure accessibility and version control.
 
 \subsection{Assumptions and Dependencies}
 
-2.8.1 The Santa Barbara County Single Sign-On (SSO) system will remain active and available for authenticating user access to Smartsheet and Box.  
+The system is based on the following assumptions and dependencies:
 
-2.8.2 HR will maintain an up-to-date supervisor–employee hierarchy, which is essential for ensuring correct reminder routing and escalation workflows.  
-
-2.8.3 Users will have stable internet connectivity and access to County-approved browsers and hardware to ensure reliable system performance.  
-
-2.8.4 The system depends on Smartsheet’s enterprise automation features, including date-triggered reminders and escalation workflows, which must remain supported under the County’s current licensing plan.  
-
-2.8.5 Box will continue to serve as the official repository for all finalized EPR documents, with sufficient storage capacity and retention policy compliance.  
-
-2.8.6 Any changes to County IT infrastructure, security protocols, or access permissions may require adjustments to automation rules, reminder schedules, or folder configurations.  
+\begin{itemize}
+    \item The Santa Barbara County Single Sign-On (SSO) system remains active and available for user authentication to Smartsheet and Box.
+    \item HR maintains an up-to-date supervisor–employee hierarchy to ensure accurate routing of reminders and escalations.
+    \item Users have stable internet connectivity and access to County-approved browsers and hardware.
+    \item Smartsheet enterprise automation features (including date-based reminders and escalation workflows) remain available under the County’s licensing plan.
+    \item Box continues to serve as the official repository for finalized documents, with sufficient storage capacity and retention policy compliance.
+    \item Changes to County IT infrastructure, security protocols, or access permissions may require updates to automation rules or system configurations.
+\end{itemize}
 
 \subsection{Apportioning of Requirements}
 
-Phase 1: Implementation of the EPR Workflow and Dashboard, including centralized tracking, automated reminders and escalations, Power BI reporting, and secure document management through Box.
+System functionality will be implemented in phases as follows:
 
-Phase 2: Deployment of the Personnel Matters Tracker, introducing standardized intake forms, structured case tracking, automated status management, and centralized documentation to replace informal, email-based processes.
+\begin{itemize}
+    \item \textbf{Phase 1:} Implementation of the Employee Performance Review (EPR) workflow, including centralized tracking, automated reminders and escalations, reporting dashboards, and secure document storage.
+    
+    \item \textbf{Phase 2:} Implementation of the Personnel Matters workflow, including structured intake forms, case tracking, status management, and document storage.
+    
+    \item \textbf{Phase 3:} Implementation of the Vacancies and Recruitments workflow, including centralized vacancy tracking and recruitment reporting.
+    
+    \item \textbf{Phase 4:} Implementation of the Employee Separations workflow, including separation tracking, notification management, and reporting.
+\end{itemize}
 
-Phase 3: Implementation of the Vacancies \& Recruitments Tracker and dashboard, providing centralized tracking of open positions and hiring activity, automated data intake from the Den application, and real-time Power BI analytics to support workforce planning.
-
-Phase 4: Deployment of the Employee Separations Tracker and dashboard, including standardized separation data capture, automated notification emails, and leadership reporting on exit trends by job class and reason.
+Each phase may be deployed independently but will operate within the same centralized system architecture.
 
 % ===================== 3. External Interface Requirements =====================
 \section{External Interface Requirements}
 
-This section outlines how the EPR Dashboard, Personnel Matters, Vacancies and Recruitments, Employee Separations Tracker will interact with external interfaces, including user interfaces, hardware, software, and communication channels. These requirements describe how both components operate within the Santa Barbara County Public Defender’s Office’s IT environment and ensure seamless integration with existing enterprise tools.
+This section describes how the system interacts with external interfaces, including user interfaces, hardware, software, and communication services within the Santa Barbara County Public Defender’s Office IT environment.
+
+% --------------------------------------------------
 
 \subsection{User Interfaces}
 
-3.1.1 The system shall provide a clean and user-friendly interface within Smartsheet, allowing HR staff and supervisors to view, update, and manage EPR records and personnel cases efficiently.
+The system shall provide the following user interface capabilities:
 
-3.1.2 Smartsheet forms shall enable users to input key data such as employee name, supervisor, review period, due date, Box link for finalized documents, and metadata related to personnel matters (status, next-step due dates, responsible HR staff, and outcomes).
+\begin{itemize}
+    \item A user-friendly interface within Smartsheet that allows HR staff and supervisors to view, update, and manage workflow records.
+    
+    \item Structured Smartsheet forms for entering and updating data such as employee information, review periods, due dates, case status, responsible parties, and document links.
+    
+    \item Visual dashboards summarizing workflow progress, including counts of records by status (e.g., Not Started, In Progress, Completed, Overdue).
+    
+    \item Clear visual indicators (e.g., color coding or status flags) to highlight overdue or pending items.
+    
+    \item Organized document access within Box using structured folders and metadata for finalized records.
+    
+    \item Accessible interfaces that support screen readers and high-contrast viewing options.
+    
+    \item Clear labels, tooltips, and validation messages to guide users during data entry and updates.
+    
+    \item Embedded help links providing access to user guides and FAQs.
+\end{itemize}
 
-3.1.3 The system shall include visual dashboards summarizing review progress and personnel case status, displaying key metrics such as the number of EPRs or cases that are Not Started, In Progress, Submitted, Completed, or Overdue.
-
-3.1.4 The interface shall clearly highlight overdue reviews or pending personnel cases using color indicators or status flags to assist HR in monitoring compliance and initiating follow-ups.
-
-3.1.5 The Box interface shall organize completed EPR and personnel matter files in structured folders (e.g., /EPR/<Year>/<Division>/<Employee Name>/ and /Personnel\_Matters/<Year>/<Case\_ID>/) and display metadata including file name, upload date, and responsible reviewer.
-
-3.1.6 All user interfaces shall follow accessibility standards, supporting screen readers and high-contrast viewing options to ensure usability for all authorized personnel.
-
-3.1.7 The system shall provide clear, consistent labels, tooltips, and error messages to guide users during data entry, uploads, or when correcting invalid information.
-
-3.1.8 Embedded help links shall be available within Smartsheet dashboards to provide users with quick access to the User Guide, FAQs, and troubleshooting instructions for both EPR and Personnel Matters workflows.
+% --------------------------------------------------
 
 \subsection{Hardware Interfaces}
 
-The EPR Dashboard, Personnel Matters, Vacancies and Recruitments, Employee Separations Tracker do not require any dedicated hardware and operate entirely in the cloud. Users can access the system using standard County-approved devices such as desktop computers, laptops, or mobile devices with internet connectivity. No local installation or specialized equipment is needed for normal operation, ensuring ease of access and minimal maintenance requirements.
+The system operates entirely in a cloud-based environment and does not require dedicated hardware. Users may access the system through County-approved desktop computers, laptops, or mobile devices with internet connectivity. No local installation or specialized equipment is required.
+
+% --------------------------------------------------
 
 \subsection{Software Interfaces}
 
-The system integrates with existing County enterprise software through secure, supported connections. Smartsheet serves as the main workflow platform, while Box is used for document storage and link management. Automated reminders and notifications are sent via Microsoft Outlook or Exchange. The Personnel Matters Tracker uses the same Smartsheet and Box integrations for intake forms, case tracking, and document linkage. All integrations comply with County IT security policies, and no third-party or custom-built software components are required.
+The system integrates with the following County-supported software platforms:
+
+\begin{itemize}
+    \item \textbf{Smartsheet} — Workflow management and structured data tracking.
+    \item \textbf{Box} — Secure document storage and retrieval.
+    \item \textbf{Microsoft Outlook/Exchange} — Automated email notifications and reminders.
+    \item \textbf{Power BI} — Reporting dashboards and analytics visualization.
+\end{itemize}
+
+In addition, the system utilizes a cloud-based automation service to support advanced workflow processing, including outbound email handling and document synchronization between platforms.
+
+All integrations use supported, secure connections and comply with County IT policies. No unsupported third-party applications are required.
+
+% --------------------------------------------------
 
 \subsection{Communications Interfaces}
 
-All communications within the EPR Dashboard, Personnel Matters, Vacancies and Recruitments, Employee Separations Tracker occur over secure, encrypted HTTPS/TLS 1.2 or higher protocols. User authentication and access are managed through the County’s Single Sign-On (SSO) system using OAuth 2.0 or SAML standards. Automated emails and notifications are sent through the County’s Microsoft Exchange network, ensuring data security and compliance with organizational IT policies.
+All system communications shall:
+
+\begin{itemize}
+    \item Use encrypted HTTPS/TLS 1.2 or higher protocols.
+    \item Authenticate users through the County Single Sign-On (SSO) system.
+    \item Transmit automated notifications via the County’s Microsoft Exchange network.
+\end{itemize}
+
+All communications must comply with County data security and privacy standards.
+
 % ===================== 4. Requirements Specification =====================
 \section{Requirements Specification}
 
-The Requirements Specification section lists all system functions, interfaces, and data interactions.
+The Requirements Specification section defines the system’s functional capabilities and expected behaviors across all HR workflow modules.
 
-\subsection{Functional Requirements} % 4.1
+% --------------------------------------------------
+\subsection{Functional Requirements}
 
-\subsubsection{EPR Workflow Management} % 4.1.1
+% --------------------------------------------------
+\subsubsection{EPR Workflow}
 
-\begin{enumerate}[label=\thesubsubsection.\arabic*, left=0pt]
-  \item The system shall maintain a Smartsheet Employee Master table to track all active employees and their performance review progress. The table shall include, at minimum, the following fields:
-    \begin{itemize}
-      \item Status – Indicates the current stage of the review (Not Created, In Progress, With HR, Complete).
-      \item DocuSign Status – Shows document progress (Not Started, Sent, Signed, Approved).
-      \item Employee First Name / Last Name – Legal employee name.
-      \item Job Class – Employee classification or role (e.g., HR Manager, Social Services Worker).
-      \item Job Class Level / Step – Identifies seniority or pay grade.
-      \item Anniversary Month – Used to determine the review cycle.
-      \item Probationary EPR – Checkbox identifying probationary status.
-      \item Probation Quarter – Identifies the evaluation quarter (1Q, 2Q, 3Q, 4Q).
-      \item Probation Due Date – Date the probationary review is due.
-      \item Late EPR – Flag for overdue reviews.
-      \item Signed EPR Due Date – Date by which the signed review must be submitted.
-      \item Previous EPR Signed / Previous Actual Due Date – Historical tracking of prior review cycles.
-      \item Supervisor, HR, Head of HR, Head of Office – Assigned staff responsible for review routing.
-      \item Supervisor 1, 2, 3 Approval Fields – Records hierarchical approvals.
-      \item Reset Ready – Flag indicating readiness for a new review cycle.
-    \end{itemize}
-
-  \item The system shall allow HR or supervisors to initiate a new EPR entry from the Employee Master sheet using a form or button automation. The new entry shall automatically populate with employee data, supervisor details, and calculated due dates.
-
-  \item The system shall calculate the next review due date based on either the employee’s anniversary month or the previous EPR completion date (Next Review Due = Last Review Date + 12 months).
-
-  \item The system shall allow HR to monitor review progress through fields such as Status, DocuSign Status, and Current Holder, updating automatically as the review moves through stages (Supervisor → HR → Head of HR → Head of Office).
-
-  \item The system shall log all major state changes (Created, Assigned, Reviewed, Approved, Completed) with timestamps and responsible users for auditing purposes.
-
-  \item When the review is completed, the system shall mark the record as Complete, store the Box link to the signed EPR, and flag the record as Reset Ready for the next annual cycle.
+\begin{enumerate}
+    \item The system shall maintain employee records containing review-related information, including employee number, name, job class, start date, employment status, probation due date, and signed EPR due date.
+    
+    \item The system shall track previous review completion dates and historical review status.
+    
+    \item The system shall allow HR to initiate a new review cycle.
+    
+    \item The system shall route reviews sequentially through assigned supervisors and leadership for approval.
+    
+    \item The system shall display the current stage of each review.
+    
+    \item The system shall prevent progression to the next stage until the current stage is completed.
+    
+    \item The system shall archive finalized reviews in a secure document repository.
+    
+    \item The system shall record a link to the archived document.
+    
+    \item The system shall prepare the record for the next review cycle upon completion.
 \end{enumerate}
 
-\subsubsection{Reminder and Escalation Automation} % 4.1.2
-\begin{enumerate}[label=\thesubsubsection.\arabic*, left=0pt]
-  \item The system shall automatically issue reminder and escalation notifications based on the value of the Next Review Due date, following the schedule below:
-    \begin{itemize}
-      \item 30 days before — Notification to Supervisor and Employee.
-      \item 14 days before — Notification to Supervisor and HR.
-      \item 7 days before — Urgent reminder to Supervisor.
-      \item 7 days after — Escalation to Division Lead (Escalation Level 1).
-      \item 14 days after — Escalation to Head of Office (Escalation Level 2).
-    \end{itemize}
-  \item The system shall automatically update the field \textit{EPR Status} to “Overdue” if no completion record exists after the due date has passed.
-  \item Each reminder and escalation event shall be recorded in the Reminder Log sheet (Log ID, Employee ID, EPR ID, Timestamp, Recipient(s), Channel, Template ID, Delivery Status).
+% --------------------------------------------------
+\subsubsection{Personnel Matters Workflow}
+
+\begin{enumerate}
+    \item The system shall allow employees and HR staff to submit personnel matter information using a structured intake form.
+    
+    \item Upon submission of the form, the system shall create a new case record within the Personnel Matters tracker.
+    
+    \item The system shall allow HR to update case status, assign responsible parties, and record outcomes.
+    
+    \item The system shall require documentation of outcome before a case can be marked as closed.
+    
+    \item The system shall restrict case access based on user role.
+    
+    \item The system shall support reporting on open, in-progress, and closed cases.
 \end{enumerate}
 
-\subsubsection{Completion and Archival} % 4.1.3
-\begin{enumerate}[label=\thesubsubsection.\arabic*, left=0pt]
-  \item Upon review completion, the finalized EPR document shall be uploaded to Box in the designated folder structure: \texttt{/EPR/\textless Year\textgreater/\textless Division\textgreater/\textless Employee Name\textgreater/}.
-  \item The system shall update the Smartsheet record by setting Completion Date, updating EPR Status to “Complete,” recording Last Review Date, and recalculating Next Review Due.
-  \item Attachments shall be restricted to EPR-related documents only; other sensitive content shall be stored securely in Box and referenced by hyperlink.
+% --------------------------------------------------
+\subsubsection{Vacancies and Recruitment Workflow}
+
+\begin{enumerate}
+    \item The system shall allow HR to upload vacancy or recruitment data files exported from the County’s Den application.
+    
+    \item Upon successful upload, the system shall create or update vacancy records within the Vacancies and Recruitment tracker.
+    
+    \item The system shall allow HR to update recruitment status as positions progress.
+    
+    \item The system shall track interview activity and hiring outcomes.
+    
+    \item The system shall identify positions as filled or on hold.
+    
+    \item The system shall support reporting of recruitment metrics and trends.
 \end{enumerate}
 
-\subsubsection{Access Control and Audit} % 4.1.4
-\begin{enumerate}[label=\thesubsubsection.\arabic*, left=0pt]
-  \item Supervisors shall view only their team’s EPRs.
-  \item HR and Admin shall have department-wide visibility.
-  \item Access shall be enforced via SSO; all actions shall be logged with timestamps.
+% --------------------------------------------------
+\subsubsection{Employee Separation Workflow}
+
+\begin{enumerate}
+    \item The system shall allow HR staff to submit employee separation information using a structured form.
+    
+    \item Upon submission, the system shall create a new separation record in the Separation tracker.
+    
+    \item The system shall enforce completion of required separation fields before finalization.
+    
+    \item The system shall generate standardized separation notifications.
+    
+    \item The system shall track notification status.
+    
+    \item The system shall support reporting of separation trends and metrics.
 \end{enumerate}
 
-\subsubsection{Personnel Matters Workflow Management} % 4.1.5
-\begin{enumerate}[label=\thesubsubsection.\arabic*, left=0pt]
-  \item The system shall maintain a Smartsheet Personnel Matters tracker to record and monitor all employee-raised concerns, investigations, and HR actions. The tracker shall include the following minimum fields:
-    \begin{itemize}
-      \item Opened – Date the case was initiated.
-      \item Complaint(s) – Name(s) of the employee(s) submitting the concern.
-      \item Respondent(s) – Name(s) of the individual(s) the concern relates to.
-      \item What Happened – Description of the reported incident or issue.
-      \item Issue – Category or type of personnel matter (e.g., conduct, policy violation, workplace conflict).
-      \item Documents – Attachments or Box links to supporting evidence or reports.
-      \item Status – Indicates current case state (Opened, In Progress, Closed).
-      \item Modified By – Last user to update the record.
-      \item Next Step Due Date – The date the next follow-up action is due.
-      \item Outcome – Summary of the resolution or decision; required before closure.
-      \item Memo/Notes – Optional comments or observations by HR staff.
-    \end{itemize}
+% --------------------------------------------------
+\subsection{External Interface Requirements}
 
-  \item The system shall provide two intake forms:
-    \begin{itemize}
-      \item \textbf{Employee Intake Form} – Used by employees to submit complaints or concerns, capturing details such as complainant, respondent, incident description, and relevant documents.
-      \item \textbf{HR Intake Form} – Used by HR to document follow-up actions, assign responsible staff, and update the case status, next step due date, and outcomes.
-    \end{itemize}
-
-  \item The system shall automatically populate supervisor information from the Employee Master table when available, ensuring consistent hierarchy mapping.
-
-  \item The system shall restrict access to personnel matter records based on role:
-    \begin{itemize}
-      \item HR staff – Full access to create, edit, and close records.
-      \item Supervisors/Division Leads – Limited access to cases involving their direct reports.
-      \item Employees – View access only to submitted cases (if permitted under HR policy).
-    \end{itemize}
-
-  \item The system shall require completion of the “Outcome” field before a case can be marked as Closed.
-
-  \item Each case update, status change, and document upload shall be logged with timestamps and the responsible user for audit purposes.
-
-  \item HR dashboards shall summarize open, in-progress, and closed cases, displaying counts by division, status, and responsible HR staff.
-\end{enumerate}
-
-\subsubsection{Vacancies and Recruitments Workflow Management} % 4.1.6
-\begin{enumerate}[label=\thesubsubsection.\arabic*, left=0pt]
-  \item The system shall maintain a centralized Smartsheet Vacancies and Recruitments Tracker to record and monitor all active vacancies and recruitment activities. The tracker shall include the following minimum fields:
-    \begin{itemize}
-      \item Position ID
-      \item Job Class
-      \item Office Location
-      \item Recruitment Status – Indicates the current stage of recruitment (e.g., Interview Phase, Offer Letter Phase).
-      \item Funding Status – Identifies whether the position is Funded or Unfunded.
-      \item Vacancy Start Date – Date the vacancy was opened.
-      \item Date Filled – Date the position was filled.
-      \item Time to Hire – Calculated number of calendar days between Vacancy Start Date and Date Filled.
-    \end{itemize}
-
-  \item The system shall support initial data population through uploads of vacancy and recruitment reports exported from the county-provided Den application, with HR completing or updating remaining fields manually.
-
-  \item The system shall automatically calculate Time to Hire based on Vacancy Start Date and Date Filled and update the value when either date changes.
-
-  \item The system shall allow HR to update recruitment status as a vacancy progresses through defined stages, ensuring real-time visibility into hiring activity.
-
-  \item The system shall support classification of recruitments as Internal or External and capture this designation for reporting and analytics purposes.
-
-  \item The system shall restrict access to vacancy and recruitment records based on role:
-    \begin{itemize}
-      \item HR/Admin – Full access to create, edit, and report on records.
-      \item Leadership – Read-only access to dashboards and summary views.
-    \end{itemize}
-
-  \item The system shall provide structured data outputs to Power BI to support dashboards summarizing active vacancies, recruitment status distribution, new hires, interview activity, office location breakdowns, and historical hiring trends.
-\end{enumerate}
-
-\subsubsection{Employee Separations Workflow Management} % 4.1.7
-\begin{enumerate}[label=\thesubsubsection.\arabic*, left=0pt]
-  \item The system shall maintain a centralized Smartsheet Separation Tracker to record and monitor all employee separations. The tracker shall include the following minimum fields:
-    \begin{itemize}
-      \item Staff Name
-      \item Staff Email
-      \item Position ID
-      \item Job Class
-      \item Reason for Exit
-      \item Date Submitted – Date the separation was recorded by HR.
-      \item Last Day – Employee’s final working day.
-    \end{itemize}
-
-  \item The system shall allow HR staff to create and update separation records using a Smartsheet form or direct grid entry to ensure standardized and consistent data capture.
-
-  \item The system shall enforce completion of required fields (Position ID, Reason for Exit, Date Submitted, and Last Day) before a separation record can be finalized or included in reporting.
-
-  \item The system shall support automated field dependencies to reduce manual data entry, including auto-populating Staff Name and Job Class based on Position ID or auto-populating Position ID and Job Class based on Staff Name, when reference data is available.
-
-  \item The system shall generate a standardized separation notification email using a predefined template populated with dynamic fields from the Separation Tracker.
-
-  \item The system shall log each separation notification event with timestamps, recipients, and delivery status for audit and compliance purposes.
-
-  \item The system shall restrict access to separation records based on role:
-    \begin{itemize}
-      \item HR/Admin – Full access to create, edit, and report on records.
-      \item Leadership – Read-only access to dashboards and summary views.
-    \end{itemize}
-
-  \item Separation records shall be retained in accordance with County data retention and privacy policies, and any supporting documentation shall be stored securely in Box and referenced by hyperlink when applicable.
-\end{enumerate}
-
-% Next subsection under Section 4 (will be 4.2)
-\subsection{Power BI Analytics Requirements}
-
-\subsubsection{Source Datasets and Refresh}
-\begin{enumerate}[left=0pt,label=\thesubsubsection.\arabic*]
-  \item Power BI shall pull from \texttt{EPR\_Results}, \texttt{Employee\_Master}, and \texttt{Reminder\_Log}. Phase 2 adds \texttt{Recruitment\_Tracker}, \texttt{Vacancy\_Tracker}, \texttt{Leave\_Tracker}, \texttt{Personnel\_Matters}, \texttt{Separation\_Tracker}.
-  \item Nightly refresh at 02:00 local time with failure alerts to HR Admin.
-\end{enumerate}
-
-\subsubsection{Reports, Filters, and Metrics}
-\begin{enumerate}[left=0pt,label=\thesubsubsection.\arabic*]
-  \item EPR dashboard shall include:
-    \begin{itemize}[left=1.2em]
-      \item \textbf{Filters (Slicers):} Supervisor, Classification, Division, Review Period (Quarter/Year), Status
-      \item \textbf{KPIs:} Total EPRs due; \% completed on time; average completion delay (days); overdue by Division/Supervisor
-      \item \textbf{Visuals:} Completions vs due trend; routing-stage funnel; overdue heatmap
-    \end{itemize}
-  \item Row-Level Security (RLS): Supervisor = team-only; Division Lead = division; HR/Admin = full.
-\end{enumerate}
-
-\subsubsection{Data Quality and Governance}
-\begin{enumerate}[left=0pt,label=\thesubsubsection.\arabic*]
-  \item Validate Employee\_ID, dates, and statuses in Power BI (flag missing/invalid/stale).
-  \item Include data lineage: data sources, refresh schedule, and owner.
-\end{enumerate}
-
-\subsection{Logical Database Requirements}
-
-\subsubsection{Employee Table}
-
-The Employee Master table serves as the primary data source for the EPR Dashboard and Workflow System. It stores all employee information required for tracking, automation, and reporting within Smartsheet. Each record represents a unique employee identified by the primary key \textit{Primary Column (Employee ID/UID)}.
-
-\textbf{Primary Key:} Primary Column (unique Employee ID/UID)
-
-\textbf{Purpose:} Hold all employee-related data needed to drive the EPR workflow, including identity, organizational assignment, review-cycle dates, routing roles, approvals, and status flags.
-
-\textbf{Key fields (aligned to current sheet):}
+This section defines how the system interacts with external platforms and services used by the Santa Barbara County Public Defender’s Office.
 
 \begin{itemize}
-  \item \textit{Identity \& organization}
-    \begin{itemize}
-      \item Employee First Name, Employee Last Name
-      \item Job Class, Job Class Level, Job Class Step
-      \item Division (if present) / Organizational unit
-      \item Supervisor (primary)
-      \item HR (assignee/contact)
-    \end{itemize}
+    \item 4.2.1 The system shall interface with a web browser to allow HR staff, supervisors, and administrators to access the workflow dashboards.
 
-  \item \textit{Review cycle \& dates}
-    \begin{itemize}
-      \item Anniversary Month
-      \item Probationary EPR (checkbox)
-      \item Probation Quarter (1Q, 2Q, 3Q, 4Q)
-      \item Probation Due Date
-      \item Signed EPR Due Date
-      \item Previous EPR Signed
-      \item Previous EPR Actual Due Date
-    \end{itemize}
+    \item 4.2.2 The system shall interface with \textbf{Smartsheet} to manage workflow records, including Employee Performance Reviews, Personnel Matters, Vacancies and Recruitment tracking, and Employee Separations.
 
-  \item \textit{Routing \& approvals}
-    \begin{itemize}
-      \item Supervisor 1, Supervisor 2, Supervisor 3 (names/IDs)
-      \item Head of HR, Head of Office
-      \item Supervisor 2 approval, Supervisor 3 approval
-      \item Head of HR approval, Head of Office approval
-      \item Reset Ready (checkbox to start next cycle)
-    \end{itemize}
+    \item 4.2.3 The system shall interface with \textbf{Box} to store finalized documents and provide secure document access links.
 
-  \item \textit{Status \& audit}
-    \begin{itemize}
-      \item Status (Not Created, In Progress, With HR, Complete)
-      \item DocuSign Status (Not Started, Sent, Signed, Approved) \emph{(if using e-signature)}
-      \item Late EPR (flag)
-      \item Current Holder \emph{(optional: who currently owns the task)}
-      \item Box Link \emph{(URL to finalized EPR in Box; may be stored on the EPR Results row if separated)}
-    \end{itemize}
+    \item 4.2.4 The system shall interface with \textbf{Microsoft Outlook/Exchange} to send automated notifications, reminders, and escalation messages.
+
+    \item 4.2.5 The system shall interface with \textbf{Power BI} to generate dashboards and analytics reports for leadership.
+
+    \item 4.2.6 The system shall interface with a cloud-based automation service to support workflow tasks such as document handling and automated email processing.
 \end{itemize}
 
-\textit{Notes:}
+% --------------------------------------------------
+\subsection{Logical Data Requirements}
+
+This section describes how system data is stored and managed across integrated platforms.
+
 \begin{itemize}
-  \item The Primary Column should be a stable unique identifier (not a display name). If the Smartsheet primary column is a name, add an immutable \texttt{Employee\_UID} text/number column and treat that as the logical key.
-  \item Approval columns are boolean or single-select fields that reflect each step’s outcome and are used by automations and dashboards.
-  \item Date fields should use consistent locale and be validated (non-empty when status progresses past the corresponding stage).
+    \item 4.3.1 The system shall store workflow records within Smartsheet trackers for EPRs, Personnel Matters, Vacancies and Recruitments, and Employee Separations.
+
+    \item 4.3.2 The system shall store finalized documents within Box using secure links referenced in Smartsheet records.
+
+    \item 4.3.3 The system shall ensure that stored data complies with Santa Barbara County data security and retention policies.
+
+    \item 4.3.4 The system shall support structured datasets for reporting and analytics dashboards.
 \end{itemize}
 
+% --------------------------------------------------
 \subsection{Design Constraints}
 
-This section outlines the technical and operational constraints that limit or guide the design and development of the EPR Dashboard and Workflow System.
+This section outlines technical and operational constraints affecting the system design.
 
-\subsubsection*{4.4.1 Access Method}
-The system shall be accessed through a web browser by all authorized users.  
+\begin{itemize}
+    \item 4.4.1 The system shall be accessed through modern web browsers by authorized users.
 
-4.4.1.1 The system’s accessibility may be affected by County network policies or browser compatibility restrictions.  
+    \item 4.4.2 User authentication shall be managed through the County Single Sign-On (SSO) system.
 
-\subsubsection*{4.4.2 Authentication}
-All users shall be authenticated through the County’s Single Sign-On (SSO) system before accessing Smartsheet or Box.  
+    \item 4.4.3 System availability depends on the uptime and performance of Smartsheet, Box, Power BI, and related cloud services.
 
-4.4.2.1 Authentication services shall remain available and synchronized across all connected enterprise applications.  
+    \item 4.4.4 The system must comply with Santa Barbara County data privacy, security, and records retention policies.
 
-\subsubsection*{4.4.3 Service Availability}
-The system’s performance and availability are dependent on Smartsheet’s enterprise cloud uptime and Box’s hosting reliability.  
-
-\subsubsection*{4.4.4 Downtime and Maintenance}
-The system may be subject to downtime or limited functionality during Smartsheet or Box maintenance periods or County network outages.  
-
-\subsubsection*{4.4.5 Platform Limitations}
-The solution is limited to the features and automation capabilities provided within Smartsheet’s enterprise plan and cannot use unsupported third-party connectors or scripts.  
-
-\subsubsection*{4.4.6 Data Compliance}
-The system’s data storage and document routing processes must comply with Santa Barbara County’s data privacy, security, and retention policies.  
-
-\subsubsection*{4.4.7 Power BI Integration}
-If enabled, the Power BI dashboard will refresh nightly according to County IT scheduling standards and is subject to Power BI’s service availability.  
-
-\subsubsection*{4.4.8 DocuSign Integration}
-DocuSign integration, if implemented, will follow County licensing limits and approved routing configurations.  
+    \item 4.4.5 System functionality may be limited by the capabilities and licensing constraints of the integrated enterprise platforms.
+\end{itemize}
 
 % ===================== 5. Other Nonfunctional Requirements =====================
 \section{Other Nonfunctional Requirements}
 
-This section describes the nonfunctional aspects of the Human Resources Workflow Management System, including the Employee Performance Review (EPR) Dashboard and the Personnel Matters, Vacancies and Recruitments, Employee Separations Tracker. These requirements cover performance, safety, security, software quality, and business rules that guide how the system operates and is maintained.
-
 \subsection{Performance Requirements}
 
-Performance requirements define how efficiently the system must operate to meet County standards and user expectations.
+Performance requirements define how efficiently the system must operate under normal conditions.
 
-\begin{enumerate}[label=\textbf{5.1.\arabic*}]
-  \item The system shall process automated reminder and escalation notifications promptly after their scheduled trigger time.
-  \item The system shall maintain fast and responsive dashboard performance under normal operating conditions, efficiently handling a high volume of employee performance records, personnel matter entries, and reminder notifications.
-  \item The system shall support concurrent user sessions for HR staff, supervisors, and administrators without noticeable performance degradation.
-  \item The system shall automatically retry failed automation tasks in the event of temporary network issues or vendor rate limits.
-  \item The system should recover from unexpected service interruptions within a reasonable timeframe to minimize workflow disruption.
-\end{enumerate}
+\begin{itemize}
+    \item 5.1.1 The system shall support concurrent user sessions without noticeable performance degradation.
+    \item 5.1.2 The system shall process automated notifications and workflow updates promptly after scheduled triggers.
+    \item 5.1.3 The system shall handle a significant volume of HR records and dashboard queries within acceptable response times.
+    \item 5.1.4 The system should recover from service interruptions within a reasonable timeframe to minimize disruption.
+\end{itemize}
+
+% --------------------------------------------------
 
 \subsection{Safety Requirements}
 
-This section outlines measures that ensure system stability, data protection, and recovery from potential failures.
+This section outlines measures that protect system stability and data integrity.
 
-\begin{enumerate}[label=\textbf{5.2.\arabic*}]
-  \item The system shall use Box version history to restore previous document versions in case of accidental deletion or overwrite.
-  \item Regular dataset exports or backups shall be performed in accordance with Santa Barbara County IT policies.
-  \item The system shall ensure that failed automations or partial updates do not corrupt existing Smartsheet data or Box file links for either EPR or Personnel Matters records.
-  \item The system shall maintain data consistency between integrated applications during recovery procedures.
-\end{enumerate}
+\begin{itemize}
+    \item 5.2.1 The system shall prevent data corruption during automation failures or partial updates.
+    \item 5.2.2 The system shall allow restoration of document versions through supported platform features.
+    \item 5.2.3 The system shall follow County backup and data retention policies.
+\end{itemize}
+
+% --------------------------------------------------
 
 \subsection{Security Requirements}
 
-This section defines the access control, authentication, and data protection measures necessary to safeguard sensitive employee information and personnel case data.
+This section defines security and access control standards.
 
-\begin{enumerate}[label=\textbf{5.3.\arabic*}]
-  \item All users shall authenticate through the County’s Single Sign-On (SSO) system prior to accessing Smartsheet, Box, or any integrated components.
-  \item The system shall enforce role-based access control (RBAC), restricting each user’s access based on their assigned role and the sensitivity of the data (e.g., personnel matters vs. performance reviews).
-  \item Sensitive EPR and Personnel Matters documents shall be stored only in Box, while Smartsheet retains metadata and secure links.
-  \item The system shall comply with Santa Barbara County information security and data privacy policies.
-  \item Power BI dashboards, if implemented, shall utilize Row-Level Security (RLS) to limit data visibility by role, division, and module (EPR or Personnel Matters).
-\end{enumerate}
+\begin{itemize}
+    \item 5.3.1 The system shall require authentication through County Single Sign-On (SSO).
+    \item 5.3.2 The system shall enforce role-based access control (RBAC).
+    \item 5.3.3 Sensitive documents shall be stored in a secure repository.
+    \item 5.3.4 The system shall comply with County data privacy and information security policies.
+    \item 5.3.5 Reporting dashboards shall restrict data visibility based on user role.
+\end{itemize}
+
+% --------------------------------------------------
 
 \subsection{Software Quality Attributes}
 
-This section specifies the quality attributes required to ensure usability, reliability, maintainability, and scalability.
+This section specifies quality characteristics necessary for long-term effectiveness.
 
-\begin{enumerate}[label=\textbf{5.4.\arabic*}]
-  \item The system shall provide an intuitive and easy-to-use interface for HR staff, supervisors, and employees submitting personnel matters.
-  \item The system shall maintain high availability during standard County business hours.
-  \item Automation rules, templates, and configurations shall be clearly documented and version controlled for maintainability.
-  \item The system shall log automation errors, integration issues, and failures for administrative review and debugging.
-  \item The system shall be scalable, allowing new divisions, workflows, or HR modules (e.g., Personnel Matters, Leave Tracking) to be added without major structural changes.
-\end{enumerate}
+\begin{itemize}
+    \item 5.4.1 The system shall provide an intuitive and user-friendly interface.
+    \item 5.4.2 The system shall maintain high availability during County business hours.
+    \item 5.4.3 System configurations and automations shall be documented for maintainability.
+    \item 5.4.4 The system should support future workflow expansions without major redesign.
+\end{itemize}
+
+% --------------------------------------------------
 
 \subsection{Business Rules}
 
-This section outlines the operational rules and policies that govern the use of the EPR Dashboard, Personnel Matters Tracker, Vacancies and Recruitments Tracker, and Employee Separations Tracker.
+This section defines operational policies governing system use.
 
-\begin{enumerate}[label=\textbf{5.5.\arabic*}]
-  \item Each employee shall complete one formal performance review annually unless otherwise specified by HR policy.
-  \item Personnel Matters records shall only be created and updated by authorized HR staff and shall remain confidential in accordance with County HR policies.
-  \item Only HR administrators shall have the ability to configure templates, reminders, escalation rules, and automated notifications across all HR tracking systems.
-  \item Supervisors and HR staff may update review or recruitment statuses but shall not delete EPR, Personnel Matters, Vacancy, Recruitment, or Separation records.
-  \item Only County-approved and current templates shall be used for performance reviews, personnel case documentation, recruitment communications, and separation notifications.
-  \item Escalation recipients, reporting hierarchies, and approval roles shall be maintained within the Supervisor Master sheet and reviewed quarterly by HR.
-  \item All vacancy, recruitment, and separation data shall be entered and maintained by HR to ensure consistency, accuracy, and compliance with County workforce reporting standards.
-  \item Separation records and notifications shall be completed in a timely manner following an employee’s exit and retained in accordance with County data retention and privacy policies.
-\end{enumerate}
+\begin{itemize}
+    \item 5.5.1 Each employee shall complete one formal performance review annually unless otherwise specified by HR policy.
+    \item 5.5.2 Only authorized HR personnel may create or close personnel matter records.
+    \item 5.5.3 Only administrators shall configure system settings and automation rules.
+    \item 5.5.4 Standard users shall not delete official HR records.
+    \item 5.5.5 Access to workflow data shall be determined by user role.
+\end{itemize}
 
 
 % ===================== 6. Legal and Ethical Considerations =====================
@@ -738,111 +640,135 @@ This section outlines the operational rules and policies that govern the use of 
 
 \subsection{Privacy and Security}
 
-6.1.1 Privacy and security are essential to ensure that the EPR Dashboard and Personnel Matters Tracker operate within the legal and ethical standards of Santa Barbara County.
+The system shall operate in compliance with Santa Barbara County legal, privacy, and security standards. The following requirements apply:
 
 \begin{itemize}
-  \item 6.1.1.1 The system shall comply with all applicable County HR policies, data privacy regulations, and records retention requirements to protect sensitive employee and personnel case information.
-  \item 6.1.1.2 The system shall ensure that all performance review and personnel matter data is securely collected, stored, and processed in accordance with County IT security standards.
-  \item 6.1.1.3 Authorized personnel shall have access only to the data necessary for their role, following the principle of least privilege, with additional confidentiality controls for Personnel Matters cases.
-  \item 6.1.1.4 All personally identifiable information (PII) and case documentation shall remain protected through access controls, encryption, and secure data transmission methods.
-  \item 6.1.1.5 The system shall maintain audit logs of user activities and file access, ensuring transparency and accountability in data handling.
-  \item 6.1.1.6 All data transfers between Smartsheet, Box, and related systems shall use encrypted connections compliant with HTTPS/TLS 1.2 or higher.
+    \item 6.1.1 The system shall comply with all applicable County HR policies, data privacy regulations, and records retention requirements.
+    
+    \item 6.1.2 The system shall ensure that all performance review, personnel matter, recruitment, and separation data is securely collected, stored, and processed.
+    
+    \item 6.1.3 Access to data shall follow the principle of least privilege, restricting users to only the information necessary for their assigned role.
+    
+    \item 6.1.4 Personally identifiable information (PII) shall be protected through secure authentication, role-based access control, and encrypted data transmission.
+    
+    \item 6.1.5 The system shall maintain audit logs of user actions and document access to support accountability and compliance reviews.
+    
+    \item 6.1.6 All inter-system data transfers shall use encrypted HTTPS/TLS 1.2 or higher protocols.
 \end{itemize}
+
+% --------------------------------------------------
 
 \subsection{Ethical Considerations}
 
-6.1.2 Ethical standards guide the responsible use of employee and personnel data, fostering trust, transparency, and fairness across the organization.
+The system shall promote responsible and ethical handling of employee data.
 
 \begin{itemize}
-  \item 6.1.2.1 The system shall handle all performance and personnel matter data ethically, ensuring that information is used solely for official HR purposes and not for punitive or discriminatory actions.
-  \item 6.1.2.2 The system shall provide employees with clear communication regarding how their information is collected, stored, and protected.
-  \item 6.1.2.3 All workflows shall promote fairness, impartiality, and respect for privacy in handling employee evaluations and HR case resolutions.
-  \item 6.1.2.4 The system’s design and documentation shall ensure accessibility and usability for all authorized users, including those with disabilities.
-  \item 6.1.2.5 Safeguards shall be in place to prevent misuse, unauthorized disclosure, or exploitation of employee performance data or personnel matter records.
+    \item 6.2.1 Employee performance and personnel data shall be used solely for authorized HR and administrative purposes.
+    
+    \item 6.2.2 The system shall support transparency by clearly documenting workflows and data handling practices.
+    
+    \item 6.2.3 Workflows shall promote fairness, consistency, and impartial treatment of employees.
+    
+    \item 6.2.4 The system shall be designed to support accessibility for authorized users, including those requiring assistive technologies.
+    
+    \item 6.2.5 Safeguards shall be implemented to prevent unauthorized disclosure, misuse, or exploitation of sensitive employee information.
 \end{itemize}
 
-
-% ===================== Appendix A =====================
+% ===================== Appendices =====================
 \appendix
 
-\section*{Appendix A: Glossary}
-\addcontentsline{toc}{section}{Appendix A: Glossary}
+% --------------------- Appendix A ---------------------
+\section{Glossary}
 
-\textbf{EPR (Employee Performance Review):} A formal evaluation process used by the Santa Barbara County Public Defender’s Office to assess employee performance, track progress, and document professional development.
+\textbf{EPR (Employee Performance Review):} A formal evaluation process used to assess employee performance, document progress, and support professional development.
 
-\textbf{Personnel Matters Tracker:} A structured HR workflow used to record, manage, and resolve employee-raised concerns, investigations, or disciplinary actions through standardized intake forms and secure recordkeeping.
+\textbf{Personnel Matters Tracker:} A structured HR workflow used to record, manage, and resolve employee concerns, investigations, or disciplinary matters through standardized intake and secure recordkeeping.
 
-\textbf{Intake Form:} A Smartsheet-based data entry form used by employees or HR staff to submit or document information for either EPRs or personnel matters.
+\textbf{Vacancies and Recruitments Tracker:} A workflow used to manage open positions, recruitment progress, interview activity, and hiring outcomes.
 
-\textbf{SSO (Single Sign-On):} An authentication process that allows users to access multiple County systems, such as Smartsheet and Box, using a single set of login credentials.
+\textbf{Separation Tracker:} A workflow used to record and manage employee exits, including separation details, notifications, and reporting.
 
-\textbf{KPI (Key Performance Indicator):} A measurable value that indicates how effectively employees or departments are achieving performance objectives.
+\textbf{Intake Form:} A structured data-entry form used by employees or HR staff to submit workflow information, such as review data, case details, or separation information.
 
-\textbf{RLS (Row-Level Security):} A Power BI feature that restricts data visibility based on user roles, ensuring that employees can only view information relevant to their permissions.
-
-\textbf{Dataset (Power BI):} A structured collection of data used within Power BI reports and dashboards for visualization and analysis.
-
-\textbf{Box Link:} A secure URL generated in Box that provides authorized users access to finalized EPR documents stored in the County’s cloud repository.
-
-\textbf{Smartsheet:} A cloud-based platform used for workflow automation, data management, and tracking of EPR progress within the County.
-
-\textbf{Box:} The County’s secure cloud storage platform used for managing, archiving, and sharing finalized EPR documents.
-
-\textbf{Power BI:} A business analytics tool by Microsoft used to visualize EPR metrics, compliance rates, and departmental performance trends.
-
-\textbf{SRS (Software Requirements Specification):} A document that outlines the functional and
-non-functional requirements for a software system, providing clear and testable guidelines for
-developers and testers.
+\textbf{Workflow Status:} A defined stage that indicates the current position of a record within a process (e.g., Not Started, In Progress, Completed, Overdue).
 
 \textbf{Vacancy:} An approved position within the organization that is currently unfilled.
 
 \textbf{Recruitment:} The process of sourcing, evaluating, and hiring a candidate to fill a vacant position.
 
-\textbf{Vacancies and Recruitments Tracker:} A Smartsheet-based tracking tool used by HR to manage and monitor open positions and recruitment activity.
+\textbf{SSO (Single Sign-On):} An authentication method that allows users to access multiple County systems using a single set of credentials.
 
-\textbf{Separation Tracker:} A Smartsheet-based tracking tool used by HR to record and manage employee separations.
+\textbf{RBAC (Role-Based Access Control):} A security model that restricts system access based on a user’s assigned role.
 
-% ===================== Appendix B=====================
-\section*{Appendix B: Analysis Models}
-\addcontentsline{toc}{section}{Appendix B: Analysis Models}
+\textbf{RLS (Row-Level Security):} A reporting security feature that limits data visibility within dashboards based on user role or division.
+
+\textbf{Smartsheet:} A cloud-based workflow and data management platform used to track HR activities and automate processes.
+
+\textbf{Box:} The County’s secure cloud storage platform used for archiving and managing finalized HR documents.
+
+\textbf{Box Link:} A secure URL generated within Box that provides authorized users access to stored documents.
+
+\textbf{Power BI:} A Microsoft business intelligence platform used to generate dashboards and visual analytics reports.
+
+\textbf{Dataset (Power BI):} A structured collection of data used to create reports and dashboards.
+
+\textbf{Automation Service:} A cloud-based processing component that supports advanced workflow tasks such as document synchronization and automated notifications.
+
+\textbf{Den Application:} The County-provided system used to generate official vacancy and recruitment reports.
+
+\textbf{SRS (Software Requirements Specification):} A document defining the functional and nonfunctional requirements of the system.
+
+\textbf{SDS (Software Design Specification):} A document describing the technical architecture and implementation details of the system.
+
+% --------------------- Appendix B ---------------------
+\section{Analysis Models}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{workflow.png}
-    \caption{Project Workflow}
+    \caption{System Workflow Overview}
     \label{fig:workflow}
 \end{figure}
 
 \noindent
 \textbf{Workflow Explanation}
 
+The following describes the high-level data and process flow within the system:
+
 \begin{enumerate}
-    \item \textbf{HR → Smartsheet} \\
-    HR enters employee or assignment information into Smartsheet for tracking.
+    \item \textbf{HR -> Smartsheet} \\
+    HR staff create or update records in Smartsheet to initiate workflows such as performance reviews, personnel matters, recruitment tracking, or employee separations.
 
-    \item \textbf{Supervisors/Managers → Smartsheet} \\
-    Supervisors review, update, and approve tasks or EPR submissions directly in Smartsheet.
+    \item \textbf{Supervisors/Managers -> Smartsheet} \\
+    Supervisors and managers review, update, and approve assigned records directly within Smartsheet.
 
-    \item \textbf{Smartsheet → Supervisors/Managers} \\
-    Smartsheet automatically sends email notifications to supervisors and managers to review EPRs, and sends reminders to individuals who are late.
+    \item \textbf{Smartsheet -> Users (Email Notifications)} \\
+    Automated notifications and reminders are sent to responsible users when actions are required or deadlines approach.
 
-    \item \textbf{Smartsheet → DocuSign} \\
-    Smartsheet sends documents to DocuSign for required signatures.
+    \item \textbf{Smartsheet -> Automation Service (Python/AWS Lambda)} \\
+    When required, workflow events trigger a cloud-based automation service to perform advanced processing tasks such as email generation, document handling, and cross-system synchronization.
 
-    \item \textbf{DocuSign → Smartsheet} \\
-    Smartsheet retrieves the signed document from DocuSign and temporarily stores it before moving it.
+    \item \textbf{Automation Service -> Box} \\
+    Finalized documents are securely stored in Box, and the corresponding file links are written back to the appropriate workflow record.
 
-    \item \textbf{Smartsheet → Power BI} \\
-    Smartsheet provides data to Power BI to generate dashboards and reports for leadership.
+    \item \textbf{Smartsheet -> Power BI} \\
+    Workflow data is synchronized with Power BI to generate dashboards and reports for leadership visibility.
 
-    \item \textbf{Smartsheet → Box.com} \\
-    Files uploaded or collected through Smartsheet are stored in Box.com, and Smartsheet keeps the corresponding links.
+    \item \textbf{Box -> Authorized Users} \\
+    Authorized users access finalized documents through secure Box links.
 \end{enumerate}
 
-% ===================== Appendix C=====================
-\section*{Appendix C: To Be Determined List}
-\addcontentsline{toc}{section}{Appendix C: To Be Determined List}
-Final DocuSign field list and template IDs; Box retention labels; Power BI workspace configuration; detailed test cases and traceability matrix.
+% --------------------- Appendix C ---------------------
+\section{To Be Determined (TBD) Items}
+
+The following items remain to be finalized:
+
+\begin{itemize}
+    \item Final DocuSign field mappings and template identifiers.
+    \item Box retention labels and document classification policies.
+    \item Power BI workspace configuration and deployment settings.
+    \item Detailed test cases and the finalized Requirements Traceability Matrix (RTM).
+\end{itemize}
 
 \end{document}
 
