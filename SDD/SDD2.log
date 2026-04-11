@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  23 MAR 2026 16:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  10 APR 2026 21:27
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -936,7 +936,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.110 ...idation and Verification}{24}{section.11}
+l.110 ...berline {9}User Interface}{21}{section.9}
                                                   % [2])
 \tf@toc=\write3
 \openout3 = `SDD2.toc'.
@@ -1015,148 +1015,171 @@ Package microtype Info: Loading generic protrusion settings for font family
 ]
 
 [11]
-Overfull \hbox (123.48698pt too wide) in paragraph at lines 614--615
+
+[12]
+Overfull \hbox (123.48698pt too wide) in paragraph at lines 653--654
 \T1/ntxtt/m/n/12 EmploymentStatus, ProbationDueDate, SignedEPRDueDate, Previous
 EPRSigned, PreviousEPRDueDate,
  []
 
 
-Overfull \hbox (54.07323pt too wide) in paragraph at lines 637--638
+Overfull \hbox (54.07323pt too wide) in paragraph at lines 676--677
 [] []\T1/ntxtlf/b/n/12 (-20) Core Data Fields[] \T1/ntxtt/m/n/12 MatterID, Open
 Date, Status, Complaint, Responder, IncidentSummary,
  []
 
 
-Overfull \hbox (12.9192pt too wide) in paragraph at lines 637--638
+Overfull \hbox (12.9192pt too wide) in paragraph at lines 676--677
 \T1/ntxtt/m/n/12 IssueType, PolicyReference, Supervisor, NextStep, NextStepDueD
 ate, Box_URL 
  []
 
 
-Overfull \hbox (28.87328pt too wide) in paragraph at lines 658--659
+
+[13
+
+]
+Overfull \hbox (28.87328pt too wide) in paragraph at lines 697--698
 [] []\T1/ntxtlf/b/n/12 (-20) Core Data Fields[] \T1/ntxtt/m/n/12 VacancyID, Job
 ClassTitle, Department, Label, VacancyStartDate,
  []
 
 
-
-[12
-
-]
-Overfull \hbox (54.07323pt too wide) in paragraph at lines 679--680
+Overfull \hbox (54.07323pt too wide) in paragraph at lines 718--719
 [] []\T1/ntxtlf/b/n/12 (-20) Core Data Fields[] \T1/ntxtt/m/n/12 EmployeeID, Fi
 rstName, LastName, Email, ExitReason, EffectiveDate,
  []
 
 
 
-[13]
-
-[14
-
-]
+[14]
 
 [15
 
 ]
 
 [16]
-<EPR Data 1.png, id=320, 1279.27937pt x 85.31876pt>
+<EPR Data 1.png, id=332, 1279.27937pt x 85.31876pt>
 File: EPR Data 1.png Graphic file (type png)
 <use EPR Data 1.png>
-Package pdftex.def Info: EPR Data 1.png  used on input line 813.
+Package pdftex.def Info: EPR Data 1.png  used on input line 847.
 (pdftex.def)             Requested size: 452.9679pt x 30.2096pt.
-<EPR Data 2.png, id=322, 1274.26062pt x 87.32625pt>
+<EPR Data 2.png, id=334, 1274.26062pt x 87.32625pt>
 File: EPR Data 2.png Graphic file (type png)
 <use EPR Data 2.png>
-Package pdftex.def Info: EPR Data 2.png  used on input line 820.
+Package pdftex.def Info: EPR Data 2.png  used on input line 854.
 (pdftex.def)             Requested size: 452.9679pt x 31.04167pt.
 
 
 [17
 
  <./EPR Data 1.png> <./EPR Data 2.png>]
-<EPR Data History 1.png, id=331, 1306.38063pt x 81.80562pt>
+<EPR Data History 1.png, id=343, 1306.38063pt x 81.80562pt>
 File: EPR Data History 1.png Graphic file (type png)
 <use EPR Data History 1.png>
-Package pdftex.def Info: EPR Data History 1.png  used on input line 846.
+Package pdftex.def Info: EPR Data History 1.png  used on input line 880.
 (pdftex.def)             Requested size: 452.9679pt x 28.36401pt.
-<EPR Data History 2.png, id=332, 1398.22375pt x 92.84688pt>
+<EPR Data History 2.png, id=344, 1398.22375pt x 92.84688pt>
 File: EPR Data History 2.png Graphic file (type png)
 <use EPR Data History 2.png>
-Package pdftex.def Info: EPR Data History 2.png  used on input line 853.
+Package pdftex.def Info: EPR Data History 2.png  used on input line 887.
 (pdftex.def)             Requested size: 452.9679pt x 30.07852pt.
-<Personnel Matters Data.png, id=333, 1423.3175pt x 145.54375pt>
+<Personnel Matters Data.png, id=345, 1423.3175pt x 145.54375pt>
 File: Personnel Matters Data.png Graphic file (type png)
 <use Personnel Matters Data.png>
-Package pdftex.def Info: Personnel Matters Data.png  used on input line 879.
+Package pdftex.def Info: Personnel Matters Data.png  used on input line 913.
 (pdftex.def)             Requested size: 452.9679pt x 46.31732pt.
 
 
 [18 <./EPR Data History 1.png> <./EPR Data History 2.png>]
-<Separation Data.png, id=342, 1318.9275pt x 120.45pt>
+<Separation Data.png, id=354, 1318.9275pt x 120.45pt>
 File: Separation Data.png Graphic file (type png)
 <use Separation Data.png>
-Package pdftex.def Info: Separation Data.png  used on input line 904.
+Package pdftex.def Info: Separation Data.png  used on input line 938.
 (pdftex.def)             Requested size: 452.9679pt x 41.36598pt.
-<Separation Holiday Data.png, id=343, 607.77063pt x 226.8475pt>
+<Separation Holiday Data.png, id=355, 607.77063pt x 226.8475pt>
 File: Separation Holiday Data.png Graphic file (type png)
 <use Separation Holiday Data.png>
-Package pdftex.def Info: Separation Holiday Data.png  used on input line 927.
+Package pdftex.def Info: Separation Holiday Data.png  used on input line 961.
 (pdftex.def)             Requested size: 452.9679pt x 169.07254pt.
 
 
 [19 <./Personnel Matters Data.png> <./Separation Data.png>]
-<Vacancies and Recruitments Data.png, id=352, 933.4875pt x 96.36pt>
+<Vacancies and Recruitments Data.png, id=364, 933.4875pt x 96.36pt>
 File: Vacancies and Recruitments Data.png Graphic file (type png)
 <use Vacancies and Recruitments Data.png>
 Package pdftex.def Info: Vacancies and Recruitments Data.png  used on input lin
-e 953.
+e 987.
 (pdftex.def)             Requested size: 452.9679pt x 46.75806pt.
 
 
 [20 <./Separation Holiday Data.png> <./Vacancies and Recruitments Data.png>]
-<Personnel Matters Employee Intake Form.png, id=361, 519.44063pt x 667.99562pt>
+<EPR Smartsheet UI.png, id=374, 1457.445pt x 281.55188pt>
+File: EPR Smartsheet UI.png Graphic file (type png)
+<use EPR Smartsheet UI.png>
+Package pdftex.def Info: EPR Smartsheet UI.png  used on input line 1009.
+(pdftex.def)             Requested size: 362.37569pt x 70.00113pt.
+<EPR HR email.png, id=375, 1110.64937pt x 469.25313pt>
+File: EPR HR email.png Graphic file (type png)
+<use EPR HR email.png>
+Package pdftex.def Info: EPR HR email.png  used on input line 1016.
+(pdftex.def)             Requested size: 362.37569pt x 153.1069pt.
+<EPR Supervisor email.png, id=376, 1158.82938pt x 608.2725pt>
+File: EPR Supervisor email.png Graphic file (type png)
+<use EPR Supervisor email.png>
+Package pdftex.def Info: EPR Supervisor email.png  used on input line 1023.
+(pdftex.def)             Requested size: 362.37569pt x 190.20535pt.
+<Personnel Matters Employee Intake Form.png, id=377, 519.44063pt x 667.99562pt>
 
 File: Personnel Matters Employee Intake Form.png Graphic file (type png)
 <use Personnel Matters Employee Intake Form.png>
 Package pdftex.def Info: Personnel Matters Employee Intake Form.png  used on in
-put line 974.
-(pdftex.def)             Requested size: 452.9679pt x 582.50714pt.
-<Personnel Matters HR Intake Form.png, id=362, 496.35437pt x 827.09pt>
-File: Personnel Matters HR Intake Form.png Graphic file (type png)
-<use Personnel Matters HR Intake Form.png>
-Package pdftex.def Info: Personnel Matters HR Intake Form.png  used on input li
-ne 981.
-(pdftex.def)             Requested size: 452.9679pt x 754.79854pt.
+put line 1032.
+(pdftex.def)             Requested size: 181.18439pt x 232.99673pt.
 
 
 [21
 
- <./Personnel Matters Employee Intake Form.png>]
-Overfull \vbox (81.38966pt too high) has occurred while \output is active []
+ <./EPR Smartsheet UI.png> <./EPR HR email.png> <./EPR Supervisor email.png>]
+<Personnel Matters HR Intake Form.png, id=389, 496.35437pt x 827.09pt>
+File: Personnel Matters HR Intake Form.png Graphic file (type png)
+<use Personnel Matters HR Intake Form.png>
+Package pdftex.def Info: Personnel Matters HR Intake Form.png  used on input li
+ne 1039.
+(pdftex.def)             Requested size: 181.18439pt x 301.91689pt.
+<Separation UI.png, id=390, 1207.00937pt x 784.43062pt>
+File: Separation UI.png Graphic file (type png)
+<use Separation UI.png>
+Package pdftex.def Info: Separation UI.png  used on input line 1050.
+(pdftex.def)             Requested size: 362.37569pt x 235.49857pt.
 
 
+[22 <./Personnel Matters Employee Intake Form.png> <./Personnel Matters HR Inta
+ke Form.png>]
+<Separation PBI.png, id=399, 1327.96124pt x 743.77875pt>
+File: Separation PBI.png Graphic file (type png)
+<use Separation PBI.png>
+Package pdftex.def Info: Separation PBI.png  used on input line 1057.
+(pdftex.def)             Requested size: 362.37569pt x 202.95657pt.
 
-[22 <./Personnel Matters HR Intake Form.png>]
 
-[23]
-Underfull \hbox (badness 10000) in paragraph at lines 1009--1009
+[23 <./Separation UI.png> <./Separation PBI.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 1074--1074
 []|\T1/ntxtlf/m/n/12 (+20) User In-ter-face
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1026--1026
-[]|\T1/ntxtlf/m/n/12 (+20) Compare dash-board counts with
+Underfull \hbox (badness 1642) in paragraph at lines 1091--1091
+[]|\T1/ntxtlf/m/n/12 (+20) Comparison of dash-board data with
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1041--1041
-[]|\T1/ntxtlf/m/n/12 (+20) Power Au-to-mate /
+Underfull \hbox (badness 2088) in paragraph at lines 1105--1105
+[]|\T1/ntxtlf/m/n/12 (+20) Support for mul-ti-ple con-
  []
 
 
-Overfull \hbox (57.50098pt too wide) in paragraph at lines 1004--1049
+Overfull \hbox (57.50098pt too wide) in paragraph at lines 1069--1114
 [][] 
  []
 
@@ -1173,12 +1196,6 @@ Overfull \hbox (57.50098pt too wide) in paragraph at lines 1004--1049
 [26
 
 ]
-Overfull \hbox (52.82909pt too wide) in paragraph at lines 1138--1139
-[]\T1/ntxtlf/m/n/12 (-20) Microsoft Power Au-to-mate Doc-u-men-ta-tion: []$\T1/
-ntxtt/m/n/12 https : / / learn . microsoft . com / power-[]automate/$[] 
- []
-
-
 
 [27
 
@@ -1189,11 +1206,11 @@ L3 programming layer <2020/03/25>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 19056 strings out of 473190
- 286258 string characters out of 5715801
- 709440 words of memory out of 5000000
- 41761 multiletter control sequences out of 15000+600000
- 601383 words of font info for 132 fonts, out of 8000000 for 9000
+ 19111 strings out of 473190
+ 287445 string characters out of 5715801
+ 709736 words of memory out of 5000000
+ 41807 multiletter control sequences out of 15000+600000
+ 601297 words of font info for 131 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  80i,8n,93p,1001b,2262s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/tex-gyre/qtmr.pfb></us
@@ -1202,10 +1219,10 @@ l/texlive/2025/texmf-dist/fonts/type1/public/newtx/txsys.pfb></usr/local/texliv
 e/2025/texmf-dist/fonts/type1/public/newtx/ztmb.pfb></usr/local/texlive/2025/te
 xmf-dist/fonts/type1/public/newtx/ztmr.pfb></usr/local/texlive/2025/texmf-dist/
 fonts/type1/public/newtx/ztmri.pfb>
-Output written on SDD2.pdf (31 pages, 979207 bytes).
+Output written on SDD2.pdf (31 pages, 1586851 bytes).
 PDF statistics:
- 764 PDF objects out of 1000 (max. 8388607)
- 692 compressed objects within 7 object streams
- 168 named destinations out of 1000 (max. 500000)
- 21315 words of extra memory for PDF output out of 24883 (max. 10000000)
+ 811 PDF objects out of 1000 (max. 8388607)
+ 729 compressed objects within 8 object streams
+ 179 named destinations out of 1000 (max. 500000)
+ 21388 words of extra memory for PDF output out of 24883 (max. 10000000)
 

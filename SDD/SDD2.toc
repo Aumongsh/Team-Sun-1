@@ -15,7 +15,7 @@
 \contentsline {subsection}{\numberline {3.2}Reuse of Existing Components}{4}{subsection.3.2}%
 \contentsline {subsection}{\numberline {3.3}Integration and Communication}{4}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Modularity and Scalability}{4}{subsection.3.4}%
-\contentsline {subsection}{\numberline {3.5}Data Storage and Management}{4}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.5}Data Storage and Management}{5}{subsection.3.5}%
 \contentsline {subsection}{\numberline {3.6}Security Strategy}{5}{subsection.3.6}%
 \contentsline {subsection}{\numberline {3.7}Rejected Alternatives}{5}{subsection.3.7}%
 \contentsline {section}{\numberline {4}System Architecture}{6}{section.4}%
@@ -39,11 +39,11 @@
 \contentsline {subsubsection}{\numberline {4.4.1}Smartsheet → Box (Archival Flow)}{8}{subsubsection.4.4.1}%
 \contentsline {subsubsection}{\numberline {4.4.2}Smartsheet → Power BI (Analytics Flow)}{8}{subsubsection.4.4.2}%
 \contentsline {subsubsection}{\numberline {4.4.3}External APIs → Smartsheet (Optional Metadata Extraction)}{8}{subsubsection.4.4.3}%
-\contentsline {subsection}{\numberline {4.5}Scalability and Modularity}{8}{subsection.4.5}%
-\contentsline {subsubsection}{\numberline {4.5.1}Subsystem Isolation}{8}{subsubsection.4.5.1}%
+\contentsline {subsubsection}{\numberline {4.4.4}External APIs → Separations (Email Notifications)}{8}{subsubsection.4.4.4}%
+\contentsline {subsection}{\numberline {4.5}Scalability and Modularity}{9}{subsection.4.5}%
+\contentsline {subsubsection}{\numberline {4.5.1}Subsystem Isolation}{9}{subsubsection.4.5.1}%
 \contentsline {subsubsection}{\numberline {4.5.2}Scalability Approach}{9}{subsubsection.4.5.2}%
 \contentsline {subsection}{\numberline {4.6}Justification of Architecture}{9}{subsection.4.6}%
-\contentsline {subsection}{\numberline {4.7}Rejected Alternatives}{9}{subsection.4.7}%
 \contentsline {section}{\numberline {5}Design Policies and Implementation Tactics}{10}{section.5}%
 \contentsline {subsection}{\numberline {5.1}Platform Components}{10}{subsection.5.1}%
 \contentsline {subsubsection}{\numberline {5.1.1}Smartsheet (Workflow Engine)}{10}{subsubsection.5.1.1}%
@@ -54,65 +54,71 @@
 \contentsline {subsection}{\numberline {5.3}Verification and Validation Strategy}{10}{subsection.5.3}%
 \contentsline {subsubsection}{\numberline {5.3.1}Unit-Level Validation}{10}{subsubsection.5.3.1}%
 \contentsline {subsubsection}{\numberline {5.3.2}Testing}{10}{subsubsection.5.3.2}%
-\contentsline {subsubsection}{\numberline {5.3.3}Accessibility Validation}{10}{subsubsection.5.3.3}%
-\contentsline {subsubsection}{\numberline {5.3.4}Data Integrity Monitoring}{10}{subsubsection.5.3.4}%
-\contentsline {subsection}{\numberline {5.4}Engineering Trade-Off Decisions}{11}{subsection.5.4}%
-\contentsline {subsubsection}{\numberline {5.4.1}Low-Code vs. Custom Development}{11}{subsubsection.5.4.1}%
-\contentsline {subsubsection}{\numberline {5.4.2}Analytics Refresh Strategy}{11}{subsubsection.5.4.2}%
-\contentsline {subsubsection}{\numberline {5.4.3}Source-of-Truth Model}{11}{subsubsection.5.4.3}%
-\contentsline {subsection}{\numberline {5.5}Design Standards}{11}{subsection.5.5}%
-\contentsline {subsubsection}{\numberline {5.5.1}Date Handling}{11}{subsubsection.5.5.1}%
-\contentsline {subsubsection}{\numberline {5.5.2}Box Metadata Policy}{11}{subsubsection.5.5.2}%
-\contentsline {subsection}{\numberline {5.6}Communication Protocols}{11}{subsection.5.6}%
-\contentsline {subsection}{\numberline {5.7}Architectural Patterns}{11}{subsection.5.7}%
-\contentsline {subsection}{\numberline {5.8}Abstraction Strategy}{11}{subsection.5.8}%
-\contentsline {section}{\numberline {6}Detailed System Design}{12}{section.6}%
-\contentsline {subsection}{\numberline {6.1}EPR Workflow}{12}{subsection.6.1}%
-\contentsline {paragraph}{Purpose}{12}{paragraph*.5}%
-\contentsline {paragraph}{Core Data Fields}{12}{paragraph*.6}%
-\contentsline {paragraph}{Workflow States}{12}{paragraph*.7}%
-\contentsline {paragraph}{Integration Points}{12}{paragraph*.8}%
-\contentsline {subsection}{\numberline {6.2}Personnel Matters Workflow}{12}{subsection.6.2}%
-\contentsline {paragraph}{Purpose}{12}{paragraph*.9}%
-\contentsline {paragraph}{Core Data Fields}{12}{paragraph*.10}%
-\contentsline {paragraph}{Workflow States}{12}{paragraph*.11}%
-\contentsline {paragraph}{Integration Points}{12}{paragraph*.12}%
-\contentsline {subsection}{\numberline {6.3}Vacancies and Recruitment Workflow}{12}{subsection.6.3}%
-\contentsline {paragraph}{Purpose}{12}{paragraph*.13}%
-\contentsline {paragraph}{Core Data Fields}{13}{paragraph*.14}%
-\contentsline {paragraph}{Workflow States}{13}{paragraph*.15}%
-\contentsline {paragraph}{Integration Points}{13}{paragraph*.16}%
-\contentsline {subsection}{\numberline {6.4}Separations Workflow}{13}{subsection.6.4}%
-\contentsline {paragraph}{Purpose}{13}{paragraph*.17}%
-\contentsline {paragraph}{Core Data Fields}{13}{paragraph*.18}%
-\contentsline {paragraph}{Workflow States}{13}{paragraph*.19}%
-\contentsline {paragraph}{Integration Points}{13}{paragraph*.20}%
-\contentsline {section}{\numberline {7}Development Environment}{14}{section.7}%
-\contentsline {section}{\numberline {8}Execution and Automation Model}{15}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Workflow Automation Structure}{15}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Shared Python Execution Framework}{15}{subsection.8.2}%
-\contentsline {subsubsection}{\numberline {8.2.1}Execution Pattern}{15}{subsubsection.8.2.1}%
-\contentsline {subsubsection}{\numberline {8.2.2}Security Controls}{16}{subsubsection.8.2.2}%
-\contentsline {subsection}{\numberline {8.3}Performance Characteristics}{16}{subsection.8.3}%
-\contentsline {section}{\numberline {9}Database Design}{17}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Data Integration}{17}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Security}{17}{subsection.9.2}%
-\contentsline {subsection}{\numberline {9.3}Data Tables}{17}{subsection.9.3}%
-\contentsline {subsubsection}{\numberline {9.3.1}EPR Tracker - Employees Performance Tracker}{17}{subsubsection.9.3.1}%
-\contentsline {subsubsection}{\numberline {9.3.2}EPR Tracker - Employees History Records}{18}{subsubsection.9.3.2}%
-\contentsline {subsubsection}{\numberline {9.3.3}Personnel Matters - Personnel Matters Tracker}{18}{subsubsection.9.3.3}%
-\contentsline {subsubsection}{\numberline {9.3.4}Separations - Employees Separations Tracker}{19}{subsubsection.9.3.4}%
-\contentsline {subsubsection}{\numberline {9.3.5}Separations - Recognized Holidays}{19}{subsubsection.9.3.5}%
-\contentsline {subsubsection}{\numberline {9.3.6}Vacancies and Recruitment - Vacancies and Recruitment}{20}{subsubsection.9.3.6}%
-\contentsline {section}{\numberline {10}User Interface}{21}{section.10}%
-\contentsline {subsection}{\numberline {10.1}Interface Overview}{21}{subsection.10.1}%
-\contentsline {subsection}{\numberline {10.2}Primary User Interfaces}{23}{subsection.10.2}%
-\contentsline {section}{\numberline {11}Requirements Validation and Verification}{24}{section.11}%
-\contentsline {section}{\numberline {12}Installation Guide}{25}{section.12}%
-\contentsline {subsection}{\numberline {12.1}Repository Setup}{25}{subsection.12.1}%
-\contentsline {subsection}{\numberline {12.2}Virtual Environment Setup}{25}{subsection.12.2}%
-\contentsline {subsection}{\numberline {12.3}Python Version Requirement}{25}{subsection.12.3}%
-\contentsline {subsection}{\numberline {12.4}Install Dependencies}{25}{subsection.12.4}%
-\contentsline {subsection}{\numberline {12.5}Separations Project Setup}{25}{subsection.12.5}%
-\contentsline {section}{\numberline {13}Glossary}{26}{section.13}%
-\contentsline {section}{\numberline {14}References}{27}{section.14}%
+\contentsline {subsection}{\numberline {5.4}Error Handling and Exception Management}{11}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Logging and Monitoring}{11}{subsection.5.5}%
+\contentsline {subsection}{\numberline {5.6}Backup and Recovery}{11}{subsection.5.6}%
+\contentsline {subsection}{\numberline {5.7}Access Control}{11}{subsection.5.7}%
+\contentsline {subsubsection}{\numberline {5.7.1}Accessibility Validation}{11}{subsubsection.5.7.1}%
+\contentsline {subsubsection}{\numberline {5.7.2}Data Integrity Monitoring}{11}{subsubsection.5.7.2}%
+\contentsline {subsection}{\numberline {5.8}Engineering Trade-Off Decisions}{11}{subsection.5.8}%
+\contentsline {subsubsection}{\numberline {5.8.1}Low-Code vs. Custom Development}{11}{subsubsection.5.8.1}%
+\contentsline {subsubsection}{\numberline {5.8.2}Analytics Refresh Strategy}{11}{subsubsection.5.8.2}%
+\contentsline {subsubsection}{\numberline {5.8.3}Source-of-Truth Model}{11}{subsubsection.5.8.3}%
+\contentsline {subsection}{\numberline {5.9}Design Standards}{12}{subsection.5.9}%
+\contentsline {subsubsection}{\numberline {5.9.1}Date Handling}{12}{subsubsection.5.9.1}%
+\contentsline {subsubsection}{\numberline {5.9.2}Box Metadata Policy}{12}{subsubsection.5.9.2}%
+\contentsline {subsection}{\numberline {5.10}Communication Protocols}{12}{subsection.5.10}%
+\contentsline {subsection}{\numberline {5.11}Architectural Patterns}{12}{subsection.5.11}%
+\contentsline {subsection}{\numberline {5.12}Abstraction Strategy}{12}{subsection.5.12}%
+\contentsline {section}{\numberline {6}Detailed System Design}{13}{section.6}%
+\contentsline {subsection}{\numberline {6.1}EPR Workflow}{13}{subsection.6.1}%
+\contentsline {paragraph}{Purpose}{13}{paragraph*.5}%
+\contentsline {paragraph}{Core Data Fields}{13}{paragraph*.6}%
+\contentsline {paragraph}{Workflow States}{13}{paragraph*.7}%
+\contentsline {paragraph}{Integration Points}{13}{paragraph*.8}%
+\contentsline {subsection}{\numberline {6.2}Personnel Matters Workflow}{13}{subsection.6.2}%
+\contentsline {paragraph}{Purpose}{13}{paragraph*.9}%
+\contentsline {paragraph}{Core Data Fields}{13}{paragraph*.10}%
+\contentsline {paragraph}{Workflow States}{13}{paragraph*.11}%
+\contentsline {paragraph}{Integration Points}{13}{paragraph*.12}%
+\contentsline {subsection}{\numberline {6.3}Vacancies and Recruitment Workflow}{14}{subsection.6.3}%
+\contentsline {paragraph}{Purpose}{14}{paragraph*.13}%
+\contentsline {paragraph}{Core Data Fields}{14}{paragraph*.14}%
+\contentsline {paragraph}{Workflow States}{14}{paragraph*.15}%
+\contentsline {paragraph}{Integration Points}{14}{paragraph*.16}%
+\contentsline {subsection}{\numberline {6.4}Separations Workflow}{14}{subsection.6.4}%
+\contentsline {paragraph}{Purpose}{14}{paragraph*.17}%
+\contentsline {paragraph}{Core Data Fields}{14}{paragraph*.18}%
+\contentsline {paragraph}{Workflow States}{14}{paragraph*.19}%
+\contentsline {paragraph}{Integration Points}{14}{paragraph*.20}%
+\contentsline {section}{\numberline {7}Execution and Automation Model}{15}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Workflow Automation Structure}{15}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Shared Python Execution Framework}{15}{subsection.7.2}%
+\contentsline {subsubsection}{\numberline {7.2.1}Execution Pattern}{15}{subsubsection.7.2.1}%
+\contentsline {subsubsection}{\numberline {7.2.2}Security Controls}{16}{subsubsection.7.2.2}%
+\contentsline {subsection}{\numberline {7.3}Performance Characteristics}{16}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Database Design}{17}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Data Integration}{17}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Security}{17}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Data Tables}{17}{subsection.8.3}%
+\contentsline {subsubsection}{\numberline {8.3.1}EPR Tracker - Employees Performance Tracker}{17}{subsubsection.8.3.1}%
+\contentsline {subsubsection}{\numberline {8.3.2}EPR Tracker - Employees History Records}{18}{subsubsection.8.3.2}%
+\contentsline {subsubsection}{\numberline {8.3.3}Personnel Matters - Personnel Matters Tracker}{18}{subsubsection.8.3.3}%
+\contentsline {subsubsection}{\numberline {8.3.4}Separations - Employees Separations Tracker}{19}{subsubsection.8.3.4}%
+\contentsline {subsubsection}{\numberline {8.3.5}Separations - Recognized Holidays}{19}{subsubsection.8.3.5}%
+\contentsline {subsubsection}{\numberline {8.3.6}Vacancies and Recruitment - Vacancies and Recruitment}{20}{subsubsection.8.3.6}%
+\contentsline {section}{\numberline {9}User Interface}{21}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Interface Overview}{21}{subsection.9.1}%
+\contentsline {subsubsection}{\numberline {9.1.1}EPR}{21}{subsubsection.9.1.1}%
+\contentsline {subsubsection}{\numberline {9.1.2}Personnel Matter}{22}{subsubsection.9.1.2}%
+\contentsline {subsubsection}{\numberline {9.1.3}Vacancies and Recruitment}{23}{subsubsection.9.1.3}%
+\contentsline {subsubsection}{\numberline {9.1.4}Separations}{23}{subsubsection.9.1.4}%
+\contentsline {section}{\numberline {10}Requirements Validation and Verification}{24}{section.10}%
+\contentsline {section}{\numberline {11}Installation Guide}{25}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Repository Setup}{25}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Virtual Environment Setup}{25}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}Python Version Requirement}{25}{subsection.11.3}%
+\contentsline {subsection}{\numberline {11.4}Install Dependencies}{25}{subsection.11.4}%
+\contentsline {subsection}{\numberline {11.5}Separations Project Setup}{25}{subsection.11.5}%
+\contentsline {section}{\numberline {12}Glossary}{26}{section.12}%
+\contentsline {section}{\numberline {13}References}{27}{section.13}%
