@@ -1002,7 +1002,10 @@ This single-sheet data structure provides modularity, real-time synchronization,
 
 The system does not implement a custom front-end application.  
 User interaction occurs through three existing SaaS platforms:
+
 \subsubsection{EPR}
+
+\textbf{Smartsheet Interface and Notifications}
 
 \begin{figure}[H]
     \centering
@@ -1025,6 +1028,68 @@ User interaction occurs through three existing SaaS platforms:
     \label{fig:epr-prompting-email}
 \end{figure}
 
+\textbf{Power BI Dashboard}
+
+The EPR Analytics Dashboard in Power BI provides near real-time insights into staffing and Employee Performance Review (EPR) progress. Data is refreshed nightly from Smartsheet.
+
+\subparagraph{Page 1 -- HR Overview}
+
+\textbf{Purpose:}  
+Provide a high-level view of workforce structure, job classifications, and reporting relationships.
+
+\textbf{Key Features:}
+\begin{itemize}
+    \item \textbf{Summary Cards (Employees, Supervisors, Interns, Employees on Probation)}  
+    Displays key workforce metrics that dynamically update based on filters and slicers.
+
+    \item \textbf{Find Employee (Search Slicer)}  
+    Allows users to search and filter the dashboard by one or more employees.
+
+    \item \textbf{Employee Directory}  
+    A table showing Full Name, Job Class, Job Class Level, and Supervisor. Selecting a row filters other visuals.
+
+    \item \textbf{Employees by Job Class Level}  
+    Bar chart showing distribution across levels (Intern, I, II, III, Senior).
+
+    \item \textbf{Employees by Job Class}  
+    Horizontal bar chart displaying employee counts by job category.
+
+    \item \textbf{Employees by Job Class and Level (Stacked Bar Chart)}  
+    Combined visualization showing employee count by job class segmented by level.
+\end{itemize}
+
+\textbf{Use:}  
+Supports workforce analysis, staffing distribution insights, and organizational planning.
+
+\subparagraph{Page 2 -- EPR Performance Review}
+
+\textbf{Purpose:}  
+Track the status and completion of Employee Performance Reviews.
+
+\textbf{Key Features:}
+\begin{itemize}
+    \item \textbf{Date Range Filter}  
+    Allows users to view EPRs within a selected time window.
+
+    \item \textbf{KPI Cards}  
+    Displays Open EPRs, Completed EPRs, Total EPRs, and Completion Rate.
+
+    \item \textbf{Open vs. Completed by Month}  
+    Line chart showing trends in review progress over time.
+
+    \item \textbf{Open EPRs by Job Class}  
+    Bar chart highlighting outstanding reviews by job category.
+\end{itemize}
+
+\textbf{Key Metrics:}
+\begin{itemize}
+    \item Completion Rate (\%) = Completed EPRs / Total EPRs
+    \item Open EPRs = Reviews currently in progress
+    \item Overdue EPRs = Reviews past due and not completed
+\end{itemize}
+
+\textbf{Use:}  
+Helps HR and supervisors monitor review progress, identify overdue evaluations, and track completion performance.
 \subsubsection{Personnel Matter}
 
 \begin{figure}[H]
@@ -1045,6 +1110,8 @@ User interaction occurs through three existing SaaS platforms:
 
 \subsubsection{Separations}
 
+\textbf{Smartsheet Form Interface}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{Separation UI.png}
@@ -1052,12 +1119,45 @@ User interaction occurs through three existing SaaS platforms:
     \label{fig:separation-hr-intake-form}
 \end{figure}
 
+\textbf{Separations Dashboard}
+
+The Separations Dashboard in Power BI provides insights into employee separations, including total exits, reasons for leaving, and trends over time. The dashboard supports filtering by job class, fiscal year, and date range to enable flexible analysis.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{Separation PBI.png}
     \caption{Separation PowerBI Dashboard}
     \label{fig:separation-pbi-dashboard}
 \end{figure}
+
+\subparagraph{Overview}
+
+\textbf{Purpose:}  
+Provide a comprehensive view of employee separations to support workforce planning, retention analysis, and organizational decision-making.
+
+\textbf{Key Features:}
+\begin{itemize}
+    \item \textbf{Total Exits KPI}  
+    Displays the total number of employee separations within the selected filters.
+
+    \item \textbf{Filters (Job Class, Fiscal Year, Date Range)}  
+    Allows users to refine the dataset dynamically for targeted analysis.
+
+    \item \textbf{Total Exits by Job Class and Job Class Level}  
+    Stacked bar chart showing separations across job classes, segmented by level (e.g., Intern, I, Senior).  
+    \textit{Use:} Helps identify which roles and levels experience the highest turnover.
+
+    \item \textbf{Total Exits by Reason for Exit}  
+    Donut chart displaying the distribution of separation reasons (e.g., failed probation, new job, misconduct).  
+    \textit{Use:} Supports understanding of primary drivers of employee turnover.
+
+    \item \textbf{Total Exits Over Time}  
+    Line chart showing separation trends by year, quarter, month, and day.  
+    \textit{Use:} Enables identification of patterns or spikes in employee exits over time.
+\end{itemize}
+
+\textbf{Use:}  
+Supports HR in monitoring attrition, identifying turnover patterns, and informing retention strategies.
 
 % =====================================
 % Section 11 – Requirements Validation and Verification
