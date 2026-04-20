@@ -6,6 +6,7 @@
 \usepackage{microtype}
 \usepackage{newtxtext,newtxmath}
 
+
 % ---------- Page & core ----------
 \usepackage[a4paper,margin=1in]{geometry}
 \usepackage{setspace}
@@ -20,6 +21,7 @@
 \usepackage{ragged2e}
 \usepackage{graphicx}
 \usepackage{etoolbox} % robust section hook
+\usepackage{placeins}
 
 \newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
 
@@ -147,7 +149,8 @@ Hayk Vardapetyan\par}
 3.0 & 12/01/2025 & Momoka Aung &  Added detailed information of System Strategy and Architecture part. \\ \hline
 4.0 & 12/03/2025 & Momoka Aung &  Updated the documents with work flow diagrams and automation flow diagrrams. \\ \hline
 5.0 & 12/03/2025 & Momoka Aung &  Update Box Upload function to the current version. \\ \hline
-5.0 & 03/23/2026 & Momoka Aung &  Added Section 9  Database Design. \\ \hline
+6.0 & 03/23/2026 & Momoka Aung &  Added Section 9  Database Design. \\ \hline
+7.0 & 04/20/2026 & Hoang Le (Dempsey) & Updated Section 9 User Interface with expanded Power BI dashboard documentation for Personnel Matters and Vacancies \& Recruitment, including Smartsheet data, intake forms, tracker screenshots, and dashboard page descriptions. \\ \hline
 \end{tabularx}
 \end{center}
 
@@ -1090,7 +1093,10 @@ Track the status and completion of Employee Performance Reviews.
 
 \textbf{Use:}  
 Helps HR and supervisors monitor review progress, identify overdue evaluations, and track completion performance.
-\subsubsection{Personnel Matter}
+
+\subsubsection{Personnel Matters}
+
+\textbf{Smartsheet / Intake Interfaces}
 
 \begin{figure}[H]
     \centering
@@ -1106,7 +1112,113 @@ Helps HR and supervisors monitor review progress, identify overdue evaluations, 
     \label{fig:personnel-matters-hr-intake-form}
 \end{figure}
 
+\textbf{Smartsheet / Data Tracker Interface}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Smartsheet Personnel Matters.png}
+    \caption{Personnel Matters Smartsheet Data Overview}
+    \label{fig:placeholder}
+\end{figure}
+
+The Personnel Matters Smartsheet tracker serves as the operational data source for this component. 
+It stores case-level records submitted through intake forms and maintained by HR, including fields such as 
+Matter ID, Opened Date, Status, Complaint Type, Respondent, Issue, Supervisor, Next Steps, Closed Date, 
+Outcome, Days Open, and update-required indicators. This tracker supports case monitoring, follow-up actions, 
+and downstream reporting in the Power BI dashboard.
+
+\textbf{Power BI Dashboard}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{PowerBI Dashboard Personnel Matters.png}
+    \caption{Power BI Personnel Matters Dashboard}
+    \label{fig:personnel-matters-dashboard}
+\end{figure}
+
+
+The Personnel Matters Dashboard in Power BI provides near real-time visibility into employee relations cases, including open matters, closed matters, case status, and resolution activity. Data is refreshed from the Personnel Matters Smartsheet tracker and supports filtering for targeted HR review and compliance monitoring.
+
+\textbf{Overview Purpose:} Provide HR and leadership with a centralized view of personnel matters so they can monitor case volume, case status, overdue follow-up, and resolution trends.
+
+\textbf{Key Features:}
+\begin{itemize}
+    \item \textbf{KPI Cards} display summary values such as Total Matters, Open Matters, Closed Matters, and Average Days to Resolution.
+    \item \textbf{Status Breakdown} visual shows the distribution of cases by current status to help users quickly identify unresolved or in-progress matters.
+    \item \textbf{Matters Opened Over Time} chart displays monthly or yearly intake trends for personnel matters.
+    \item \textbf{Matters Closed Over Time} chart shows case resolution activity across time.
+    \item \textbf{Detailed Tracker Table} displays case-level information such as Matter ID, Opened Date, Status, Complaint Type, Supervisor, and Closed Date.
+    \item \textbf{Filter Controls} allow users to refine the dashboard by date range, fiscal year, status, complaint category, supervisor, or intake method.
+\end{itemize}
+
+\textbf{Use:} Helps HR monitor case progress, identify overdue or unresolved matters, support compliance reporting, and improve visibility into employee relations.
+
 \subsubsection{Vacancies and Recruitment}
+
+\textbf{Smartsheet / Data Import Interface}
+
+The Vacancies and Recruitment component uses structured vacancy and recruitment data to support reporting on open positions, hiring progress, and workforce planning.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{Smartsheet Vacancies.png}
+    \caption{Recruitment \& Vacancies Smartsheet Data}
+    \label{fig:vacancies-smartsheet}
+\end{figure}
+
+\textbf{Power BI Dashboard}
+
+\FloatBarrier
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{PowerBI Dashboard Vacancies p1.png}
+    \caption{Power BI Vacancies Dashboard Page 1}
+    \label{fig:vacancies-dashboard-page1}
+\end{figure}
+
+\FloatBarrier
+
+\paragraph{Page 1 --- Vacancies Overview}
+
+\textbf{Purpose:} Provide a high-level view of current vacancy volume, active positions, and vacancy distribution across the organization.
+
+\textbf{Key Features:}
+\begin{itemize}
+    \item \textbf{KPI Cards} display summary values such as Total Vacancies, Active Vacancies, Filled Vacancies, and average vacancy days open.
+    \item \textbf{Active Vacancies by Job Class} visual highlights which job categories currently have the highest staffing need.
+    \item \textbf{Vacancy Status Breakdown} visual displays positions by workflow stage, such as Posted, Screening, Interviewing, Offer Extended, or Filled.
+    \item \textbf{Vacancy Trend Over Time} chart shows how vacancy volume changes across months or fiscal periods.
+    \item \textbf{Additional categorical visuals} may show vacancy distribution by funding label, department, office location, or other available organizational fields.
+    \item \textbf{Filter controls} allow users to refine the dashboard by date range, fiscal year, job class title, department, funding label, or vacancy status.
+\end{itemize}
+
+\textbf{Use:} Supports staffing analysis, hiring prioritization, and workforce planning by helping HR identify where vacancies are concentrated and how long positions remain open.
+
+\paragraph{Page 2 --- Recruitment Overview}
+
+\textbf{Purpose:} Track recruitment activity, hiring progress, and operational metrics related to filling positions.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{PowerBI Dashboard Vacancies p2.png}
+    \caption{Power BI Vacancies Dashboard Page 2}
+    \label{fig:vacancies-dashboard-page2}
+\end{figure}
+
+\textbf{Key Features:}
+\begin{itemize}
+    \item \textbf{KPI Cards} display summary values such as Recruitment Records, Interviews Conducted, New Hires, or other hiring activity metrics available in the dataset.
+    \item \textbf{Recruitment Type Breakdown} visual shows internal versus external recruitment activity when applicable.
+    \item \textbf{Hiring Activity Over Time} chart displays recruitment and hiring trends across selected time periods.
+    \item \textbf{Historical Overview by Job Class} visual helps HR compare recruitment volume and outcomes across classifications.
+    \item \textbf{Detailed Recruitment Table} provides row-level visibility into vacancy ID, job class title, recruitment type, interviews conducted, date filled, and current status.
+    \item \textbf{Shared Filters} allow users to analyze recruitment data by job class, recruitment type, status, fiscal year, and date range.
+\end{itemize}
+
+\textbf{Use:} Helps HR track recruitment pipeline progress, monitor hiring outcomes, evaluate time-to-fill patterns, and support operational hiring decisions.
+
+
 
 \subsubsection{Separations}
 
