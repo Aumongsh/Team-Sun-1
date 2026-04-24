@@ -81,8 +81,8 @@
 \contentsline {paragraph}{Core Data Fields}{13}{paragraph*.10}%
 \contentsline {paragraph}{Workflow States}{13}{paragraph*.11}%
 \contentsline {paragraph}{Integration Points}{13}{paragraph*.12}%
-\contentsline {subsection}{\numberline {6.3}Vacancies and Recruitment Workflow}{14}{subsection.6.3}%
-\contentsline {paragraph}{Purpose}{14}{paragraph*.13}%
+\contentsline {subsection}{\numberline {6.3}Vacancies and Recruitment Workflow}{13}{subsection.6.3}%
+\contentsline {paragraph}{Purpose}{13}{paragraph*.13}%
 \contentsline {paragraph}{Core Data Fields}{14}{paragraph*.14}%
 \contentsline {paragraph}{Workflow States}{14}{paragraph*.15}%
 \contentsline {paragraph}{Integration Points}{14}{paragraph*.16}%
@@ -93,10 +93,11 @@
 \contentsline {paragraph}{Integration Points}{14}{paragraph*.20}%
 \contentsline {section}{\numberline {7}Execution and Automation Model}{15}{section.7}%
 \contentsline {subsection}{\numberline {7.1}Workflow Automation Structure}{15}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Shared Python Execution Framework}{15}{subsection.7.2}%
-\contentsline {subsubsection}{\numberline {7.2.1}Execution Pattern}{15}{subsubsection.7.2.1}%
-\contentsline {subsubsection}{\numberline {7.2.2}Security Controls}{16}{subsubsection.7.2.2}%
-\contentsline {subsection}{\numberline {7.3}Performance Characteristics}{16}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.2}Event-Driven Integration Architecture}{15}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Python Execution Framework}{16}{subsection.7.3}%
+\contentsline {subsubsection}{\numberline {7.3.1}Execution Pattern}{16}{subsubsection.7.3.1}%
+\contentsline {subsubsection}{\numberline {7.3.2}Security Controls}{16}{subsubsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.4}Performance Characteristics}{16}{subsection.7.4}%
 \contentsline {section}{\numberline {8}Database Design}{17}{section.8}%
 \contentsline {subsection}{\numberline {8.1}Data Integration}{17}{subsection.8.1}%
 \contentsline {subsection}{\numberline {8.2}Security}{17}{subsection.8.2}%
@@ -117,7 +118,7 @@
 \contentsline {paragraph}{Page 1 --- Vacancies Overview}{27}{paragraph*.23}%
 \contentsline {paragraph}{Page 2 --- Recruitment Overview}{27}{paragraph*.24}%
 \contentsline {subsubsection}{\numberline {9.1.4}Separations}{28}{subsubsection.9.1.4}%
-\contentsline {subparagraph}{Overview}{29}{subparagraph*.25}%
+\contentsline {subparagraph}{Overview}{30}{subparagraph*.25}%
 \contentsline {section}{\numberline {10}Requirements Validation and Verification}{31}{section.10}%
 \contentsline {section}{\numberline {11}Installation Guide}{32}{section.11}%
 \contentsline {subsection}{\numberline {11.1}Repository Setup}{32}{subsection.11.1}%

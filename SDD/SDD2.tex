@@ -94,7 +94,7 @@
 \vspace{1.5cm}
 
 % Version line
-{\normalsize Version 0.2 Approve Pending\par}
+{\normalsize Version 7.0\par}
 \vspace{2cm}
 
 % Prepared by + names
@@ -120,7 +120,7 @@ Hayk Vardapetyan\par}
 
 % Push date to bottom
 \vfill
-{\normalsize 03 December 2025\par}
+{\normalsize 23 April 2026\par}
 
 \end{titlepage}
 
@@ -684,12 +684,6 @@ Opened → In Progress → Closed
 \end{verbatim}
 
 \paragraph{Integration Points}
-\begin{itemize}
-    \item Optional document metadata extraction via Python-based automation
-    \item Archival to Box repository
-    \item Power BI reporting integration
-\end{itemize}
-
 % ------------------------------------------------
 \subsection{Vacancies and Recruitment Workflow}
 
@@ -731,79 +725,122 @@ Missing Field → Awaiting Email → Email Sent → Email Failed
     \item Optional document processing and extraction
     \item Power BI reporting integration
 \end{itemize}
+\begin{itemize}
+    \item Optional document metadata extraction via Python-based automation
+    \item Archival to Box repository
+    \item Power BI reporting integration
+\end{itemize}
+
 
 % =====================================
-% Section 8 – Execution and Automation Model
+% Section 7 – Execution and Automation Model
 % =====================================
 \section{Execution and Automation Model}
 
-This section defines the automation execution logic and shared processing framework.
+This section defines the end-to-end automation architecture, including Smartsheet-native workflows and the external execution framework powered by AWS and Python.
 
 \subsection{Workflow Automation Structure}
 
-All workflows implement:
+All workflows originate from Smartsheet and Box events, triggered via webhook integrations.
+
+Core characteristics include:
 
 \begin{itemize}
-    \item Event-driven rule execution
-    \item Status-based state transitions
-    \item Validation before archival
-    \item Idempotent integration triggers
+    \item Event-driven execution via Smartsheet and Box webhooks
+    \item Status-based lifecycle management within tracker sheets
+    \item Conditional logic enforced through control and validation fields
+    \item Idempotent processing using flags to prevent duplicate execution
 \end{itemize}
 
-Automation rules are organized into logical groups:
+Each tracker (e.g., Separation, EPR, Personnel Matters) follows a consistent structural design, while incorporating workflow-specific fields tailored to each process.
+
+Fields are generally organized into three categories:
 
 \begin{itemize}
-    \item Initialization Rules
-    \item Routing Rules
-    \item Status Management Rules
-    \item Archival Rules
-    \item Reminder/Escalation Rules
+    \item \textbf{Core Fields:} Identify and track the record, including status, ownership, and key dates
+    \item \textbf{Control Fields:} Support workflow execution through approvals, processing flags, and next-step indicators
+    \item \textbf{Audit Fields:} Capture system activity, including timestamps, processing metrics, and execution logs
 \end{itemize}
 
-Detailed rule configurations are documented in Appendix A.
+Specific field definitions vary by tracker to support the requirements of each workflow.
 
-\subsection{Shared Python Execution Framework}
-
-The Python execution framework extends native automation capabilities for:
+Smartsheet automation rules handle:
 
 \begin{itemize}
-    \item Box archival synchronization
-    \item Metadata extraction
-    \item Record validation
-    \item Email generation support
-    \item Bulk processing tasks
+    \item Record initialization from intake forms
+    \item Status transitions and approvals
+    \item Notifications and reminders
+    \item Flagging records for downstream processing (e.g., archival, sync)
+\end{itemize}
+
+\subsection{Event-Driven Integration Architecture}
+
+External processing is initiated via webhook events from:
+
+\begin{itemize}
+    \item Smartsheet (row creation/updates)
+    \item Box (file/folder events)
+\end{itemize}
+
+These events are routed through AWS API Gateway, which directs requests to workflow-specific Lambda functions:
+
+\begin{itemize}
+    \item EPR Lambda
+    \item Personnel Matters Lambda
+    \item Separations Lambda
+    \item Vacancies \& Recruitment Lambda
+\end{itemize}
+
+Each Lambda function invokes a corresponding Python script responsible for executing business logic.
+
+\subsection{Python Execution Framework}
+
+Python scripts perform operations not supported natively within Smartsheet, including:
+
+\begin{itemize}
+    \item Box folder creation and archival synchronization
+    \item Cross-system data validation and enrichment
+    \item Metadata extraction and transformation
+    \item Dynamic email content generation
+    \item Bulk and asynchronous record processing
 \end{itemize}
 
 \subsubsection{Execution Pattern}
 
+Each Lambda-triggered Python process follows a consistent pattern:
+
 \begin{enumerate}
-    \item Authenticate with external APIs
-    \item Retrieve eligible records
-    \item Validate required fields
-    \item Execute workflow-specific logic
-    \item Update Smartsheet and/or Box
-    \item Log results
+    \item Retrieve event payload from API Gateway
+    \item Authenticate using credentials from AWS Secrets Manager
+    \item Identify and retrieve the relevant Smartsheet record(s)
+    \item Validate required fields and processing conditions
+    \item Execute workflow-specific actions (e.g., Box operations, updates)
+    \item Write results back to Smartsheet (status updates, timestamps)
+    \item Log execution outcomes for auditability
 \end{enumerate}
+
+Processing is designed to be idempotent, ensuring repeated events do not create duplicate artifacts.
 
 \subsubsection{Security Controls}
 
 \begin{itemize}
-    \item OAuth 2.0 authentication
-    \item Environment-based secret storage
-    \item Least-privilege API scopes
-    \item Execution logging for auditability
+    \item Centralized credential management via AWS Secrets Manager
+    \item OAuth 2.0 authentication for Smartsheet and Box APIs
+    \item Least-privilege access for all services and scripts
+    \item Structured logging within Lambda for traceability and monitoring
 \end{itemize}
 
 \subsection{Performance Characteristics}
 
 \begin{itemize}
-    \item Event-driven, non-blocking execution
-    \item Idempotent processing to prevent duplication
-    \item Linear scaling within API rate limits
+    \item Fully event-driven architecture with no manual triggers
+    \item Serverless execution via AWS Lambda enables horizontal scaling
+    \item Asynchronous processing prevents blocking within Smartsheet workflows
+    \item Designed to operate within API rate limits for all integrated systems
 \end{itemize}
 
 % =====================================
-% Section 9 – Database Design
+% Section 8 – Database Design
 % =====================================
 \section{Database Design}
 
@@ -997,7 +1034,7 @@ This single-sheet data structure provides modularity, real-time synchronization,
 
 
 % =====================================
-% Section 10 – User Interface
+% Section 9 – User Interface
 % =====================================
 \section{User Interface}
 
@@ -1009,6 +1046,8 @@ User interaction occurs through three existing SaaS platforms:
 \subsubsection{EPR}
 
 \textbf{Smartsheet Interface and Notifications}
+
+The EPR Tracker serves as the operational data source, storing HR-managed evaluation records submitted through intake forms, including Employee ID, Review Period, Status, Reviewer, ratings, comments, approvals, outcomes, and processing time.
 
 \begin{figure}[H]
     \centering
@@ -1232,11 +1271,18 @@ The Vacancies and Recruitment component uses structured vacancy and recruitment 
 
 \textbf{Use:} Helps HR track recruitment pipeline progress, monitor hiring outcomes, evaluate time-to-fill patterns, and support operational hiring decisions.
 
-
-
 \subsubsection{Separations}
 
-\textbf{Smartsheet Form Interface}
+\textbf{Smartsheet / Data Tracker Interface}
+
+The Separation Tracker serves as the operational data source, storing HR-managed case records submitted through intake forms, including Employee ID, Separation Type, dates, Status, Reason, Department, Supervisor, approvals, outcomes, and processing time.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{Separation Data.png}
+    \caption{Separation Data}
+    \label{fig:Separation}
+\end{figure}
 
 \begin{figure}[H]
     \centering
@@ -1245,7 +1291,7 @@ The Vacancies and Recruitment component uses structured vacancy and recruitment 
     \label{fig:separation-hr-intake-form}
 \end{figure}
 
-\textbf{Separations Dashboard}
+\textbf{Power BI Dashboard}
 
 The Separations Dashboard in Power BI provides insights into employee separations, including total exits, reasons for leaving, and trends over time. The dashboard supports filtering by job class, fiscal year, and date range to enable flexible analysis.
 
@@ -1286,7 +1332,7 @@ Provide a comprehensive view of employee separations to support workforce planni
 Supports HR in monitoring attrition, identifying turnover patterns, and informing retention strategies.
 
 % =====================================
-% Section 11 – Requirements Validation and Verification
+% Section 10 – Requirements Validation and Verification
 % =====================================
 \section{Requirements Validation and Verification}
 
@@ -1342,7 +1388,7 @@ Review of logs for accuracy of timestamps, user actions, and changes \\ \hline
 All major modules were validated through user testing and workflow simulations to ensure the system operates correctly, securely, and efficiently.
 
 % =====================================
-% Section 12 – Installation Guide
+% Section 11 – Installation Guide
 % =====================================
 \section{Installation Guide}
 
@@ -1399,7 +1445,7 @@ layers/shared_config/config.py
 \end{itemize}
 
 % =====================================
-% Section 13 – Glossary
+% Section 12 – Glossary
 % =====================================
 \section{Glossary}
 
@@ -1418,7 +1464,7 @@ layers/shared_config/config.py
 \end{itemize}
 
 % =====================================
-% Section 14 – References
+% Section 13 – References
 % =====================================
 \section{References}
 
